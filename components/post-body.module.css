@@ -1,5 +1,5 @@
 .content {
-  @apply text-lg leading-relaxed;
+  @apply text-lg leading-relaxed flex overflow-x-auto;
 }
 
 .content p,
@@ -73,4 +73,12 @@
 
 .content audio {
   @apply w-full;
+}
+
+.content > figure {
+  @apply flex flex-row gap-4;
+}
+
+.content > figure > figure {
+  @apply flex-shrink-0;
 }

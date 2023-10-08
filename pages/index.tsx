@@ -1,35 +1,26 @@
-import Head from 'next/head'
-import { GetStaticProps } from 'next'
-import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
-import Layout from '../components/layout'
-import { getAllPostsForHome } from '../lib/api'
-import { CMS_NAME } from '../lib/constants'
+import { GetStaticProps } from "next"
+import Head from "next/head"
+import Container from "../components/container"
+import Intro from "../components/intro"
+import Layout from "../components/layout"
+import SinglePost from "../components/single-post"
+import { getAllPostsForHome } from "../lib/api"
 
-export default function Index({ allPosts: { edges }, preview }) {
-  const heroPost = edges[0]?.node
-  const morePosts = edges.slice(1)
-
+export default function Index({ allPosts: { edges } }) {
   return (
-    <Layout preview={preview}>
+    <Layout>
       <Head>
-        <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
+        <title>RINA WOLF</title>
       </Head>
       <Container>
         <Intro />
-        {heroPost && (
-          <HeroPost
-            title={heroPost.title}
-            coverImage={heroPost.featuredImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-          />
-        )}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        {edges.length > 0 ? (
+          <>
+            {edges.map(({ node }) => (
+              <SinglePost post={node} />
+            ))}
+          </>
+        ) : null}
       </Container>
     </Layout>
   )
@@ -40,6 +31,6 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
 
   return {
     props: { allPosts, preview },
-    revalidate: 10,
+    revalidate: 10
   }
 }
