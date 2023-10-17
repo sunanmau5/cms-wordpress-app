@@ -17,8 +17,8 @@ module.exports = {
     ],
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "rina-wolf.com",
+        protocol: "https",
+        hostname: "admin.rina-wolf.com",
         port: "",
         pathname: "/wordpress/**"
       }

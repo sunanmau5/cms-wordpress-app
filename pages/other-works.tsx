@@ -1,17 +1,13 @@
 import { GetStaticProps } from "next"
-import Head from "next/head"
 import Container from "../components/container"
 import Intro from "../components/intro"
 import Layout from "../components/layout"
 import SinglePost from "../components/single-post"
-import { getAllPostsForPortfolio } from "../lib/api"
+import { getAllPostsForOtherWorks } from "../lib/api"
 
-export default function Index({ allPosts: { edges } }) {
+export default function OtherWorks({ allPosts: { edges } }) {
   return (
     <Layout>
-      <Head>
-        <title>RINA WOLF</title>
-      </Head>
       <Container>
         <Intro />
         {edges.length > 0 ? (
@@ -29,7 +25,7 @@ export default function Index({ allPosts: { edges } }) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const allPosts = await getAllPostsForPortfolio(preview)
+  const allPosts = await getAllPostsForOtherWorks(preview)
 
   return {
     props: { allPosts, preview },

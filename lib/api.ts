@@ -59,13 +59,43 @@ export async function getAllPostsWithSlug() {
   return data?.posts
 }
 
-export async function getAllPostsForHome(preview) {
+export async function getAllPostsForPortfolio(preview) {
   const data = await fetchAPI(
     `
     query AllPosts {
       posts(
         first: 20
         where: {categoryName: "portfolio", orderby: {field: DATE, order: DESC}}
+      ) {
+        edges {
+          node {
+            title
+            excerpt
+            slug
+            content
+          }
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        onlyEnabled: !preview,
+        preview
+      }
+    }
+  )
+
+  return data?.posts
+}
+
+export async function getAllPostsForOtherWorks(preview) {
+  const data = await fetchAPI(
+    `
+    query AllPosts {
+      posts(
+        first: 20
+        where: {categoryName: "other-works", orderby: {field: DATE, order: DESC}}
       ) {
         edges {
           node {
