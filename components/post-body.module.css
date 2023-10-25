@@ -79,6 +79,10 @@
   @apply flex flex-row gap-4 pl-20;
 }
 
+.content > *:first-child:not(figure) {
+  @apply mx-20;
+}
+
 .content > figure > figure {
   @apply flex-shrink-0;
 }

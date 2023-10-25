@@ -1,7 +1,6 @@
 import { GetStaticProps } from "next";
-import Layout from "../components/layout";
-import SinglePost from "../components/single-post";
 import { getAllPostsForOtherWorks } from "../lib/api";
+import { Layout, SinglePost } from "../components";
 
 export default function OtherWorks({ allPosts: { edges } }) {
   return (

@@ -1,8 +1,7 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import Layout from "../components/layout";
-import SinglePost from "../components/single-post";
 import { getAllPostsForPortfolio } from "../lib/api";
+import { Layout, SinglePost } from "../components";
 
 export default function Index({ allPosts: { edges } }) {
   return (
