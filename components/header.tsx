@@ -1,11 +1,18 @@
 import Link from "next/link"
 
+// TODO - make header nav responsive
+// TODO - make routes dynamic
+
 export default function Header() {
   return (
-    <h2 className="text-2xl md:text-4xl font-bold tracking-tight md:tracking-tighter leading-tight mb-20 mt-8">
-      <Link href="/" className="hover:underline">
-        RINA WOLF
-      </Link>
-    </h2>
+    <header className="flex items-center">
+      <h1 className="m-20 text-4xl font-bold">
+        <Link href="/">RINA WOLF</Link>
+      </h1>
+
+      <h2 className="m-20 text-2xl font-semibold">
+        <Link href="/other-works">other works</Link>
+      </h2>
+    </header>
   )
 }

@@ -1,10 +1,8 @@
-import { GetStaticProps } from "next"
-import Head from "next/head"
-import Container from "../components/container"
-import Intro from "../components/intro"
-import Layout from "../components/layout"
-import SinglePost from "../components/single-post"
-import { getAllPostsForPortfolio } from "../lib/api"
+import { GetStaticProps } from "next";
+import Head from "next/head";
+import Layout from "../components/layout";
+import SinglePost from "../components/single-post";
+import { getAllPostsForPortfolio } from "../lib/api";
 
 export default function Index({ allPosts: { edges } }) {
   return (
@@ -12,27 +10,24 @@ export default function Index({ allPosts: { edges } }) {
       <Head>
         <title>RINA WOLF</title>
       </Head>
-      <Container>
-        <Intro />
-        {edges.length > 0 ? (
-          <>
-            {edges.map(({ node }) => (
-              //
-              //
-              <SinglePost key={node.id} post={node} />
-            ))}
-          </>
-        ) : null}
-      </Container>
+      {edges.length > 0 ? (
+        <>
+          {edges.map(({ node }) => (
+            //
+            //
+            <SinglePost key={node.slug} post={node} />
+          ))}
+        </>
+      ) : null}
     </Layout>
-  )
+  );
 }
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const allPosts = await getAllPostsForPortfolio(preview)
+  const allPosts = await getAllPostsForPortfolio(preview);
 
   return {
     props: { allPosts, preview },
-    revalidate: 10
-  }
-}
+    revalidate: 10,
+  };
+};
