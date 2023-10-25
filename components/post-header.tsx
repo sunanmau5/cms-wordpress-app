@@ -1,5 +1,5 @@
-import PostTitle from "./post-title"
+import PostTitle from "./post-title";
 
 export default function PostHeader({ title }) {
-  return <PostTitle>{title}</PostTitle>
+  return <PostTitle>{title}</PostTitle>;
 }

@@ -1,5 +1,5 @@
-import PostBody from "./post-body"
-import PostHeader from "./post-header"
+import PostBody from "./post-body";
+import PostHeader from "./post-header";
 
 export default function SinglePost({ post }) {
   return (
@@ -7,5 +7,5 @@ export default function SinglePost({ post }) {
       <PostHeader title={post.title} />
       <PostBody content={post.content} />
     </article>
-  )
+  );
 }

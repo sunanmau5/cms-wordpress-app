@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 // TODO - make header nav responsive
 // TODO - make routes dynamic
@@ -14,5 +14,5 @@ export default function Header() {
         <Link href="/other-works">other works</Link>
       </h2>
     </header>
-  )
+  );
 }
