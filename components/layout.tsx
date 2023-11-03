@@ -8,7 +8,7 @@ export default function Layout({ children }) {
       <Meta />
       <Header />
       <div className="min-h-screen">
-        <main>{children}</main>
+        <main className="flex flex-col gap-4">{children}</main>
       </div>
       <Footer />
     </>

@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import ErrorPage from "next/error";
 import { useRouter } from "next/router";
-import { Layout, PostTitle, SinglePost } from "../components";
+import { Layout, PostBody, PostTitle } from "../components";
 import { getAllPagesWithSlug, getPage } from "../lib/api";
 
 export default function Page({ page }) {
@@ -16,7 +16,7 @@ export default function Page({ page }) {
       {isFallback ? (
         <PostTitle>Loading…</PostTitle>
       ) : (
-        <SinglePost post={page} />
+        <PostBody content={page.content} />
       )}
     </Layout>
   );
