@@ -1,10 +1,15 @@
 import styles from "./post-body.module.css";
 
-export default function PostBody({ content }) {
+export interface IPost {
+  title: string;
+  content: string;
+}
+
+export default function PostBody({ content }: IPost) {
   return (
     <div
-      className={styles.content}
       dangerouslySetInnerHTML={{ __html: content }}
+      className={styles.content}
     />
   );
 }

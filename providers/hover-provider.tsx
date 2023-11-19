@@ -31,4 +31,14 @@ export const HoverProvider: React.FC<Props> = ({
   );
 };
 
-export const useHoverContext = () => useContext(HoverContext);
+export const useHoverContext = () => {
+  const context = useContext(HoverContext);
+  if (
+    context === undefined ||
+    (typeof context === "object" && Object.keys(context).length === 0)
+  ) {
+    throw new Error("useHoverContext must be used within a HoverProvider");
+  }
+
+  return context;
+};

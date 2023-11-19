@@ -1,6 +1,6 @@
 import cx from "classnames";
 import Link from "next/link";
-import { useHoverContext } from "./hover-provider";
+import { useHoverContext } from "../providers";
 
 export default function Route({
   activePage,
@@ -12,15 +12,15 @@ export default function Route({
   const { activeOption, setActiveOption } = useHoverContext();
   return (
     <h2
-      onMouseOver={() => setActiveOption(route)}
-      onMouseLeave={() => setActiveOption(activePage)}
       className={cx(
-        "mx-20 text-2xl font-semibold transition-opacity duration-300",
+        "mx-20 text-xl font-semibold transition-opacity duration-300",
         {
           "opacity-100": route === activeOption,
           "opacity-50": route !== activeOption,
         },
       )}
+      onMouseLeave={() => setActiveOption(activePage)}
+      onMouseOver={() => setActiveOption(route)}
     >
       <Link href={`/${route}`}>{route.replace("-", " ")}</Link>
     </h2>

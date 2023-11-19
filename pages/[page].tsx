@@ -14,9 +14,9 @@ export default function Page({ page }) {
   return (
     <Layout>
       {isFallback ? (
-        <PostTitle>Loading…</PostTitle>
+        <PostTitle title="Loading..." />
       ) : (
-        <PostBody content={page.content} />
+        <PostBody content={page.content} title={page.title} />
       )}
     </Layout>
   );

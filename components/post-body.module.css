@@ -1,5 +1,5 @@
 .content {
-  @apply text-lg leading-relaxed flex overflow-x-auto;
+  @apply text-lg leading-relaxed px-20;
 }
 
 .content p,
@@ -73,16 +73,4 @@
 
 .content audio {
   @apply w-full;
-}
-
-.content > figure {
-  @apply flex flex-row gap-4 pl-20;
-}
-
-.content > *:first-child:not(figure) {
-  @apply mx-20;
-}
-
-.content > figure > figure {
-  @apply flex-shrink-0;
 }

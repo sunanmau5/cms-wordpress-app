@@ -102,3 +102,23 @@
 .wp-block-media-text {
   @apply grid grid-cols-2 gap-4;
 }
+
+.wp-block-gallery img {
+  @apply m-0;
+}
+
+/*
+    https://github.com/tailwindlabs/tailwindcss/discussions/2394
+    https://github.com/tailwindlabs/tailwindcss/pull/5732
+*/
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}

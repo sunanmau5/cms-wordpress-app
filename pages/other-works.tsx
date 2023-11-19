@@ -1,19 +1,19 @@
 import { GetStaticProps } from "next";
-import { getAllPostsForOtherWorks } from "../lib/api";
 import { Layout, SinglePost } from "../components";
+import { getAllPostsForOtherWorks } from "../lib/api";
 
 export default function OtherWorks({ allPosts: { edges } }) {
+  if (edges.length === 0) {
+    return null;
+  }
+
   return (
     <Layout>
-      {edges.length > 0 ? (
-        <>
-          {edges.map(({ node }) => (
-            //
-            //
-            <SinglePost key={node.slug} post={node} />
-          ))}
-        </>
-      ) : null}
+      {edges.map(({ node }) => (
+        //
+        //
+        <SinglePost key={node.slug} className="snap-start" post={node} />
+      ))}
     </Layout>
   );
 }

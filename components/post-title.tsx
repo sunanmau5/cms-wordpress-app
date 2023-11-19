@@ -1,8 +1,10 @@
-export default function PostTitle({ children }) {
+export default function PostTitle({ title }) {
   return (
     <h1
-      className="mx-20 my-4 text-left text-4xl font-bold"
-      dangerouslySetInnerHTML={{ __html: children }}
-    />
+      className="mx-20 mb-4 mt-0 text-left text-3xl font-bold"
+      style={{ lineHeight: 0.7 }}
+    >
+      {title}
+    </h1>
   );
 }

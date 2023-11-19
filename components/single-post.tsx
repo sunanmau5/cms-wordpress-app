@@ -1,11 +1,19 @@
-import PostBody from "./post-body";
-import PostHeader from "./post-header";
+import PostGallery from "./post-gallery";
+import PostTitle from "./post-title";
 
-export default function SinglePost({ post }) {
+type ISinglePost = {
+  post: {
+    title: string;
+    content: string;
+  };
+  className?: string;
+};
+
+export default function SinglePost({ post, className }: ISinglePost) {
   return (
-    <article>
-      <PostHeader title={post.title} />
-      <PostBody content={post.content} />
+    <article className={className}>
+      <PostTitle title={post.title} />
+      <PostGallery post={post} />
     </article>
   );
 }
