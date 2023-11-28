@@ -1,8 +1,10 @@
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+
 import { useElementOnScreen } from "../hooks";
-import { useImageHeightContext } from "../providers";
+// import { useImageHeightContext } from "../providers";
 import { extractSrcFromContent } from "../utils";
+
 import ArrowButton from "./arrow-button";
 import { IPost } from "./post-body";
 
@@ -20,12 +22,14 @@ export default function PostGallery({ post }: IPostGallery) {
   const _title = title.toLowerCase();
 
   const config = {
-    root: document?.querySelector(`#${_title}-scroll-area`),
+    // TODO - fix this
+    // root: document?.querySelector(`#${_title}-scroll-area`),
     rootMargin: "0px",
     threshold: 0.95,
   };
 
-  const { imageHeight } = useImageHeightContext();
+  // TODO - remove image height
+  // const { imageHeight } = useImageHeightContext();
   const [imageWidth, setImageWidth] = useState<number>(0);
   const images = extractSrcFromContent(content);
 
@@ -36,7 +40,6 @@ export default function PostGallery({ post }: IPostGallery) {
   const [showPrev, setShowPrev] = useState<boolean>(false);
   const [showNext, setShowNext] = useState<boolean>(true);
 
-  console.log({ imageHeight, imageWidth });
   useEffect(() => {
     setShowPrev(!isFirstVisible);
   }, [isFirstVisible]);
@@ -91,7 +94,8 @@ export default function PostGallery({ post }: IPostGallery) {
             src={src}
             style={{
               width: "auto",
-              height: imageHeight - (POST_TITLE_HEIGHT + DEFAULT_MARGIN),
+              // TODO - don't use magic numbers
+              height: 691 - (POST_TITLE_HEIGHT + DEFAULT_MARGIN),
             }}
             width="0"
           />

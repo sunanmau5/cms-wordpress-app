@@ -1,5 +1,6 @@
 import cx from "classnames";
 import Link from "next/link";
+
 import { useHoverContext } from "../providers";
 
 export default function Route({
@@ -12,13 +13,10 @@ export default function Route({
   const { activeOption, setActiveOption } = useHoverContext();
   return (
     <h2
-      className={cx(
-        "mx-20 text-xl font-semibold transition-opacity duration-300",
-        {
-          "opacity-100": route === activeOption,
-          "opacity-50": route !== activeOption,
-        },
-      )}
+      className={cx("text-xl font-semibold transition-opacity duration-300", {
+        "opacity-100": route === activeOption,
+        "opacity-50": route !== activeOption,
+      })}
       onMouseLeave={() => setActiveOption(activePage)}
       onMouseOver={() => setActiveOption(route)}
     >

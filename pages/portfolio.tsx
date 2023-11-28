@@ -1,4 +1,5 @@
 import { GetStaticProps } from "next";
+
 import { Layout, SinglePost } from "../components";
 import { getAllPostsForPortfolio } from "../lib/api";
 
@@ -12,17 +13,17 @@ export default function Portfolio({ allPosts: { edges } }) {
       {edges.map(({ node }) => (
         //
         //
-        <SinglePost key={node.slug} className="snap-start" post={node} />
+        <SinglePost key={node.slug} post={node} />
       ))}
     </Layout>
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const allPosts = await getAllPostsForPortfolio(preview);
+export const getStaticProps: GetStaticProps = async () => {
+  const allPosts = await getAllPostsForPortfolio();
 
   return {
-    props: { allPosts, preview },
+    props: { allPosts },
     revalidate: 10,
   };
 };

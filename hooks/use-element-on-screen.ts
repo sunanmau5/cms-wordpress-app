@@ -1,8 +1,8 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 
-export default function useElementOnScreen<T extends HTMLElement>(
+export const useElementOnScreen = <T extends HTMLElement>(
   options,
-): [MutableRefObject<T>, boolean] {
+): [MutableRefObject<T>, boolean] => {
   const containerRef = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -21,4 +21,4 @@ export default function useElementOnScreen<T extends HTMLElement>(
   }, [containerRef, options]);
 
   return [containerRef, isVisible];
-}
+};

@@ -10,14 +10,18 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
   }
 
   // WPGraphQL Plugin must be enabled
-  const res = await fetch(API_URL, {
-    headers,
-    method: "POST",
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-  });
+  const res = await fetch(
+    API_URL ?? "https://admin.rina-wolf.com/wordpress/graphql",
+    {
+      next: { revalidate: 10 },
+      headers,
+      method: "POST",
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+    },
+  );
 
   const json = await res.json();
   if (json.errors) {
@@ -27,24 +31,7 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
   return json.data;
 }
 
-export async function getPreviewPost(id, idType = "DATABASE_ID") {
-  const data = await fetchAPI(
-    `
-    query PreviewPost($id: ID!, $idType: PostIdType!) {
-      post(id: $id, idType: $idType) {
-        databaseId
-        slug
-        status
-      }
-    }`,
-    {
-      variables: { id, idType },
-    },
-  );
-  return data.post;
-}
-
-export async function getAllPostsForPortfolio(preview) {
+export async function getAllPostsForPortfolio() {
   const data = await fetchAPI(
     `
     query AllPostsForPortfolio {
@@ -63,18 +50,12 @@ export async function getAllPostsForPortfolio(preview) {
       }
     }
   `,
-    {
-      variables: {
-        onlyEnabled: !preview,
-        preview,
-      },
-    },
   );
 
   return data?.posts;
 }
 
-export async function getAllPostsForOtherWorks(preview) {
+export async function getAllPostsForOtherWorks() {
   const data = await fetchAPI(
     `
     query AllPostsForOtherWorks {
@@ -93,12 +74,6 @@ export async function getAllPostsForOtherWorks(preview) {
       }
     }
   `,
-    {
-      variables: {
-        onlyEnabled: !preview,
-        preview,
-      },
-    },
   );
 
   return data?.posts;
@@ -142,4 +117,33 @@ export async function getAllPagesWithSlug() {
   );
 
   return data?.pages;
+}
+
+export async function sendMail({ subject, body, mutationId = "contact" }) {
+  const fromAddress = "noreply@rina-wolf.com";
+  const toAddress = "sunan.regi+111@gmail.com";
+  const data = await fetchAPI(
+    `
+		mutation SendEmail($input: SendEmailInput!) {
+			sendEmail(input: $input) {
+				message
+				origin
+				sent
+			}
+		}
+	`,
+    {
+      variables: {
+        input: {
+          clientMutationId: mutationId,
+          from: fromAddress,
+          to: toAddress,
+          subject: subject,
+          body: body,
+        },
+      },
+    },
+  );
+
+  return data?.sendEmail;
 }
