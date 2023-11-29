@@ -1,10 +1,10 @@
 "use client";
 
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 export const useElementOnScreen = <T extends HTMLElement>(
   options,
-): [MutableRefObject<T>, boolean] => {
+): [RefObject<T>, boolean] => {
   const containerRef = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -15,10 +15,11 @@ export const useElementOnScreen = <T extends HTMLElement>(
 
   useEffect(() => {
     const observer = new IntersectionObserver(callbackFn, options);
+    const curr = containerRef.current;
 
-    if (containerRef.current) observer.observe(containerRef.current);
+    if (curr) observer.observe(curr);
     return () => {
-      if (containerRef.current) observer.unobserve(containerRef.current);
+      if (curr) observer.unobserve(curr);
     };
   }, [containerRef, options]);
 

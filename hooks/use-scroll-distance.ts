@@ -30,7 +30,7 @@ export const useScrollDistance = (
       isScrolling.current = setTimeout(() => {
         // Calculate distance
         end.current = window.scrollY;
-        distance.current = end.current - start.current;
+        distance.current = end.current - (start?.current ?? 0);
 
         // Run the callback
         if (

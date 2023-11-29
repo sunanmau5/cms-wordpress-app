@@ -16,7 +16,7 @@ type HoverContextProps = {
 const HoverContext = createContext({} as HoverContextProps);
 
 interface Props {
-  initialActiveOption?: string;
+  initialActiveOption: string;
   children: React.ReactNode;
 }
 
