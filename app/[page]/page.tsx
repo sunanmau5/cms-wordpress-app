@@ -4,11 +4,13 @@ import { getAllPagesWithSlug, getPage } from "../../lib/api";
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const allPages = await getAllPagesWithSlug();
-  return allPages.edges.map(({ node }) => ({ page: node.slug })) || [];
+  const { edges } = await getAllPagesWithSlug();
+  const params = edges.map(({ node }) => ({ page: node.slug }));
+  return params;
 }
 
-export default async function WPPage({ page }) {
+export default async function WPPage({ params }) {
+  const { page } = params;
   const data = await getPage(page);
 
   return (

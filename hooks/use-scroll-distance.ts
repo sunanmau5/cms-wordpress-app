@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 
 type ScrollCallback = (distance: number, start: number, end: number) => void;

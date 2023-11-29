@@ -1,14 +1,8 @@
-import { useState } from "react";
-
-import { useElementSize, useScrollDistance } from "../hooks";
-
 import Footer from "./footer";
 import Header from "./header";
 import Meta from "./meta";
 
 export default function Layout({ children }) {
-  const [ref, { height }] = useElementSize<HTMLDivElement>();
-
   // TODO - show loading when height is calculated
 
   // TODO - make header and footer sticky
@@ -17,13 +11,6 @@ export default function Layout({ children }) {
   //        Maybe use position absolute for the content too(?) so when user scrolls,
   //        the content is not moving.Only when the scroll distance exceeds the
   //        threshold, the content is moved to the next post.
-
-  const [scrollDistance, setScrollDistance] = useState<number>(0);
-
-  useScrollDistance((distance) => {
-    console.log({ distance });
-    setScrollDistance(distance);
-  });
 
   return (
     <div className="relative h-screen w-screen">

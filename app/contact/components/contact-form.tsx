@@ -1,9 +1,10 @@
+"use client";
+
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InferType, object, string } from "yup";
 
-import { sendMail } from "../lib/api";
-import { handleFormSubmit } from "../pages/api/actions";
+import { handleContactFormSubmit } from "../../../lib/actions";
 
 import InputField from "./input-field";
 import TextareaField from "./textarea-field";
@@ -33,15 +34,20 @@ export default function ContactForm() {
 
   const { reset, handleSubmit } = methods;
 
-  const onSubmit: SubmitHandler<IContactForm> = async (data) => {
-    const { firstName, email, message, subject } = data;
+  const onFormSubmit: SubmitHandler<IContactForm> = async (data) => {
+    const { firstName, lastName, email, message, subject } = data;
     const emailContent = `
-      Message received from <strong>${firstName}</strong>.
+      Message received from <strong>${firstName}${
+        lastName ? ` ${lastName}` : ""
+      }</strong>.
       Their email address is <strong>${email}</strong>. <br />
-      They'd like to know about...
+      Message: <br />
       ${message}
     `;
-    const mailData = await handleFormSubmit({ subject, body: emailContent });
+    const mailData = await handleContactFormSubmit({
+      subject,
+      body: emailContent,
+    });
 
     if (mailData.sent) {
       // email was sent successfully!
@@ -54,7 +60,7 @@ export default function ContactForm() {
       <form
         className="flex w-1/2 flex-1 flex-shrink-0 flex-col gap-4"
         name="contact"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onFormSubmit)}
       >
         <div className="flex gap-4">
           <div className="flex-1">

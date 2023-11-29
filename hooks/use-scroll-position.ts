@@ -1,3 +1,5 @@
+"use client";
+
 import { DependencyList, MutableRefObject, useRef } from "react";
 
 import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
@@ -61,7 +63,6 @@ export const useScrollPosition = (
   boundingElement?: ElementRef,
 ): void => {
   const position = useRef(getScrollPosition({ useWindow, boundingElement }));
-  console.log({ position });
 
   let throttleTimeout: number | null = null;
 

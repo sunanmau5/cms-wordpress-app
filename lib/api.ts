@@ -1,7 +1,10 @@
 const API_URL = process.env.WORDPRESS_API_URL;
 
 async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
-  const headers = { "Content-Type": "application/json" };
+  const headers = {
+    "Content-Type": "application/json",
+    origin: "https://rina-wolf.com",
+  };
 
   if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
     headers[
@@ -121,7 +124,7 @@ export async function getAllPagesWithSlug() {
 
 export async function sendMail({ subject, body, mutationId = "contact" }) {
   const fromAddress = "noreply@rina-wolf.com";
-  const toAddress = "sunan.regi+111@gmail.com";
+  const toAddress = "sunan.regi@gmail.com";
   const data = await fetchAPI(
     `
 		mutation SendEmail($input: SendEmailInput!) {

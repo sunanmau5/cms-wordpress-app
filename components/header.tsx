@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { usePathname, useSearchParams } from "next/navigation";
 
 import { HoverProvider } from "../providers";
 
@@ -14,8 +16,10 @@ const categories = ["portfolio", "other-works"];
 const staticPages = ["about", "contact"];
 
 export default function Header() {
-  const { query, pathname } = useRouter();
-  const activePage = (query.page as string) || pathname.substring(1);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const activePage = searchParams.get("page") || pathname.substring(1);
   return (
     <header className="fixed top-0 z-10 flex w-full items-center justify-between bg-white px-20 py-4">
       <h1 className="text-2xl font-bold">RINA WOLF</h1>

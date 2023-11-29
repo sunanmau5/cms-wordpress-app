@@ -1,5 +1,7 @@
-import { ContactForm, Layout } from "../../components";
+import { Layout } from "../../components";
 import { getPage } from "../../lib/api";
+
+import { ContactForm } from "./components";
 
 const extractTextFromContent = (content: string) => {
   // Remove line breaks
