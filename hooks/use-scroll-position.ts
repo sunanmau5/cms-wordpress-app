@@ -2,7 +2,7 @@
 
 import { DependencyList, MutableRefObject, useRef } from "react";
 
-import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
+import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
 
 interface IPosition {
   x: number;

@@ -1,4 +1,4 @@
-export default function PostTitle({ title }) {
+function PostTitle({ title }) {
   return (
     <h1
       className="mx-20 mb-4 mt-0 text-left text-3xl font-bold"
@@ -8,3 +8,6 @@ export default function PostTitle({ title }) {
     </h1>
   );
 }
+PostTitle.displayName = "PostTitle";
+
+export { PostTitle };

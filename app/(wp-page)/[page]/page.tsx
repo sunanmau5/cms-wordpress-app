@@ -1,5 +1,7 @@
-import { Layout, PostBody } from "../../components";
-import { getAllPagesWithSlug, getPage } from "../../lib/api";
+import { getAllPagesWithSlug, getPage } from "@/lib/api";
+
+import { Layout } from "@/components/layout";
+import { PostBody } from "@/components/post-body";
 
 export const dynamicParams = true;
 

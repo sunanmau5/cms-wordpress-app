@@ -2,9 +2,12 @@
 
 import { TextareaHTMLAttributes } from "react";
 import { useFormContext } from "react-hook-form";
-import cx from "classnames";
 
-import InputLabel from "./input-label";
+import { cn } from "@/lib/utils";
+
+import { Textarea } from "@/components/ui/textarea";
+
+import { InputLabel } from "@/components/input-label";
 
 type ITextareaFieldProps = Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -15,7 +18,7 @@ type ITextareaFieldProps = Omit<
   isRequired?: boolean;
 };
 
-export default function TextareaField(props: ITextareaFieldProps) {
+function TextareaField(props: ITextareaFieldProps) {
   const { label, fieldName, isRequired, ...textareaProps } = props;
   const {
     register,
@@ -29,8 +32,8 @@ export default function TextareaField(props: ITextareaFieldProps) {
   return (
     <div className="relative">
       <InputLabel fieldName={fieldName} isRequired={isRequired} label={label} />
-      <textarea
-        className={cx(
+      <Textarea
+        className={cn(
           "mt-2 h-80 w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none",
           { "border-red-400": isError },
         )}
@@ -48,3 +51,6 @@ export default function TextareaField(props: ITextareaFieldProps) {
     </div>
   );
 }
+TextareaField.displayName = "TextareaField";
+
+export { TextareaField };

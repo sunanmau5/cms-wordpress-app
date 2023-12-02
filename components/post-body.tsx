@@ -1,11 +1,11 @@
 import styles from "./post-body.module.css";
 
-export interface IPost {
+interface IPost {
   title: string;
   content: string;
 }
 
-export default function PostBody({ content }: IPost) {
+function PostBody({ content }: IPost) {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: content }}
@@ -13,3 +13,6 @@ export default function PostBody({ content }: IPost) {
     />
   );
 }
+PostBody.displayName = "PostBody";
+
+export { PostBody };

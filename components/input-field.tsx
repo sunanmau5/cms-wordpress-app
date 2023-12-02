@@ -2,9 +2,12 @@
 
 import { InputHTMLAttributes } from "react";
 import { useFormContext } from "react-hook-form";
-import cx from "classnames";
 
-import InputLabel from "./input-label";
+import { cn } from "@/lib/utils";
+
+import { Input } from "@/components/ui/input";
+
+import { InputLabel } from "@/components/input-label";
 
 type IInputFieldProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -15,7 +18,7 @@ type IInputFieldProps = Omit<
   isRequired?: boolean;
 };
 
-export default function InputField(props: IInputFieldProps) {
+function InputField(props: IInputFieldProps) {
   const { label, fieldName, isRequired, ...inputProps } = props;
   const {
     register,
@@ -27,8 +30,8 @@ export default function InputField(props: IInputFieldProps) {
   return (
     <div>
       <InputLabel fieldName={fieldName} isRequired={isRequired} label={label} />
-      <input
-        className={cx(
+      <Input
+        className={cn(
           "mt-2 w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none",
           { "border-red-400": isError },
         )}
@@ -39,3 +42,6 @@ export default function InputField(props: IInputFieldProps) {
     </div>
   );
 }
+InputField.displayName = "InputField";
+
+export { InputField };

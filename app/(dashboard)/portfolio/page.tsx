@@ -1,5 +1,7 @@
-import { Layout, SinglePost } from "../../components";
-import { getAllPostsForPortfolio } from "../../lib/api";
+import { getAllPostsForPortfolio } from "@/lib/api";
+
+import { Layout } from "@/components/layout";
+import { SinglePost } from "@/components/single-post";
 
 export default async function Portfolio() {
   const { edges } = await getAllPostsForPortfolio();

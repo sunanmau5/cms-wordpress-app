@@ -3,22 +3,27 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-import { useElementOnScreen } from "../hooks";
-// import { useImageHeightContext } from "../providers";
-import { extractSrcFromContent } from "../utils";
+import {
+  DEFAULT_IMAGE_WIDTH,
+  DEFAULT_MARGIN,
+  POST_TITLE_HEIGHT,
+} from "@/lib/constants";
 
-import ArrowButton from "./arrow-button";
-import { IPost } from "./post-body";
+import { useElementOnScreen } from "@/hooks/use-element-on-screen";
 
-const POST_TITLE_HEIGHT = 21;
-const DEFAULT_MARGIN = 16;
-const DEFAULT_IMAGE_WIDTH = 436;
+import { ArrowButton } from "@/components/arrow-button";
+
+// import { useImageHeightContext } from "@/providers";
+import { extractSrcFromContent } from "@/utils/extract-src-from-content";
 
 interface IPostGallery {
-  post: IPost;
+  post: {
+    title: string;
+    content: string;
+  };
 }
 
-export default function PostGallery({ post }: IPostGallery) {
+function PostGallery({ post }: IPostGallery) {
   const { content, title } = post;
 
   const _title = title.toLowerCase();
@@ -108,3 +113,6 @@ export default function PostGallery({ post }: IPostGallery) {
     </div>
   );
 }
+PostGallery.displayName = "PostGallery";
+
+export { PostGallery };

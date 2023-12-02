@@ -2,9 +2,9 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { HoverProvider } from "../providers";
+import { Route } from "@/components/route";
 
-import Route from "./route";
+import { HoverProvider } from "@/providers";
 
 // TODO - make categories dynamic
 // TODO - make pages dynamic
@@ -15,7 +15,7 @@ import Route from "./route";
 const categories = ["portfolio", "other-works"];
 const staticPages = ["about", "contact"];
 
-export default function Header() {
+function Header() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -34,3 +34,6 @@ export default function Header() {
     </header>
   );
 }
+Header.displayName = "Header";
+
+export { Header };

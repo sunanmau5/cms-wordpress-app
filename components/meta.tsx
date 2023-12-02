@@ -1,8 +1,8 @@
 import Head from "next/head";
 
-import { HOME_OG_IMAGE_URL } from "../lib/constants";
+import { HOME_OG_IMAGE_URL } from "@/lib/constants";
 
-export default function Meta() {
+function Meta() {
   return (
     <Head>
       <link
@@ -38,3 +38,6 @@ export default function Meta() {
     </Head>
   );
 }
+Meta.displayName = "Meta";
+
+export { Meta };

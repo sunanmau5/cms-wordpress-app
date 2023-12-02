@@ -4,10 +4,12 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InferType, object, string } from "yup";
 
-import { handleContactFormSubmit } from "../../../lib/actions";
+import { handleContactFormSubmit } from "@/lib/actions";
 
-import InputField from "./input-field";
-import TextareaField from "./textarea-field";
+import { Button } from "@/components/ui/button";
+
+import { InputField } from "@/components/input-field";
+import { TextareaField } from "@/components/textarea-field";
 
 const contactSchema = object({
   firstName: string()
@@ -26,7 +28,7 @@ const contactSchema = object({
 
 type IContactForm = InferType<typeof contactSchema>;
 
-export default function ContactForm() {
+function ContactForm() {
   const methods = useForm({
     reValidateMode: "onChange",
     resolver: yupResolver(contactSchema),
@@ -107,13 +109,11 @@ export default function ContactForm() {
           placeholder="Message"
         />
 
-        <button
-          className="rounded-md p-2 font-semibold transition-all hover:bg-slate-100"
-          type="submit"
-        >
-          Submit
-        </button>
+        <Button type="submit">Submit</Button>
       </form>
     </FormProvider>
   );
 }
+ContactForm.displayName = "ContactForm";
+
+export { ContactForm };

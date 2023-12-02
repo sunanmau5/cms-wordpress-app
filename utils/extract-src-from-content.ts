@@ -11,7 +11,7 @@
 // const src = extractSrcFromContent(content);
 // console.log(src); // ["https://example.com/image.png"]
 
-export default function extractSrcFromContent(content: string): string[] {
+export function extractSrcFromContent(content: string): string[] {
   const regex = /<img[^>]+src=["']([^"']+)["']/g;
   const matches = content.match(regex) || [];
   return matches.map((match) =>

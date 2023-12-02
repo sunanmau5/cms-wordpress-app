@@ -1,19 +1,14 @@
-import cx from "classnames";
 import Link from "next/link";
 
-import { useHoverContext } from "../providers";
+import { cn } from "@/lib/utils";
 
-export default function Route({
-  activePage,
-  route,
-}: {
-  activePage: string;
-  route: string;
-}) {
+import { useHoverContext } from "@/providers";
+
+function Route({ activePage, route }: { activePage: string; route: string }) {
   const { activeOption, setActiveOption } = useHoverContext();
   return (
     <h2
-      className={cx("text-xl font-semibold transition-opacity duration-300", {
+      className={cn("text-xl font-semibold transition-opacity duration-300", {
         "opacity-100": route === activeOption,
         "opacity-50": route !== activeOption,
       })}
@@ -24,3 +19,6 @@ export default function Route({
     </h2>
   );
 }
+Route.displayName = "Route";
+
+export { Route };

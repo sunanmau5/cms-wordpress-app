@@ -1,5 +1,7 @@
-import { Layout, SinglePost } from "../../components";
-import { getAllPostsForOtherWorks } from "../../lib/api";
+import { getAllPostsForOtherWorks } from "@/lib/api";
+
+import { Layout } from "@/components/layout";
+import { SinglePost } from "@/components/single-post";
 
 export default async function OtherWorks() {
   const { edges } = await getAllPostsForOtherWorks();

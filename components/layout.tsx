@@ -1,6 +1,6 @@
-import Footer from "./footer";
-import Header from "./header";
-import Meta from "./meta";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
+import { Meta } from "@/components/meta";
 
 export default function Layout({ children }) {
   // TODO - show loading when height is calculated
@@ -13,7 +13,7 @@ export default function Layout({ children }) {
   //        threshold, the content is moved to the next post.
 
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative h-screen">
       <Meta />
       <Header />
       {/* <div className="fixed left-1/2 top-1/4 z-50 flex -translate-x-1/2 flex-col rounded-md bg-white px-4 py-2 shadow">
@@ -26,3 +26,6 @@ export default function Layout({ children }) {
     </div>
   );
 }
+Layout.displayName = "Layout";
+
+export { Layout };

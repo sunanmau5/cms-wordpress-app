@@ -1,5 +1,5 @@
-import PostGallery from "./post-gallery";
-import PostTitle from "./post-title";
+import { PostGallery } from "@/components/post-gallery";
+import { PostTitle } from "@/components/post-title";
 
 type ISinglePost = {
   post: {
@@ -9,7 +9,7 @@ type ISinglePost = {
   className?: string;
 };
 
-export default function SinglePost({ post, className }: ISinglePost) {
+function SinglePost({ post, className }: ISinglePost) {
   return (
     <article className={className}>
       <PostTitle title={post.title} />
@@ -17,3 +17,6 @@ export default function SinglePost({ post, className }: ISinglePost) {
     </article>
   );
 }
+SinglePost.displayName = "SinglePost";
+
+export { SinglePost };
