@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { kebabCase } from "lodash";
 import Image from "next/image";
 
 import {
@@ -13,7 +14,6 @@ import { useElementOnScreen } from "@/hooks/use-element-on-screen";
 
 import { ArrowButton } from "@/components/arrow-button";
 
-// import { useImageHeightContext } from "@/providers";
 import { extractSrcFromContent } from "@/utils/extract-src-from-content";
 
 interface IPostGallery {
@@ -26,17 +26,14 @@ interface IPostGallery {
 function PostGallery({ post }: IPostGallery) {
   const { content, title } = post;
 
-  const _title = title.toLowerCase();
+  const _title = kebabCase(title.toLowerCase());
 
   const config = {
-    // TODO - fix this
-    // root: document?.querySelector(`#${_title}-scroll-area`),
+    root: document?.querySelector(`#${_title}-scroll-area`),
     rootMargin: "0px",
     threshold: 0.95,
   };
 
-  // TODO - remove image height
-  // const { imageHeight } = useImageHeightContext();
   const [imageWidth, setImageWidth] = useState<number>(0);
   const images = extractSrcFromContent(content);
 
@@ -77,12 +74,16 @@ function PostGallery({ post }: IPostGallery) {
 
       <div
         ref={containerRef}
-        className="no-scrollbar flex w-full flex-1 gap-4 overflow-x-scroll scroll-smooth"
+        className="no-scrollbar flex w-full flex-1 space-x-4 overflow-x-scroll scroll-smooth"
       >
         {/* Empty div as first element ref */}
-        <div ref={firstRef} className="inline-block w-16 flex-shrink-0">
+        <div
+          ref={firstRef}
+          className="inline-block w-0.5 flex-shrink-0 sm:w-16"
+        >
           &nbsp;
         </div>
+
         {images.map((src, index) => (
           //
           //
@@ -101,7 +102,7 @@ function PostGallery({ post }: IPostGallery) {
             src={src}
             style={{
               width: "auto",
-              // TODO - don't use magic numbers
+              // TODO: don't use magic numbers
               height: 691 - (POST_TITLE_HEIGHT + DEFAULT_MARGIN),
             }}
             width="0"

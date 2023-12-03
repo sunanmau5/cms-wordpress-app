@@ -2,6 +2,7 @@ import { getPage } from "@/lib/api";
 
 import { ContactForm } from "@/components/contact-form";
 import { Layout } from "@/components/layout";
+import { PostTitle } from "@/components/post-title";
 
 const extractTextFromContent = (content: string) => {
   // Remove line breaks
@@ -15,9 +16,12 @@ export default async function Contact() {
 
   return (
     <Layout>
-      <div className="flex gap-12 px-20">
-        <ContactForm />
-        <p className="w-1/2 flex-1">{extractTextFromContent(data.content)}</p>
+      <PostTitle title="Contact" />
+      <div className="mt-4 flex flex-col-reverse gap-12 px-4 sm:flex-row sm:px-20">
+        <ContactForm className="flex flex-1 flex-shrink-0 flex-col space-y-4 sm:w-1/2" />
+        <p className="flex-1 sm:w-1/2">
+          {extractTextFromContent(data.content)}
+        </p>
       </div>
     </Layout>
   );

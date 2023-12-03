@@ -12,11 +12,13 @@ export default async function Portfolio() {
 
   return (
     <Layout>
-      {edges.map(({ node }) => (
-        //
-        //
-        <SinglePost key={node.slug} post={node} />
-      ))}
+      <div className="flex flex-col space-y-4">
+        {edges.map(({ node }) => (
+          //
+          //
+          <SinglePost key={node.slug} post={node} />
+        ))}
+      </div>
     </Layout>
   );
 }
