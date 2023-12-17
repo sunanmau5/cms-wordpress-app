@@ -2,6 +2,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Instagram,
   Loader2,
   type LucideIcon,
   type LucideProps,
@@ -16,7 +17,8 @@ export const Icons = {
   chevronDown: ChevronDown,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
-  spinner: Loader2,
+  instagram: Instagram,
+  loader2: Loader2,
   menu: Menu,
   x: X,
 };

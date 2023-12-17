@@ -1,17 +1,21 @@
 import { getAllPostsForOtherWorks } from "@/lib/api";
 
+import { useRefererPathname } from "@/hooks/use-referer-pathname";
+
 import { Layout } from "@/components/layout";
 import { SinglePost } from "@/components/single-post";
 
 export default async function OtherWorks() {
   const { edges } = await getAllPostsForOtherWorks();
 
+  const pathname = useRefererPathname();
+
   if (edges.length === 0) {
     return null;
   }
 
   return (
-    <Layout>
+    <Layout refererPathname={pathname}>
       <div className="flex flex-col space-y-4">
         {edges.map(({ node }) => (
           //

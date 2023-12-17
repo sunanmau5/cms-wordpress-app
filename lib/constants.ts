@@ -3,3 +3,12 @@ export const HOME_OG_IMAGE_URL =
 export const POST_TITLE_HEIGHT = 21;
 export const DEFAULT_MARGIN = 4;
 export const DEFAULT_IMAGE_WIDTH = 436;
+
+// TODO: make pages dynamic
+export const PAGES = [
+  "/portfolio",
+  "/other-works",
+  "/services",
+  "/about",
+  "/contact",
+];

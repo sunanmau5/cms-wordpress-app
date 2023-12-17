@@ -4,7 +4,7 @@ import { IconProps, Icons } from "@/components/icons";
 
 function LoadingSpinner({ className, ...props }: IconProps) {
   return (
-    <Icons.spinner
+    <Icons.loader2
       className={cn("h-4 w-4 animate-spin", className)}
       {...props}
     />

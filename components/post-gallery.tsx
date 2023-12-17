@@ -28,11 +28,7 @@ function PostGallery({ post }: IPostGallery) {
 
   const _title = kebabCase(title.toLowerCase());
 
-  const config = {
-    root: document?.querySelector(`#${_title}-scroll-area`),
-    rootMargin: "0px",
-    threshold: 0.95,
-  };
+  const [config, setConfig] = useState<IntersectionObserverInit | undefined>();
 
   const [imageWidth, setImageWidth] = useState<number>(0);
   const images = extractSrcFromContent(content);
@@ -43,6 +39,14 @@ function PostGallery({ post }: IPostGallery) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showPrev, setShowPrev] = useState<boolean>(false);
   const [showNext, setShowNext] = useState<boolean>(true);
+
+  useEffect(() => {
+    setConfig({
+      root: document?.querySelector(`#${_title}-scroll-area`),
+      rootMargin: "0px",
+      threshold: 0.95,
+    });
+  }, [_title]);
 
   useEffect(() => {
     setShowPrev(!isFirstVisible);

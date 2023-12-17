@@ -69,9 +69,16 @@
 @layer base {
   * {
     @apply border-border;
+
+    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAwklEQVR4nN3ToU5CYRgG4GdKMDDIBmchcwlSiJjtNrN6D1QKGxt34D14CcrgFiSxUT0Q+BzbCQbCOXi+4ru99X3C/3/81zxjik4WsEfgE9cZQPzqF/qZQGCLu0wgUOAhEwgc8JIJRNkJLjKBwBuuMoHAO7qZQGCFm0wgsK57K3WBqHsrcWa/cZ8JBD4ygKJ87OPXHf4VWGKOV4zQw2WV0SrADK26Y1WAHR6bGD4FbDDQcHbl+AK3TY8f84Qx2hnjjeYHQdOp1CTCH/MAAAAASUVORK5CYII=),
+      auto;
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    @apply text-background bg-foreground;
   }
 }
 

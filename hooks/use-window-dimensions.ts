@@ -12,7 +12,7 @@ function getWindowDimensions() {
 
 function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions(),
+    {} as ReturnType<typeof getWindowDimensions>,
   );
 
   useEffect(() => {

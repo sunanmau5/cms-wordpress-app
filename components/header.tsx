@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
+import { PAGES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 import {
@@ -16,16 +17,15 @@ import { MobileBreakpoint } from "@/components/mobile-breakpoint";
 import { MobileMenu } from "@/components/mobile-menu";
 import { MobileMenuButton } from "@/components/mobile-menu-button";
 
+import { toRouteName } from "@/utils/to-route-name";
+
 // TODO: make categories dynamic
 // TODO: make pages dynamic
-
-const categories = ["portfolio", "other-works"];
-const staticPages = ["about", "contact"];
 
 function Header() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const activePage = searchParams.get("page") || pathname.substring(1);
+  const activePage = searchParams.get("page") || pathname;
 
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
   const [activeOption, setActiveOption] = useState<string>(activePage);
@@ -52,7 +52,7 @@ function Header() {
           ) : (
             <NavigationMenu>
               <NavigationMenuList>
-                {[...categories, ...staticPages].map((route) => (
+                {PAGES.map((route) => (
                   //
                   //
                   <NavigationMenuItem key={route}>
@@ -64,11 +64,11 @@ function Header() {
                           "opacity-50": route !== activeOption,
                         },
                       )}
-                      href={`/${route}`}
+                      href={route}
                       onMouseLeave={() => setActiveOption(activePage)}
                       onMouseOver={() => setActiveOption(route)}
                     >
-                      {route.replace("-", " ")}
+                      {toRouteName(route)}
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}

@@ -35,8 +35,10 @@ import { LoadingSpinner } from "./loading-spinner";
 
 // TODO: make this enum dynamic from wordpress
 enum Service {
-  Tattoo = "tattoo",
-  Photography = "photography",
+  Photography1 = "photography_1",
+  Photography2 = "photography_2",
+  Photography3 = "photography_3",
+  Photography4 = "photography_4",
 }
 
 const contactSchema = z.object({
@@ -95,7 +97,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
           firstName: "",
           lastName: "",
           email: "",
-          service: Service.Tattoo,
+          service: Service.Photography1,
           message: "",
         });
         toast({

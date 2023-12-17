@@ -1,8 +1,9 @@
 import { getAllPagesWithSlug, getPage } from "@/lib/api";
 
+import { useRefererPathname } from "@/hooks/use-referer-pathname";
+
 import { Layout } from "@/components/layout";
 import { PostBody } from "@/components/post-body";
-import { PostTitle } from "@/components/post-title";
 
 export const dynamicParams = true;
 
@@ -16,9 +17,14 @@ export default async function WPPage({ params }) {
   const { page } = params;
   const data = await getPage(page);
 
+  const pathname = useRefererPathname();
+
+  if (!data) {
+    return null;
+  }
+
   return (
-    <Layout>
-      <PostTitle title={data.title} />
+    <Layout refererPathname={pathname}>
       <PostBody content={data.content} title={data.title} />
     </Layout>
   );

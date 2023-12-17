@@ -1,15 +1,19 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
-const routes = ["portfolio", "other-works", "about", "contact", "services"];
+import { PAGES } from "@/lib/constants";
+
+import { toRouteName } from "@/utils/to-route-name";
 
 function MobileMenu() {
   return (
     <NavigationMenu.Root>
       <NavigationMenu.List>
-        {routes.map((route) => (
+        {PAGES.map((route) => (
+          //
+          //
           <NavigationMenu.Item key={route}>
-            <NavigationMenu.Link href={`/${route}`}>
-              {route.replace("-", " ")}
+            <NavigationMenu.Link href={route}>
+              {toRouteName(route)}
             </NavigationMenu.Link>
           </NavigationMenu.Item>
         ))}
