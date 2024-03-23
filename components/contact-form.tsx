@@ -6,7 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import * as z from "zod";
 
-import { handleContactFormSubmit } from "@/lib/actions";
+import { Service } from "@/lib/types";
+// import { handleContactFormSubmit } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -33,13 +34,18 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { LoadingSpinner } from "./loading-spinner";
 
-// TODO: make this enum dynamic from wordpress
-enum Service {
-  Photography1 = "photography_1",
-  Photography2 = "photography_2",
-  Photography3 = "photography_3",
-  Photography4 = "photography_4",
-}
+// const MAX_SIZE_MB = 5;
+// const ALLOWED_FILE_TYPES = [
+//   "image/jpeg",
+//   "image/png",
+//   "image/webp",
+//   "image/jpg",
+// ];
+
+const fileSchema = z.object({
+  filename: z.string(),
+  content: z.any(), // zod doesn't works well with instanceof(File) or FileList
+});
 
 const contactSchema = z.object({
   firstName: z
@@ -52,6 +58,7 @@ const contactSchema = z.object({
     .string()
     .min(5, { message: "Message must be at least 5 characters" })
     .max(1000, { message: "Message must be at most 1000 characters" }),
+  attachments: z.array(fileSchema).optional(),
 });
 
 type ContactSchema = z.infer<typeof contactSchema>;
@@ -69,6 +76,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: contactFormDefaultValues,
+    mode: "onTouched",
   });
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -76,22 +84,21 @@ function ContactForm({ className, ...props }: IContactFormProps) {
   async function onSubmit(values: z.infer<typeof contactSchema>) {
     try {
       setIsLoading(true);
-      const { firstName, lastName, email, service, message } = values;
-      const emailContent = `
-      Message received from <strong>${firstName}${
-        lastName ? ` ${lastName}` : ""
-      }</strong>. <br />
-      Service selected: <strong>${service}</strong>. <br />
-      Their email address is <strong>${email}</strong>. <br />
-      Message: <br />
-      ${message}
-    `;
-      const mailData = await handleContactFormSubmit({
-        subject: "Love you ❤️",
-        body: emailContent,
+      const { firstName, lastName, email, service, message, attachments } =
+        values;
+      const response = await fetch("/api/send", {
+        method: "POST",
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          service,
+          message,
+          attachments,
+        }),
       });
 
-      if (mailData.sent) {
+      if (response.ok) {
         // email was sent successfully!
         form.reset({
           firstName: "",
@@ -99,6 +106,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
           email: "",
           service: Service.Photography1,
           message: "",
+          attachments: undefined,
         });
         toast({
           title: "Message sent!",
@@ -223,6 +231,39 @@ function ContactForm({ className, ...props }: IContactFormProps) {
                 />
               </FormControl>
               <FormDescription>{field.value?.length ?? 0}/1000</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="attachments"
+          render={({ field: { value: _, onChange, ...field } }) => (
+            <FormItem>
+              <FormLabel>Attachment(s)</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  multiple
+                  accept="image/jpeg, image/png, image/webp, image/jpg"
+                  className="file:cursor-pointer file:rounded-sm file:bg-slate-100 file:text-slate-600 hover:file:bg-slate-200"
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files) {
+                      Promise.all(
+                        Array.from(files).map(async (file) => ({
+                          filename: file.name,
+                          content: Buffer.from(
+                            await file.arrayBuffer(),
+                          ).toString("base64"),
+                        })),
+                      ).then(onChange);
+                    }
+                  }}
+                  type="file"
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

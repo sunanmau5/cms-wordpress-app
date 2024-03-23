@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { Icons } from "./icons";
+import { Icons } from "@/components/icons";
 
 interface IMobileMenuButtonProps {
   isNavOpen: boolean;

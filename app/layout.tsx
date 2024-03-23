@@ -1,8 +1,12 @@
+"use client";
+
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/toaster";
+
+import { PageAnimatePresence } from "@/components/page-animate-presence";
 
 import "@/styles/globals.css";
 
@@ -26,7 +30,8 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <PageAnimatePresence>{children}</PageAnimatePresence>
+
         <Toaster />
       </body>
     </html>
