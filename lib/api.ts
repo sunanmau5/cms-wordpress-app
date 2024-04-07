@@ -121,31 +121,20 @@ export async function getAllPagesWithSlug() {
   return data?.pages;
 }
 
-export async function sendMail({ subject, body, mutationId = "contact" }) {
-  const fromAddress = "noreply@rina-wolf.com";
-  const toAddress = "sunan.regi@gmail.com";
+export async function getMainUser() {
   const data = await fetchAPI(
     `
-		mutation SendEmail($input: SendEmailInput!) {
-			sendEmail(input: $input) {
-				message
-				origin
-				sent
-			}
-		}
-	`,
-    {
-      variables: {
-        input: {
-          clientMutationId: mutationId,
-          from: fromAddress,
-          to: toAddress,
-          subject: subject,
-          body: body,
-        },
-      },
-    },
+    query getMainUser {
+      user(id: "dXNlcjox") {
+        id
+        name
+        avatar {
+          url
+        }
+      }
+    }
+  `,
   );
 
-  return data?.sendEmail;
+  return data?.user;
 }

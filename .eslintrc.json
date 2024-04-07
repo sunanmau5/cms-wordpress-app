@@ -1,14 +1,25 @@
 {
   "extends": "next/core-web-vitals",
-  "plugins": ["simple-import-sort"],
+  "plugins": ["simple-import-sort", "unused-imports"],
   "rules": {
-    "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": "error",
     "react/jsx-sort-props": [
       "error",
       {
         "shorthandFirst": true,
         "reservedFirst": true
+      }
+    ],
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error",
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
       }
     ]
   },

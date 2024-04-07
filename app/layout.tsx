@@ -1,12 +1,11 @@
-"use client";
-
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/toaster";
 
-import { PageAnimatePresence } from "@/components/page-animate-presence";
+import { Header } from "@/components/header";
+import Transitions, { Animate } from "@/components/hoc/transitions";
 
 import "@/styles/globals.css";
 
@@ -30,7 +29,10 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <PageAnimatePresence>{children}</PageAnimatePresence>
+        <Transitions className="flex h-full flex-col">
+          <Header />
+          <Animate className="flex-1">{children}</Animate>
+        </Transitions>
 
         <Toaster />
       </body>

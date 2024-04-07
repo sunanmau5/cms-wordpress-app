@@ -22,5 +22,6 @@ function EmailTemplate(props: Readonly<EmailTemplateProps>) {
     </div>
   );
 }
+EmailTemplate.displayName = "EmailTemplate";
 
 export { EmailTemplate };
