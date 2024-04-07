@@ -12,13 +12,11 @@ const variants = {
     y: 0,
   }),
   enter: { opacity: 1, x: 0, y: 0 },
-  exit: (direction: number) => {
-    return {
-      opacity: 0,
-      x: direction < 0 ? -200 : 200,
-      y: 0,
-    };
-  },
+  exit: (direction: number) => ({
+    opacity: 0,
+    x: direction < 0 ? -200 : 200,
+    y: 0,
+  }),
 };
 
 interface IMainAnimationProps {

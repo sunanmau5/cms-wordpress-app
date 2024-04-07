@@ -7,7 +7,7 @@ import {
   use,
   useTransition,
 } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 export const DELAY = 200;
@@ -70,6 +70,8 @@ export default function Transitions({ children, className }: Props) {
 
 export function Animate({ children, className }: Props) {
   const { pending } = usePageTransition();
+  const overflow = useMotionValue("scroll");
+
   return (
     <AnimatePresence>
       {!pending && (
@@ -78,6 +80,9 @@ export function Animate({ children, className }: Props) {
           className={className}
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
+          onAnimationComplete={() => overflow.set("auto")}
+          onAnimationStart={() => overflow.set("hidden")}
+          style={{ overflow }}
         >
           {children}
         </motion.div>

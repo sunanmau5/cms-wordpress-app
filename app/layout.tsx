@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/toaster";
 
+import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import Transitions, { Animate } from "@/components/hoc/transitions";
 
@@ -29,9 +30,10 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Transitions className="flex h-full flex-col">
+        <Transitions className="flex h-screen flex-col">
           <Header />
           <Animate className="flex-1">{children}</Animate>
+          <Footer />
         </Transitions>
 
         <Toaster />

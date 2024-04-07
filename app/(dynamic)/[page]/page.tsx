@@ -2,8 +2,6 @@ import { getAllPagesWithSlug, getPage } from "@/lib/api";
 
 import { PostBody } from "@/components/post-body";
 
-export const dynamicParams = true;
-
 export async function generateStaticParams() {
   const { edges } = await getAllPagesWithSlug();
   const params = edges.map(({ node }) => ({ page: node.slug }));

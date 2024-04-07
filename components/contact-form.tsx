@@ -7,7 +7,6 @@ import Link from "next/link";
 import * as z from "zod";
 
 import { Service } from "@/lib/types";
-// import { handleContactFormSubmit } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -225,7 +224,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
               </FormLabel>
               <FormControl>
                 <Textarea
-                  className="h-60 resize-none"
+                  className="h-36 resize-none"
                   placeholder="Please enter your message here"
                   {...field}
                 />

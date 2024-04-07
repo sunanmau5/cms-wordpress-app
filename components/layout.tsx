@@ -1,4 +1,3 @@
-import { Footer } from "@/components/footer";
 import { MainAnimation } from "@/components/main-animation";
 import { Meta } from "@/components/meta";
 
@@ -9,12 +8,11 @@ interface ILayoutProps {
 
 export default function Layout({ refererPathname, children }: ILayoutProps) {
   return (
-    <div className="relative h-screen">
+    <div className="relative h-full">
       <Meta />
       <MainAnimation refererPathname={refererPathname}>
         {children}
       </MainAnimation>
-      <Footer />
     </div>
   );
 }
