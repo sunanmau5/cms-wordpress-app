@@ -33,17 +33,17 @@ function Header() {
   return (
     <header
       className={cn(
-        isNavOpen && "drop-shadow-md",
-        "fixed top-0 z-10 flex w-full items-start justify-between bg-white px-4 py-3 sm:items-center sm:px-20",
+        isNavOpen ? "drop-shadow h-56" : "h-[4.5rem]",
+        "fixed top-0 z-10 flex w-full items-start justify-between bg-white px-4 py-3 sm:px-20 transition-height duration-800 overflow-hidden",
       )}
     >
-      <h1 className="text-2xl font-bold">RINA WOLF</h1>
+      <h1 className="text-2xl font-bold mt-2 sm:mt-auto">RINA WOLF</h1>
 
       <MobileBreakpoint>
         {(isMobile) =>
           isMobile ? (
             <>
-              {isNavOpen ? <MobileMenu /> : null}
+              {isNavOpen ? <MobileMenu setIsNavOpen={setIsNavOpen} /> : null}
               <MobileMenuButton
                 isNavOpen={isNavOpen}
                 setIsNavOpen={setIsNavOpen}

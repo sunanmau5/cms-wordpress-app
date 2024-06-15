@@ -21,6 +21,7 @@
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.14",
+    "hamburger-react": "^2.5.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.294.0",
     "next": "latest",

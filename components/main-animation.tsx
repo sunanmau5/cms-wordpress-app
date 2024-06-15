@@ -44,7 +44,7 @@ function MainAnimation({
     <motion.main
       key={pathname}
       animate="enter"
-      className="absolute top-14 flex-1 pb-14"
+      className="absolute top-[4.5rem] sm:top-14 flex-1 pb-14"
       custom={direction}
       exit="exit"
       initial="hidden"

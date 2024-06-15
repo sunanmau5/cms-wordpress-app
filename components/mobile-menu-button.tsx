@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-
-import { Icons } from "@/components/icons";
+import { Sling as Hamburger } from "hamburger-react";
 
 interface IMobileMenuButtonProps {
   isNavOpen: boolean;
@@ -9,9 +8,14 @@ interface IMobileMenuButtonProps {
 
 function MobileMenuButton(props: IMobileMenuButtonProps) {
   const { isNavOpen, setIsNavOpen } = props;
-  const handleClick = () => setIsNavOpen((prev) => !prev);
-  const Icon = isNavOpen ? Icons.x : Icons.menu;
-  return <Icon onClick={handleClick} />;
+  return (
+    <Hamburger
+      rounded
+      duration={0.8}
+      toggle={setIsNavOpen}
+      toggled={isNavOpen}
+    />
+  );
 }
 MobileMenuButton.displayName = "MobileMenuButton";
 
