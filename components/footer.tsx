@@ -14,7 +14,7 @@ function Footer() {
 
   return (
     <footer className="fixed bottom-0 z-10 w-full bg-white">
-      <div className="my-0.5 px-4 py-4 sm:px-20 flex justify-between items-center">
+      <div className="p-4 sm:px-20 2xl:px-80 flex justify-between items-center">
         <a
           className="flex items-center gap-2"
           href={href}
