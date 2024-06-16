@@ -92,9 +92,11 @@ function PostGallery({ post }: IPostGallery) {
 
   return (
     <div className="relative overflow-hidden" id={`${_title}-scroll-area`}>
-      {showPrev ? (
-        <ArrowButton direction="left" onClick={handlePrevClick} />
-      ) : null}
+      <ArrowButton
+        className={showPrev ? "opacity-100" : "opacity-0"}
+        direction="left"
+        onClick={handlePrevClick}
+      />
 
       <div
         ref={containerRef}
@@ -121,6 +123,7 @@ function PostGallery({ post }: IPostGallery) {
             onLoad={(e) => {
               // Only get the width of the first image
               if (index === 0) {
+                console.log({ target: e.target as HTMLImageElement });
                 setImageWidth((e.target as HTMLImageElement).offsetWidth);
               }
             }}
@@ -132,7 +135,10 @@ function PostGallery({ post }: IPostGallery) {
         ))}
       </div>
 
-      {showNext ? <ArrowButton onClick={handleNextClick} /> : null}
+      <ArrowButton
+        className={showNext ? "opacity-100" : "opacity-0"}
+        onClick={handleNextClick}
+      />
     </div>
   );
 }

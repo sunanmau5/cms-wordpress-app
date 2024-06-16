@@ -8,18 +8,24 @@ const config = {
 };
 
 interface IArrowButtonProps {
+  className?: string;
   direction?: "right" | "left";
   onClick: React.HTMLAttributes<HTMLDivElement>["onClick"];
 }
 
-function ArrowButton({ direction = "right", onClick }: IArrowButtonProps) {
+function ArrowButton({
+  className: cName,
+  direction = "right",
+  onClick,
+}: IArrowButtonProps) {
   const { className, Icon } = config[direction];
 
   return (
     <div
       className={cn(
-        "absolute top-1/2 flex h-12 w-12 -translate-y-1/2 transform cursor-pointer items-center justify-center rounded-full bg-white drop-shadow transition-all hover:scale-105 sm:transform-gpu",
+        "absolute top-1/2 flex h-12 w-12 -translate-y-1/2 transform items-center justify-center rounded-full bg-white drop-shadow transition-[transform,opacity] hover:scale-105 sm:transform-gpu",
         className,
+        cName,
       )}
       onClick={onClick}
     >
