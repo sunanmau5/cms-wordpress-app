@@ -48,7 +48,7 @@ function Header() {
         <div className="flex items-center justify-center relative h-12">
           <h1 className="text-2xl font-bold">RINA WOLF</h1>
           <MobileMenuButton
-            className="absolute right-0 top-0"
+            className="absolute -right-2 top-0"
             isNavOpen={isNavOpen}
             setIsNavOpen={setIsNavOpen}
           />

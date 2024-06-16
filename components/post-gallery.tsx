@@ -98,7 +98,7 @@ function PostGallery({ post }: IPostGallery) {
 
       <div
         ref={containerRef}
-        className="no-scrollbar flex w-full flex-1 overflow-x-scroll scroll-smooth pr-20 2xl:pr-0"
+        className="no-scrollbar flex w-full flex-1 overflow-x-scroll scroll-smooth pr-4 sm:pr-20 2xl:pr-0"
       >
         {/* Empty div as first element ref */}
         <div
