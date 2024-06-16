@@ -45,9 +45,13 @@ function Header() {
           "fixed top-0 z-10 w-full bg-white px-4 py-3 transition-height duration-800 overflow-hidden",
         )}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center relative h-12">
           <h1 className="text-2xl font-bold">RINA WOLF</h1>
-          <MobileMenuButton isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+          <MobileMenuButton
+            className="absolute right-0 top-0"
+            isNavOpen={isNavOpen}
+            setIsNavOpen={setIsNavOpen}
+          />
         </div>
 
         {isNavOpen ? <MobileMenu setIsNavOpen={setIsNavOpen} /> : null}

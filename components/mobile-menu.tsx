@@ -16,7 +16,7 @@ function MobileMenu(props: MobileMenuProps) {
 
   return (
     <NavigationMenu.Root className="mt-2">
-      <NavigationMenu.List className="space-y-4">
+      <NavigationMenu.List className="space-y-4 text-center">
         {PAGES.map((route) => (
           //
           //
