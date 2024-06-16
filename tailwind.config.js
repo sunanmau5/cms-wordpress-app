@@ -72,6 +72,9 @@ module.exports = {
       transitionProperty: {
         height: "height",
       },
+      screens: {
+        "3xl": "1792px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

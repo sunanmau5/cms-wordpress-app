@@ -1,12 +1,12 @@
 .content {
-  @apply text-lg leading-relaxed px-4 sm:px-20;
+  @apply text-lg leading-relaxed px-4 sm:px-20 2xl:px-80;
 }
 
 .content p,
 .content ul,
 .content ol,
 .content blockquote {
-  @apply my-6;
+  @apply sm:my-6;
 }
 
 .content a {

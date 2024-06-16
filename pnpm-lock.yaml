@@ -44,6 +44,9 @@ importers:
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
+      eslint-plugin-tailwindcss:
+        specifier: ^3.17.3
+        version: 3.17.3(tailwindcss@3.3.5)
       framer-motion:
         specifier: ^10.16.14
         version: 10.16.14(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1076,6 +1079,12 @@ packages:
     resolution: {integrity: sha512-AeTvO9UCMSNzIHRkg8S6c3RPy5YEwKWSQPx3DYghLedo2ZQxowPFLGDN1AZ2evfg6r6mjBSZSLxLFsWSu3acsw==}
     peerDependencies:
       eslint: '>=5.0.0'
+
+  eslint-plugin-tailwindcss@3.17.3:
+    resolution: {integrity: sha512-DVMVVUFQ+lPraRSuUk2I41XMnusXT6b3WaQZYlUHduULnERaqe9sNfmpRY1IyxlzmKoQxSbZ8IHRhl9ePo8PeA==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      tailwindcss: ^3.4.0
 
   eslint-plugin-unused-imports@3.1.0:
     resolution: {integrity: sha512-9l1YFCzXKkw1qtAru1RWUtG2EVDZY0a0eChKXcL+EZ5jitG7qxdctu4RnvhOJHv4xfmUf7h+JJPINlVpGhZMrw==}
@@ -3314,6 +3323,12 @@ snapshots:
   eslint-plugin-simple-import-sort@10.0.0(eslint@8.52.0):
     dependencies:
       eslint: 8.52.0
+
+  eslint-plugin-tailwindcss@3.17.3(tailwindcss@3.3.5):
+    dependencies:
+      fast-glob: 3.3.2
+      postcss: 8.4.31
+      tailwindcss: 3.3.5
 
   eslint-plugin-unused-imports@3.1.0(eslint@8.52.0):
     dependencies:

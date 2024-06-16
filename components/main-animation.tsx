@@ -12,7 +12,7 @@ const variants = {
   hidden: (direction: number) => {
     return {
       opacity: 0,
-      x: direction < 0 ? -200 : 200,
+      x: 0,
       y: 0,
     };
   },
@@ -20,7 +20,7 @@ const variants = {
   exit: (direction: number) => {
     return {
       opacity: 0,
-      x: direction < 0 ? -200 : 200,
+      x: 0,
       y: 0,
     };
   },
@@ -64,7 +64,7 @@ function MainAnimation({
       custom={directionIdx}
       exit="exit"
       initial="hidden"
-      transition={{ type: "spring", ease: "circIn", duration: 0.9 }}
+      transition={{ type: "spring", ease: "circIn", duration: 0.8 }}
       variants={variants}
     >
       {children}

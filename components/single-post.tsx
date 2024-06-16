@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
-import { PostGallery } from "@/components/post-gallery";
-import { PostTitle } from "@/components/post-title";
+import { PostGallery } from "./post-gallery";
+import { PostTitle } from "./post-title";
 
 type ISinglePost = {
   post: {
@@ -13,8 +13,13 @@ type ISinglePost = {
 
 function SinglePost({ post, className }: ISinglePost) {
   return (
-    <article className={cn("flex flex-col space-y-4", className)}>
-      <PostTitle title={post.title} />
+    <article
+      className={cn(
+        "2xl:flex 2xl:pl-[17.75rem] 2xl:gap-4 2xl:pr-80",
+        className,
+      )}
+    >
+      <PostTitle className="hidden 2xl:block" title={post.title} />
       <PostGallery post={post} />
     </article>
   );

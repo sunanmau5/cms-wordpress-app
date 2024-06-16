@@ -9,8 +9,11 @@ interface IPostTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 function PostTitle({ title, className, ...props }: IPostTitleProps) {
   return (
     <h1
-      className={cn("px-4 text-left text-3xl font-bold sm:px-20", className)}
-      style={{ lineHeight: 0.7 }}
+      className={cn(
+        "text-3xl font-bold rotate-180 origin-center my-auto",
+        className,
+      )}
+      style={postTitleStyle}
       {...props}
     >
       {title}
@@ -18,5 +21,10 @@ function PostTitle({ title, className, ...props }: IPostTitleProps) {
   );
 }
 PostTitle.displayName = "PostTitle";
+
+const postTitleStyle: HTMLAttributes<HTMLHeadingElement>["style"] = {
+  lineHeight: 0.7,
+  writingMode: "vertical-rl",
+};
 
 export { PostTitle };

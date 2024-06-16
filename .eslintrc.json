@@ -1,6 +1,7 @@
 {
+  "root": true,
   "extends": "next/core-web-vitals",
-  "plugins": ["simple-import-sort", "unused-imports"],
+  "plugins": ["tailwindcss", "simple-import-sort", "unused-imports"],
   "rules": {
     "react/jsx-sort-props": [
       "error",
@@ -11,7 +12,7 @@
     ],
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
-    "no-unused-vars": "off",
+    "tailwindcss/no-custom-classname": "off",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
       "warn",
@@ -22,6 +23,15 @@
         "argsIgnorePattern": "^_"
       }
     ]
+  },
+  "settings": {
+    "tailwindcss": {
+      "callees": ["cn"],
+      "config": "tailwind.config.js"
+    },
+    "next": {
+      "rootDir": true
+    }
   },
   "overrides": [
     // override "simple-import-sort" config

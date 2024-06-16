@@ -14,6 +14,7 @@ export const breakpoints = {
   },
   Desktop: {
     minWidth: 992,
+    maxWidth: 1536,
   },
   Sm: {
     minWidth: 481,
@@ -22,5 +23,11 @@ export const breakpoints = {
   Md: {
     minWidth: 481,
     maxWidth: 991,
+  },
+  Desktop2xl: {
+    minWidth: 1536,
+  },
+  Desktop3xl: {
+    minWidth: 1792,
   },
 };
