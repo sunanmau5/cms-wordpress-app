@@ -1,17 +1,15 @@
 "use client";
 
-import { useWindowDimensions } from "@/hooks/use-window-dimensions";
+import { useMediaQuery } from "react-responsive";
 
 import { breakpoints } from "@/utils/breakpoints";
 
 function useMobile() {
-  const { width } = useWindowDimensions();
-  return width <= breakpoints.Mobile.maxWidth;
+  return useMediaQuery(breakpoints.Mobile);
 }
 
 function useTabletOrSmaller() {
-  const { width } = useWindowDimensions();
-  return width <= breakpoints.TabletOrSmaller.maxWidth;
+  return useMediaQuery(breakpoints.TabletOrSmaller);
 }
 
 export { useMobile, useTabletOrSmaller };

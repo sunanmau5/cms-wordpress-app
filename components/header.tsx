@@ -30,6 +30,11 @@ function Header() {
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
   const [activeOption, setActiveOption] = useState<string>(activePage);
 
+  const navigate = (route: string) => {
+    window.history.pushState({ referer: activePage }, "", route);
+    setActiveOption(route);
+  };
+
   return (
     <header
       className={cn(
@@ -37,12 +42,13 @@ function Header() {
         "fixed top-0 z-10 flex w-full items-start justify-between bg-white px-4 py-3 sm:px-20 transition-height duration-800 overflow-hidden sm:h-auto",
       )}
     >
-      <h1 className="text-2xl font-bold mt-2 sm:mt-0">RINA WOLF</h1>
-
       <MobileBreakpoint>
         {(isMobile) =>
           isMobile ? (
             <>
+              <h1 className="text-2xl font-bold mt-2 sm:mt-0 mx-auto">
+                RINA WOLF
+              </h1>
               {isNavOpen ? <MobileMenu setIsNavOpen={setIsNavOpen} /> : null}
               <MobileMenuButton
                 isNavOpen={isNavOpen}
@@ -50,30 +56,35 @@ function Header() {
               />
             </>
           ) : (
-            <NavigationMenu>
-              <NavigationMenuList>
-                {PAGES.map((route) => (
-                  //
-                  //
-                  <NavigationMenuItem key={route}>
-                    <NavigationMenuLink
-                      className={cn(
-                        "text-xl font-semibold transition-opacity duration-300",
-                        {
-                          "opacity-100": route === activeOption,
-                          "opacity-50": route !== activeOption,
-                        },
-                      )}
-                      href={route}
-                      onMouseLeave={() => setActiveOption(activePage)}
-                      onMouseOver={() => setActiveOption(route)}
-                    >
-                      {toRouteName(route)}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+            <>
+              <NavigationMenu>
+                <NavigationMenuList>
+                  {PAGES.map((route) => (
+                    //
+                    //
+                    <NavigationMenuItem key={route}>
+                      <NavigationMenuLink
+                        className={cn(
+                          "text-xl font-semibold transition-opacity duration-300",
+                          {
+                            "opacity-100": route === activeOption,
+                            "opacity-50": route !== activeOption,
+                          },
+                        )}
+                        href={route}
+                        onClick={() => navigate(route)}
+                        onMouseLeave={() => setActiveOption(activePage)}
+                        onMouseOver={() => setActiveOption(route)}
+                      >
+                        {toRouteName(route)}
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
+
+              <h1 className="text-2xl font-bold mt-2 sm:mt-0">RINA WOLF</h1>
+            </>
           )
         }
       </MobileBreakpoint>

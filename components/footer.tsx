@@ -22,7 +22,6 @@ function Footer() {
           target="_blank"
         >
           <Icons.instagram />
-          <h2 className="text-base font-semibold">@{username}</h2>
         </a>
       </div>
     </footer>
