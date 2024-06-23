@@ -60,7 +60,7 @@ function MainAnimation({
     <motion.main
       key={pathname}
       animate="enter"
-      className="absolute top-[4.5rem] sm:top-14 flex-1 pb-14"
+      className="pt-[4.5rem] sm:pt-14 flex-1 pb-14"
       custom={directionIdx}
       exit="exit"
       initial="hidden"

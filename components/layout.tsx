@@ -1,6 +1,8 @@
 import { MainAnimation } from "@/components/main-animation";
 import { Meta } from "@/components/meta";
 
+import { ProgressBar } from "./progress-bar";
+
 interface ILayoutProps {
   refererPathname?: string;
   children: React.ReactNode;
@@ -13,6 +15,7 @@ export default function Layout({ refererPathname, children }: ILayoutProps) {
       <MainAnimation refererPathname={refererPathname}>
         {children}
       </MainAnimation>
+      <ProgressBar />
     </div>
   );
 }

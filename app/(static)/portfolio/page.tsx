@@ -1,6 +1,6 @@
 import { getAllPostsForPortfolio } from "@/lib/api";
 
-import { SinglePost } from "@/components/single-post";
+import { VisiblePost } from "@/components/visible-post";
 
 export default async function Portfolio() {
   const { edges } = await getAllPostsForPortfolio();
@@ -9,13 +9,5 @@ export default async function Portfolio() {
     return null;
   }
 
-  return (
-    <div className="flex flex-col space-y-4">
-      {edges.map(({ node }) => (
-        //
-        //
-        <SinglePost key={node.slug} post={node} />
-      ))}
-    </div>
-  );
+  return <VisiblePost edges={[...edges, ...edges]} />;
 }

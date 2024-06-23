@@ -23,12 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html className="no-scrollbar" lang="en">
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-        )}
+        className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
         <Transitions className="flex h-screen flex-col">
           <Header />
