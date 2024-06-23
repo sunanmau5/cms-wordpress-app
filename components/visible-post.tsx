@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback,useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
+
+import { useIsScrolling } from "@/hooks/use-is-scrolling";
 
 import { PostGallery } from "./post-gallery";
 import { PostTitle } from "./post-title";
 
-type IVisiblePost = {
+type IVisiblePostProps = {
   edges: {
     node: {
       title: string;
@@ -32,7 +34,9 @@ const variants = {
   },
 };
 
-function VisiblePost({ edges }: IVisiblePost) {
+function VisiblePost({ edges }: IVisiblePostProps) {
+  const { isScrollingY } = useIsScrolling();
+
   const [visibleIndex, setVisibleIndex] = useState(0);
   const [visibleEdge, setVisibleEdge] = useState(edges[0]);
 
@@ -65,7 +69,7 @@ function VisiblePost({ edges }: IVisiblePost) {
     const handleScrollProgress = (scrollPercent: number) => {
       const index = Math.min(
         Math.max(Math.floor(scrollPercent * edges.length), 0),
-        edges.length - 1
+        edges.length - 1,
       );
       setVisibleIndex((prevIndex) => (prevIndex !== index ? index : prevIndex));
     };
@@ -77,8 +81,10 @@ function VisiblePost({ edges }: IVisiblePost) {
   }, [scrollYProgress, edges.length]);
 
   useEffect(() => {
-    setVisibleEdge(edges[visibleIndex]);
-  }, [visibleIndex, edges]);
+    if (!isScrollingY) {
+      setVisibleEdge(edges[visibleIndex]);
+    }
+  }, [visibleIndex, edges, isScrollingY]);
 
   useEffect(() => {
     document.body.style.setProperty("min-height", `${edges.length * 100}vh`);
