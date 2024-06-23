@@ -9,5 +9,5 @@ export default async function Portfolio() {
     return null;
   }
 
-  return <VisiblePost edges={[...edges, ...edges]} />;
+  return <VisiblePost edges={edges} />;
 }
