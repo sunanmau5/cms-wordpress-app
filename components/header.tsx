@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 import { PAGES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -25,9 +25,9 @@ import { toRouteName } from "@/utils/to-route-name";
 
 function Header() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const params = useParams<{ page?: string }>();
   const isMobile = useMobile();
-  const activePage = searchParams.get("page") || pathname;
+  const activePage = params.page || pathname;
 
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
   const [activeOption, setActiveOption] = useState<string>(activePage);
@@ -41,8 +41,8 @@ function Header() {
     return (
       <header
         className={cn(
-          isNavOpen ? "drop-shadow h-72" : "h-[4.5rem]",
-          "fixed top-0 z-10 w-full bg-white px-4 py-3 transition-height duration-800 overflow-hidden",
+          isNavOpen ? "drop-shadow h-screen" : "h-[4.5rem]",
+          "fixed top-0 z-20 w-full bg-white px-4 py-3 transition-height duration-700 ease-in-out overflow-hidden",
         )}
       >
         <div className="flex items-center justify-center relative h-12">
@@ -54,7 +54,9 @@ function Header() {
           />
         </div>
 
-        {isNavOpen ? <MobileMenu setIsNavOpen={setIsNavOpen} /> : null}
+        {isNavOpen ? (
+          <MobileMenu activePage={activePage} setIsNavOpen={setIsNavOpen} />
+        ) : null}
       </header>
     );
   }
@@ -93,4 +95,4 @@ function Header() {
 }
 Header.displayName = "Header";
 
-export { Header };
+export default Header;

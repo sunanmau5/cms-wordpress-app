@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 import { useMobile } from "@/hooks/use-media";
 
 import { Icons } from "./icons";
@@ -13,7 +15,12 @@ function Footer() {
     : `https://instagram.com/${username}`;
 
   return (
-    <footer className="fixed bottom-0 z-10 w-full bg-white">
+    <footer
+      className={cn(
+        "fixed bottom-0 z-10 w-full bg-white",
+        isMobile && "hidden",
+      )}
+    >
       <div className="p-4 sm:px-20 2xl:px-80 flex justify-between items-center">
         <a
           className="flex items-center gap-2"
@@ -29,4 +36,4 @@ function Footer() {
 }
 Footer.displayName = "Footer";
 
-export { Footer };
+export default Footer;

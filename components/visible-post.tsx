@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 
 import { useIsScrolling } from "@/hooks/use-is-scrolling";
@@ -39,31 +39,9 @@ function VisiblePost({ edges }: IVisiblePostProps) {
 
   const [visibleIndex, setVisibleIndex] = useState(0);
   const [visibleEdge, setVisibleEdge] = useState(edges[0]);
-
-  const prevScrollYRef = useRef(0);
-  const [scrollDirection, setScrollDirection] = useState<"up" | "down">("down");
+  const [scrollDir, setScrollDir] = useState<"up" | "down">("down");
 
   const { scrollYProgress } = useScroll();
-
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    const prevScrollY = prevScrollYRef.current;
-
-    if (currentScrollY > prevScrollY) {
-      setScrollDirection("down");
-    } else {
-      setScrollDirection("up");
-    }
-
-    prevScrollYRef.current = currentScrollY;
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
 
   useEffect(() => {
     const handleScrollProgress = (scrollPercent: number) => {
@@ -71,7 +49,14 @@ function VisiblePost({ edges }: IVisiblePostProps) {
         Math.max(Math.floor(scrollPercent * edges.length), 0),
         edges.length - 1,
       );
-      setVisibleIndex((prevIndex) => (prevIndex !== index ? index : prevIndex));
+      setVisibleIndex((prevIndex) => {
+        if (prevIndex < index) {
+          setScrollDir("down");
+        } else if (prevIndex > index) {
+          setScrollDir("up");
+        }
+        return prevIndex !== index ? index : prevIndex;
+      });
     };
 
     scrollYProgress.on("change", handleScrollProgress);
@@ -88,6 +73,9 @@ function VisiblePost({ edges }: IVisiblePostProps) {
 
   useEffect(() => {
     document.body.style.setProperty("min-height", `${edges.length * 100}vh`);
+    return () => {
+      document.body.style.removeProperty("min-height");
+    };
   }, [edges.length]);
 
   return (
@@ -97,8 +85,8 @@ function VisiblePost({ edges }: IVisiblePostProps) {
           key={visibleEdge.node.title}
           animate="visible"
           className="2xl:flex 2xl:pl-[17.75rem] 2xl:gap-4 2xl:pr-80"
-          exit={scrollDirection === "down" ? "down" : "up"}
-          initial={scrollDirection === "down" ? "up" : "down"}
+          exit={scrollDir === "down" ? "down" : "up"}
+          initial={scrollDir === "down" ? "up" : "down"}
           transition={_transition}
           variants={variants}
         >
