@@ -34,7 +34,7 @@ export default function RootLayout({
       <body
         className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
-        <Transitions className="flex h-screen flex-col">
+        <Transitions className="flex flex-col">
           <NoSSRHeader />
           <Animate className="flex-1 no-scrollbar">{children}</Animate>
           <NoSSRFooter />
