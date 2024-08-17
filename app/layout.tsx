@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html className="no-scrollbar" lang="en">
+    <html className="no-scrollbar overscroll-none" lang="en">
       <body
         className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
