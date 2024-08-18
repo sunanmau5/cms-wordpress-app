@@ -33,4 +33,4 @@ function ScrollNavigation({
   );
 }
 
-export default ScrollNavigation;
+export { ScrollNavigation };

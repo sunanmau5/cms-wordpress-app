@@ -9,9 +9,9 @@ import React, {
 } from "react";
 import { motion, Variants } from "framer-motion";
 
-import useWindowsScroll, { Direction } from "@/hooks/use-windows-scroll";
+import { Direction, useWindowsScroll } from "@/hooks/use-windows-scroll";
 
-import ScrollNavigation, { ScrollNavigationProps } from "./scroll-navigation";
+import { ScrollNavigation, ScrollNavigationProps } from "./scroll-navigation";
 
 export type Page = JSX.Element;
 
@@ -33,12 +33,9 @@ const initialVariants: Variants = {
   initial: {
     opacity: 0,
   },
-  animate: ({ currentPage, scrollableIndicator }) => ({
+  animate: {
     opacity: 1,
-    y:
-      scrollableIndicator && currentPage === 0
-        ? ["0%", "-3%", "-3%", "-3%", "0%"]
-        : 0,
+    y: 0,
     transition: {
       opactiy: { duration: 0.8 },
       y: {
@@ -46,7 +43,7 @@ const initialVariants: Variants = {
         duration: 0.6,
       },
     },
-  }),
+  },
   exit: { opacity: 1 },
 };
 
@@ -65,10 +62,6 @@ const baseVariants = (direction: Direction, offset: number): Variants => {
         damping: 90,
         stiffness: 1000,
       },
-    },
-    exit: {
-      y: `${direction === "up" ? "+" : "-"}100%`,
-      marginTop: offsetPx,
     },
   };
 };
@@ -240,4 +233,4 @@ const Scroll = React.memo(function Scroll({
   );
 });
 
-export default Scroll;
+export { Scroll };

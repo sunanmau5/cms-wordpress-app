@@ -1,6 +1,6 @@
 import { getAllPostsForOtherWorks } from "@/lib/api";
 
-import Scroll from "@/components/scroll";
+import { Scroll } from "@/components/scroll";
 import { VisiblePost } from "@/components/visible-post";
 
 export default async function OtherWorks() {

@@ -109,4 +109,4 @@ function useWindowsScroll() {
   return { direction, trigger, offset };
 }
 
-export default useWindowsScroll;
+export { useWindowsScroll };
