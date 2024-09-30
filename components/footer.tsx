@@ -9,7 +9,7 @@ import { Icons } from "./icons";
 function Footer() {
   const isMobile = useMobile();
 
-  const username = "waworu";
+  const username = "_rina.wolf";
   const href = isMobile
     ? `instagram://user?username=${username}`
     : `https://instagram.com/${username}`;
