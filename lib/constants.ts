@@ -10,7 +10,7 @@ export const DESKTOP_HEADER_FOOTER_HEIGHT = 56;
 export const PAGES = [
   "/portfolio",
   "/other-works",
-  "/services",
+  // "/services",
   "/about",
   "/contact",
 ];

@@ -3,10 +3,9 @@
 import { HTMLAttributes, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+// import Link from "next/link";
 import * as z from "zod";
 
-import { Service } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -20,13 +19,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
@@ -52,7 +51,7 @@ const contactSchema = z.object({
     .min(3, { message: "First name must be at least 5 characters" }),
   lastName: z.string().optional(),
   email: z.string().email({ message: "Invalid email address" }),
-  service: z.nativeEnum(Service),
+  // service: z.nativeEnum(Service),
   message: z
     .string()
     .min(5, { message: "Message must be at least 5 characters" })
@@ -83,15 +82,21 @@ function ContactForm({ className, ...props }: IContactFormProps) {
   async function onSubmit(values: z.infer<typeof contactSchema>) {
     try {
       setIsLoading(true);
-      const { firstName, lastName, email, service, message, attachments } =
-        values;
+      const {
+        firstName,
+        lastName,
+        email,
+        // service,
+        message,
+        attachments,
+      } = values;
       const response = await fetch("/api/send", {
         method: "POST",
         body: JSON.stringify({
           firstName,
           lastName,
           email,
-          service,
+          // service,
           message,
           attachments,
         }),
@@ -103,7 +108,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
           firstName: "",
           lastName: "",
           email: "",
-          service: Service.Photography1,
+          // service: Service.Photography1,
           message: "",
           attachments: undefined,
         });
@@ -180,7 +185,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="service"
           render={({ field }) => (
@@ -212,7 +217,7 @@ function ContactForm({ className, ...props }: IContactFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <FormField
           control={form.control}
