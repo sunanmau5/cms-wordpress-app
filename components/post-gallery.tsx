@@ -105,14 +105,17 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
         {...props}
       >
         <ArrowButton
-          className={showPrev ? "opacity-100" : "opacity-0"}
+          className={cn(
+            "hidden sm:block",
+            showPrev ? "opacity-100" : "opacity-0",
+          )}
           direction="left"
           onClick={handlePrevClick}
         />
 
         <div
           ref={containerRef}
-          className="no-scrollbar flex w-full flex-1 overflow-x-scroll scroll-smooth pr-4 sm:pr-20 2xl:pr-0"
+          className="flex w-full flex-1 overflow-x-scroll scroll-smooth pr-4 sm:no-scrollbar sm:pr-20 2xl:pr-0"
         >
           {/* Empty div as first element ref */}
           <div
@@ -147,7 +150,10 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
         </div>
 
         <ArrowButton
-          className={showNext ? "opacity-100" : "opacity-0"}
+          className={cn(
+            "hidden sm:block",
+            showNext ? "opacity-100" : "opacity-0",
+          )}
           onClick={handleNextClick}
         />
       </div>
