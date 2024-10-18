@@ -6,10 +6,10 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
     origin: "https://rina-wolf.com",
   };
 
-  if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-    headers["Authorization"] =
-      `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
-  }
+  // if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
+  //   headers["Authorization"] =
+  //     `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+  // }
 
   // WPGraphQL Plugin must be enabled
   const res = await fetch(
