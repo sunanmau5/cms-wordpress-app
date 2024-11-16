@@ -106,7 +106,7 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
       >
         <ArrowButton
           className={cn(
-            "hidden sm:block",
+            "hidden sm:flex",
             showPrev ? "opacity-100" : "opacity-0",
           )}
           direction="left"
@@ -151,7 +151,7 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
 
         <ArrowButton
           className={cn(
-            "hidden sm:block",
+            "hidden sm:flex",
             showNext ? "opacity-100" : "opacity-0",
           )}
           onClick={handleNextClick}
