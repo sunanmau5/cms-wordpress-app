@@ -5,6 +5,9 @@ export const DEFAULT_IMAGE_WIDTH = 436;
 export const DEFAULT_IMAGE_HEIGHT = 702;
 export const DEFAULT_BIG_IMAGE_HEIGHT = 1242;
 export const DESKTOP_HEADER_FOOTER_HEIGHT = 56;
+export const GALLERY_HEIGHT = `h-[calc(100vh-${
+  DESKTOP_HEADER_FOOTER_HEIGHT * 2
+}px)]`;
 
 // TODO: make pages dynamic
 export const PAGES = [

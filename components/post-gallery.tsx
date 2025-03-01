@@ -140,6 +140,7 @@ const PostGallery = forwardRef<HTMLDivElement, PostGalleryProps>(
                 index < images.length - 1 && "mr-4",
               )}
               height={dimensions.height}
+              loading="eager"
               onLoad={(e) => {
                 if (index === 0) {
                   setDimensions((prev) => ({
@@ -148,6 +149,7 @@ const PostGallery = forwardRef<HTMLDivElement, PostGalleryProps>(
                   }));
                 }
               }}
+              priority={images.length > 10 ? index < 3 : true} // only prioritize first few images if gallery has many images
               sizes="(max-width: 640px) 90vw, auto"
               src={src}
               style={{ height: dimensions.height, width: "auto" }}
