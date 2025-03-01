@@ -133,17 +133,24 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
               key={src}
               ref={index === images.length - 1 ? lastRef : undefined}
               alt={`${_title}-${index}`}
-              className={index === images.length - 1 ? undefined : "mr-4"}
-              height="0"
+              className={cn(
+                "h-full object-contain", // prevent cropping
+                index === images.length - 1 ? undefined : "mr-4",
+              )}
+              height={imageHeight}
               onLoad={(e) => {
-                // Only get the width of the first image
                 if (index === 0) {
                   setImageWidth((e.target as HTMLImageElement).offsetWidth);
                 }
               }}
+              priority={index < 3} // prioritize first 3 visible images
               sizes="100vw"
               src={src}
-              style={{ width: "auto", height: imageHeight }}
+              style={{
+                height: imageHeight,
+                width: "auto",
+                minWidth: "min-content", // ensure proper sizing
+              }}
               width="0"
             />
           ))}
