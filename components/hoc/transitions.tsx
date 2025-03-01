@@ -10,7 +10,7 @@ import {
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-export const DELAY = 200;
+const DELAY = 200;
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
@@ -18,23 +18,13 @@ const noop = () => {};
 
 type TransitionContext = {
   pending: boolean;
-  navigate: (url: string) => void;
+  navigate: (_: string) => void;
 };
 const Context = createContext<TransitionContext>({
   pending: false,
   navigate: noop,
 });
-export const usePageTransition = () => use(Context);
-export const usePageTransitionHandler = () => {
-  const { navigate } = usePageTransition();
-  const onClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault();
-    const href = e.currentTarget.getAttribute("href");
-    if (href) navigate(href);
-  };
-
-  return onClick;
-};
+const usePageTransition = () => use(Context);
 
 type Props = PropsWithChildren<{
   className?: string;

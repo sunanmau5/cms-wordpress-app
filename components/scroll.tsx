@@ -15,10 +15,6 @@ import { ScrollNavigation, ScrollNavigationProps } from "./scroll-navigation";
 
 export type Page = JSX.Element;
 
-export interface PageProps {
-  pageName?: string;
-}
-
 type NavigationFunction = (_props: ScrollNavigationProps) => JSX.Element;
 
 type NavigationProp = NavigationFunction | boolean;

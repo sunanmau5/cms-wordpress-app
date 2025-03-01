@@ -18,4 +18,4 @@ export default function Layout({ refererPathname, children }: ILayoutProps) {
 }
 Layout.displayName = "Layout";
 
-export { Layout };
+;
