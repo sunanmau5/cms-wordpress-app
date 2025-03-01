@@ -1,7 +1,6 @@
 "use client";
 
 import { forwardRef, useEffect, useRef, useState } from "react";
-import React from "react";
 import { kebabCase } from "lodash";
 import Image from "next/image";
 
@@ -13,86 +12,93 @@ import {
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-import { useElementOnScreen } from "@/hooks/use-element-on-screen";
-
 import { ArrowButton } from "@/components/arrow-button";
 
 import { PostTitle } from "./post-title";
 
 import { extractSrcFromContent } from "@/utils/extract-src-from-content";
 
-interface IPostGallery extends React.HTMLAttributes<HTMLDivElement> {
-  post: {
-    title: string;
-    content: string;
-  };
+interface Post {
+  title: string;
+  content: string;
 }
 
-const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
-  ({ post, className, ...props }, ref) => {
-    const { content, title } = post;
-    const _title = kebabCase(title.toLowerCase());
+interface PostGalleryProps extends React.HTMLAttributes<HTMLDivElement> {
+  post: Post;
+}
 
-    const [config, setConfig] = useState<
-      IntersectionObserverInit | undefined
-    >();
+const useGalleryDimensions = () => {
+  const [dimensions, setDimensions] = useState({
+    height: DEFAULT_IMAGE_HEIGHT,
+    width: 0,
+  });
 
-    const [imageHeight, setImageHeight] = useState(DEFAULT_IMAGE_HEIGHT);
-    const [imageWidth, setImageWidth] = useState<number>(0);
-    const images = extractSrcFromContent(content);
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (typeof window === "undefined") return;
+      const headerFooterHeight = DESKTOP_HEADER_FOOTER_HEIGHT * 2;
+      setDimensions((prev) => ({
+        ...prev,
+        height: window.innerHeight - headerFooterHeight,
+      }));
+    };
 
-    const [firstRef, isFirstVisible] =
-      useElementOnScreen<HTMLDivElement>(config);
-    const [lastRef, isLastVisible] =
-      useElementOnScreen<HTMLImageElement>(config);
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [showPrev, setShowPrev] = useState<boolean>(false);
-    const [showNext, setShowNext] = useState<boolean>(true);
+  return {
+    dimensions,
+    setDimensions,
+  };
+};
 
-    useEffect(() => {
-      setConfig({
-        root: document?.querySelector(`#${_title}-scroll-area`),
-        rootMargin: "0px",
-        threshold: 0.95,
-      });
-    }, [_title]);
+const useIntersectionObserver = (elementId: string) => {
+  const [isVisible, setIsVisible] = useState({ first: true, last: false });
+  const firstRef = useRef<HTMLDivElement>(null);
+  const lastRef = useRef<HTMLImageElement>(null);
 
-    useEffect(() => {
-      setShowPrev(!isFirstVisible);
-    }, [isFirstVisible]);
+  useEffect(() => {
+    const options: IntersectionObserverInit = {
+      root: document?.querySelector(`#${elementId}`),
+      rootMargin: "0px",
+      threshold: 0.95,
+    };
 
-    useEffect(() => {
-      setShowNext(!isLastVisible);
-    }, [isLastVisible]);
-
-    useEffect(() => {
-      const updateHeight = () => {
-        if (typeof window !== "undefined") {
-          setImageHeight(window.innerHeight - DESKTOP_HEADER_FOOTER_HEIGHT * 2);
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.target === firstRef.current) {
+          setIsVisible((prev) => ({ ...prev, first: entry.isIntersecting }));
+        } else if (entry.target === lastRef.current) {
+          setIsVisible((prev) => ({ ...prev, last: entry.isIntersecting }));
         }
-      };
-
-      // Initial height calculation
-      updateHeight();
-
-      // Update height on window resize
-      window.addEventListener("resize", updateHeight);
-      return () => {
-        window.removeEventListener("resize", updateHeight);
-      };
-    }, []);
-
-    const handlePrevClick = () => {
-      containerRef.current?.scrollBy({
-        left: -((imageWidth ?? DEFAULT_IMAGE_WIDTH) + DEFAULT_MARGIN),
-        behavior: "smooth",
       });
     };
 
-    const handleNextClick = () => {
+    const observer = new IntersectionObserver(observerCallback, options);
+    if (firstRef.current) observer.observe(firstRef.current);
+    if (lastRef.current) observer.observe(lastRef.current);
+
+    return () => observer.disconnect();
+  }, [elementId]);
+
+  return { firstRef, lastRef, isVisible };
+};
+
+const PostGallery = forwardRef<HTMLDivElement, PostGalleryProps>(
+  ({ post, className, ...props }, ref) => {
+    const galleryId = kebabCase(post.title.toLowerCase());
+    const images = extractSrcFromContent(post.content);
+    const { dimensions, setDimensions } = useGalleryDimensions();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { firstRef, lastRef, isVisible } = useIntersectionObserver(galleryId);
+
+    const handleScroll = (direction: "prev" | "next") => {
+      const scrollAmount =
+        (dimensions.width || DEFAULT_IMAGE_WIDTH) + DEFAULT_MARGIN;
       containerRef.current?.scrollBy({
-        left: (imageWidth ?? DEFAULT_IMAGE_WIDTH) + DEFAULT_MARGIN,
+        left: direction === "prev" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
     };
@@ -101,53 +107,51 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
       <div
         ref={ref}
         className={cn("relative overflow-hidden", className)}
-        id={`${_title}-scroll-area`}
+        id={galleryId}
         {...props}
       >
         <ArrowButton
           className={cn(
             "hidden sm:flex",
-            showPrev ? "opacity-100" : "opacity-0",
+            !isVisible.first ? "opacity-100" : "opacity-0",
           )}
           direction="left"
-          onClick={handlePrevClick}
+          onClick={() => handleScroll("prev")}
         />
 
         <div
           ref={containerRef}
           className="flex w-full flex-1 overflow-x-scroll scroll-smooth pr-4 sm:no-scrollbar sm:pr-20 2xl:pr-0"
         >
-          {/* Empty div as first element ref */}
           <div
             ref={firstRef}
             className="inline-block w-0.5 flex-shrink-0 sm:w-7 2xl:w-0 mr-4 2xl:mr-0"
-          >
-            &nbsp;
-          </div>
+          />
 
           <PostTitle className="2xl:hidden mr-4" title={post.title} />
+
           {images.map((src, index) => (
             <Image
               key={src}
               ref={index === images.length - 1 ? lastRef : undefined}
-              alt={`${_title}-${index}`}
+              alt={`${galleryId}-${index}`}
               className={cn(
                 "h-full w-[90vw] sm:w-auto object-contain",
-                index === images.length - 1 ? undefined : "mr-4",
+                index < images.length - 1 && "mr-4",
               )}
-              height={imageHeight}
+              height={dimensions.height}
               onLoad={(e) => {
                 if (index === 0) {
-                  setImageWidth((e.target as HTMLImageElement).offsetWidth);
+                  setDimensions((prev) => ({
+                    ...prev,
+                    width: (e.target as HTMLImageElement).offsetWidth,
+                  }));
                 }
               }}
               sizes="(max-width: 640px) 90vw, auto"
               src={src}
-              style={{
-                height: imageHeight,
-                width: "auto",
-              }}
-              width="0"
+              style={{ height: dimensions.height, width: "auto" }}
+              width={0}
             />
           ))}
         </div>
@@ -155,14 +159,15 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
         <ArrowButton
           className={cn(
             "hidden sm:flex",
-            showNext ? "opacity-100" : "opacity-0",
+            !isVisible.last ? "opacity-100" : "opacity-0",
           )}
-          onClick={handleNextClick}
+          onClick={() => handleScroll("next")}
         />
       </div>
     );
   },
 );
+
 PostGallery.displayName = "PostGallery";
 
 export { PostGallery };
