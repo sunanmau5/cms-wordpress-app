@@ -127,14 +127,12 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
 
           <PostTitle className="2xl:hidden mr-4" title={post.title} />
           {images.map((src, index) => (
-            //
-            //
             <Image
               key={src}
               ref={index === images.length - 1 ? lastRef : undefined}
               alt={`${_title}-${index}`}
               className={cn(
-                "h-full object-contain", // prevent cropping
+                "h-full w-[90vw] sm:w-auto object-contain",
                 index === images.length - 1 ? undefined : "mr-4",
               )}
               height={imageHeight}
@@ -143,13 +141,11 @@ const PostGallery = forwardRef<HTMLDivElement, IPostGallery>(
                   setImageWidth((e.target as HTMLImageElement).offsetWidth);
                 }
               }}
-              priority={index < 3} // prioritize first 3 visible images
-              sizes="100vw"
+              sizes="(max-width: 640px) 90vw, auto"
               src={src}
               style={{
                 height: imageHeight,
                 width: "auto",
-                minWidth: "min-content", // ensure proper sizing
               }}
               width="0"
             />
