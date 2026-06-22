@@ -9,7 +9,7 @@ import { PAGES } from "@/lib/constants";
 // TODO: update animation to exit to where the
 // next route is going to be
 const variants = {
-  hidden: (direction: number) => {
+  hidden: () => {
     return {
       opacity: 0,
       x: 0,
@@ -17,7 +17,7 @@ const variants = {
     };
   },
   enter: { opacity: 1, x: 0, y: 0 },
-  exit: (direction: number) => {
+  exit: () => {
     return {
       opacity: 0,
       x: 0,

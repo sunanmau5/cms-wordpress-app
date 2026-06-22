@@ -33,9 +33,11 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      // @ts-expect-error error returns a status code and message
       const { statusCode, message } = error;
-      return NextResponse.json({ error: message }, { status: statusCode });
+      return NextResponse.json(
+        { error: message },
+        { status: statusCode ?? 500 },
+      );
     }
 
     return NextResponse.json(data);

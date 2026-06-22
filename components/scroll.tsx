@@ -13,9 +13,9 @@ import { Direction, useWindowsScroll } from "@/hooks/use-windows-scroll";
 
 import { ScrollNavigation, ScrollNavigationProps } from "./scroll-navigation";
 
-export type Page = JSX.Element;
+export type Page = React.JSX.Element;
 
-type NavigationFunction = (_props: ScrollNavigationProps) => JSX.Element;
+type NavigationFunction = (_props: ScrollNavigationProps) => React.JSX.Element;
 
 type NavigationProp = NavigationFunction | boolean;
 
@@ -33,7 +33,7 @@ const initialVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      opactiy: { duration: 0.8 },
+      opacity: { duration: 0.8 },
       y: {
         delay: 0.5,
         duration: 0.6,
