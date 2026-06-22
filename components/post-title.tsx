@@ -10,7 +10,7 @@ function PostTitle({ title, className, ...props }: IPostTitleProps) {
   return (
     <h1
       className={cn(
-        "text-3xl font-bold rotate-180 origin-center my-auto",
+        "text-3xl font-bold rotate-180 origin-center my-auto text-pink-500",
         className,
       )}
       style={postTitleStyle}

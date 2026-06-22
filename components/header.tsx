@@ -46,7 +46,7 @@ function Header() {
         )}
       >
         <div className="flex items-center justify-center relative h-12">
-          <h1 className="text-2xl font-bold">RINA WOLF</h1>
+          <h1 className="text-2xl font-bold text-pink-500">RINA WOLF</h1>
           <MobileMenuButton
             className="absolute -right-2 top-0"
             isNavOpen={isNavOpen}
@@ -89,7 +89,7 @@ function Header() {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <h1 className="text-2xl font-bold">RINA WOLF</h1>
+      <h1 className="text-2xl font-bold text-pink-500">RINA WOLF</h1>
     </header>
   );
 }
