@@ -41,12 +41,21 @@ export default function Transitions({ children, className }: Props) {
   };
 
   const onClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    const a = (e.target as Element).closest("a");
-    if (a) {
-      e.preventDefault();
-      const href = a.getAttribute("href");
-      if (href) navigate(href);
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey) return;
+    if (e.shiftKey || e.altKey) return;
+
+    const anchor = (e.target as Element).closest("a");
+    const href = anchor?.getAttribute("href");
+
+    if (!anchor || !href || anchor.target || anchor.hasAttribute("download")) {
+      return;
     }
+
+    const url = new URL(href, window.location.href);
+    if (url.origin !== window.location.origin) return;
+
+    e.preventDefault();
+    navigate(`${url.pathname}${url.search}${url.hash}`);
   };
 
   return (
