@@ -178,6 +178,41 @@ export default function WheelScreen() {
 
   return (
     <div className="wheel fixed inset-0 z-50 overflow-y-auto">
+      {result !== null && (
+        <>
+          <button
+            aria-label="Fermer"
+            className="fixed inset-0 z-[70] cursor-default bg-black/45 backdrop-blur-sm"
+            onClick={() => setResult(null)}
+            type="button"
+          />
+          <div
+            key={`${result.a}-${result.p}`}
+            className="fixed left-1/2 top-1/2 z-[71] max-h-[86vh] w-[calc(100vw-2rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.28)]"
+            style={{ animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both" }}
+          >
+            <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">
+              {t.landed}
+            </p>
+            <p className={`${FUNFAIR} mt-2 text-[1.35rem] text-[#d63a30]`}>
+              {(locale === "fr" ? area!.fr : area!.en).toUpperCase()}
+            </p>
+            {vid ? (
+              <div className="mt-3">
+                <div className="relative w-full overflow-hidden rounded-2xl border-2 border-[#d63a30]/25" style={{ aspectRatio: "16 / 9" }}>
+                  <iframe allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" className="absolute inset-0 h-full w-full" src={`https://www.youtube-nocookie.com/embed/${vid}`} title={locale === "fr" ? prize!.fr : prize!.en} />
+                </div>
+                <p className={`${SERIF} mt-2.5 text-[1.15rem] leading-snug text-[#2b1512]`}>{locale === "fr" ? prize!.fr : prize!.en}</p>
+              </div>
+            ) : (
+              <p className={`${SERIF} mt-3 text-[1.6rem] leading-[1.25] text-[#2b1512]`}>{locale === "fr" ? prize!.fr : prize!.en}</p>
+            )}
+            <button className={`${FUNFAIR} mt-5 rounded-full border-[3px] border-[#3a2118] bg-[#f2c14e] px-6 py-2 text-[0.95rem] text-[#3a2118]`} onClick={() => setResult(null)} type="button">
+              {locale === "fr" ? "Rejouer" : "Spin again"}
+            </button>
+          </div>
+        </>
+      )}
       <BackToHub />
       <style
         dangerouslySetInnerHTML={{
@@ -597,72 +632,7 @@ export default function WheelScreen() {
                       {t.intro}
                     </p>
                   </>
-                ) : (
-                  <>
-                    {/* mobile: a centred popup over a dimmed, blurred backdrop,
-                        so the result never pushes the page into a scroll. On
-                        desktop it stays the card that slides in beside the wheel. */}
-                    <button
-                      aria-label="Fermer"
-                      className="fixed inset-0 z-40 cursor-default bg-black/45 backdrop-blur-sm lg:hidden"
-                      onClick={() => setResult(null)}
-                      type="button"
-                    />
-                    <div
-                      key={`${result.a}-${result.p}`}
-                      className="fixed left-1/2 top-1/2 z-50 max-h-[85vh] w-[calc(100vw-2rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:static lg:left-auto lg:top-auto lg:max-h-none lg:w-full lg:translate-x-0 lg:translate-y-0 lg:overflow-visible lg:px-10 lg:py-8"
-                      style={{
-                        animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both",
-                      }}
-                    >
-                    <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">
-                      {t.landed}
-                    </p>
-                    <p
-                      className={`${FUNFAIR} mt-2 text-[1.15rem] text-[#d63a30] sm:text-[1.35rem]`}
-                    >
-                      {(locale === "fr" ? area!.fr : area!.en).toUpperCase()}
-                    </p>
-                    {vid ? (
-                      <div
-                        className="mt-3"
-                        style={{
-                          animation:
-                            "riseIn 420ms cubic-bezier(.16,1,.3,1) 260ms both",
-                        }}
-                      >
-                        <div
-                          className="relative w-full overflow-hidden rounded-2xl border-2 border-[#d63a30]/25 shadow-[0_10px_28px_rgba(160,100,40,.2)]"
-                          style={{ aspectRatio: "16 / 9" }}
-                        >
-                          <iframe
-                            allowFullScreen
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            className="absolute inset-0 h-full w-full"
-                            src={`https://www.youtube-nocookie.com/embed/${vid}`}
-                            title={locale === "fr" ? prize!.fr : prize!.en}
-                          />
-                        </div>
-                        <p
-                          className={`${SERIF} mt-2.5 text-[1.1rem] leading-snug text-[#2b1512] sm:text-[1.25rem]`}
-                        >
-                          {locale === "fr" ? prize!.fr : prize!.en}
-                        </p>
-                      </div>
-                    ) : (
-                      <p
-                        className={`${SERIF} mt-3 text-[1.5rem] leading-[1.25] text-[#2b1512] sm:text-[1.85rem]`}
-                        style={{
-                          animation:
-                            "riseIn 420ms cubic-bezier(.16,1,.3,1) 260ms both",
-                        }}
-                      >
-                        {locale === "fr" ? prize!.fr : prize!.en}
-                      </p>
-                    )}
-                  </div>
-                  </>
-                )}
+                ) : null}
               </div>
             </div>
           </div>

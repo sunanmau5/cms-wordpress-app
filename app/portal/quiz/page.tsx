@@ -666,7 +666,7 @@ export default function QuizScreen() {
                     }}
                   >
                     <div className="shrink-0">
-                      <p className="text-[12px] uppercase tracking-[0.28em] text-[#a8281f]/70">
+                      <p className="pl-12 text-[12px] uppercase tracking-[0.28em] text-[#a8281f]/70 sm:pl-0">
                         {i + 1} {t.of} {QUESTIONS.length}
                       </p>
 

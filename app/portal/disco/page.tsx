@@ -18,7 +18,7 @@ const SERIF = instrument.className;
 const rye = Rye({ subsets: ["latin"], weight: "400" });
 const FUNFAIR = rye.className;
 
-const DURATION = 60;
+const DURATION = 10;
 
 // deterministic pseudo-random, matching the opening game
 const rand = (i: number, salt: number) =>
@@ -35,7 +35,7 @@ const STARS = Array.from({ length: 130 }).map((_, i) => ({
 
 const COPY = {
   fr: {
-    intro: "Tape la boule disco le plus de fois possible en 60 secondes !",
+    intro: "Tape la boule disco le plus de fois possible en 10 secondes !",
     start: "Tape pour commencer",
     taps: "taps",
     timeUp: "Temps écoulé !",
@@ -43,7 +43,7 @@ const COPY = {
     again: "Rejouer",
   },
   en: {
-    intro: "Tap the disco ball as many times as you can in 60 seconds!",
+    intro: "Tap the disco ball as many times as you can in 10 seconds!",
     start: "Tap to start",
     taps: "taps",
     timeUp: "Time's up!",
