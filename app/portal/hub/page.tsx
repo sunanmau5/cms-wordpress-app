@@ -340,7 +340,12 @@ const CSS = `
 /* web-only banner: alternating ferris / joker across the top. Hidden on mobile,
    where the single cutouts looked cramped. */
 .title-row { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; }
-.title-slot { width: min(400px, 84vw); flex: 0 0 auto; }
+.title-slot { width: min(340px, 72vw); flex: 0 0 auto; }
+/* smaller title on short phones, so the grid sits higher and the corner
+   fortune cookie no longer overlaps the bottom activities */
+@media (max-width: 899px) and (max-height: 820px) {
+  .title-slot { width: min(280px, 62vw); }
+}
 .acts { margin: auto; }
 /* web: banners flank the title, and the activities sit higher */
 .side-banner { display: none; }

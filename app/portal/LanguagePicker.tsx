@@ -20,7 +20,7 @@ export function LanguagePicker({ onPick }: { onPick: () => void }) {
       {/* flags are the centred element; the prompt floats above them so the
           flags themselves sit dead-centre horizontally and vertically */}
       <div className="relative flex items-center justify-center gap-10 sm:gap-14">
-        <p className="absolute -top-16 left-1/2 w-max -translate-x-1/2 text-center text-xs uppercase tracking-[0.35em] text-white/50 sm:-top-20 sm:text-sm">
+        <p className="absolute -top-16 left-1/2 w-[92vw] max-w-[30rem] -translate-x-1/2 text-center text-xs uppercase leading-relaxed tracking-[0.18em] text-white/50 sm:-top-20 sm:tracking-[0.35em] sm:text-sm">
           Choisis une langue · Pick a language
         </p>
         <button

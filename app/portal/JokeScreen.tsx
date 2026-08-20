@@ -174,7 +174,7 @@ function ColumnBody({
       <p
         // wider measure, more leading and more contrast than the first pass —
         // italic serif at low opacity on black was hard going
-        className={`${SERIF_IT} mt-6 max-w-[38rem] whitespace-pre-line text-left text-[1.25rem] leading-[1.7] text-white/85 sm:mx-auto sm:text-center ${
+        className={`joke-note ${SERIF_IT} mt-6 max-w-[38rem] whitespace-pre-line text-left text-[1.25rem] leading-[1.7] text-white/85 sm:mx-auto sm:text-center ${
           short ? "sm:mt-5 sm:text-[1.3rem]" : "sm:mt-8 sm:text-[1.7rem]"
         }`}
         style={
@@ -524,6 +524,11 @@ export function JokeScreen() {
         @keyframes nextIn { from { opacity:0; transform: translate(8px, -50%) } to { opacity:1; transform: translate(0, -50%) } }
         @keyframes nextNudge { 0%,100% { transform: translate(0, -50%) } 50% { transform: translate(6px, -50%) } }
         .joke-next { animation: nextIn 700ms ease both, nextNudge 1.9s ease-in-out 700ms infinite; }
+        /* small AND short phones (iPhone mini): the enlarged note ran into the
+           drag hint. Shrink it there; taller phones keep the bigger size. */
+        @media (max-width: 639px) and (max-height: 800px) {
+          .joke-note { font-size: 1.02rem !important; line-height: 1.45 !important; margin-top: 0.9rem !important; }
+        }
         @keyframes pop { 0%,58%,100% { opacity:0; transform: scale(.35) rotate(0deg) } 72%,86% { opacity:.9; transform: scale(1.1) rotate(20deg) } }
         @keyframes charIn { from { opacity:0; filter: blur(10px); transform: translateY(0.5em) } to { opacity:1; filter: blur(0px); transform: none } }
         @keyframes riseIn { from { opacity:0; filter: blur(12px); transform: translateY(26px) } to { opacity:1; filter: blur(0px); transform: none } }
