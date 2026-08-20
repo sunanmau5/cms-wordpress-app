@@ -161,7 +161,7 @@ function HubContent() {
         ))}
       </div>
 
-      <div className="relative z-10 flex min-h-full flex-col px-4 pb-24 pt-3">
+      <div className="relative z-10 flex min-h-full flex-col px-4 pb-32 pt-3 sm:pb-24">
         {/* the title — a deep-red marquee sign with glowing bulbs (like the quiz) */}
         <div className="title-row shrink-0">
           <div aria-hidden className="side-banner">

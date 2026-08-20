@@ -598,13 +598,23 @@ export default function WheelScreen() {
                     </p>
                   </>
                 ) : (
-                  <div
-                    key={`${result.a}-${result.p}`}
-                    className="flex flex-col justify-center rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:px-10 lg:py-8"
-                    style={{
-                      animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both",
-                    }}
-                  >
+                  <>
+                    {/* mobile: a centred popup over a dimmed, blurred backdrop,
+                        so the result never pushes the page into a scroll. On
+                        desktop it stays the card that slides in beside the wheel. */}
+                    <button
+                      aria-label="Fermer"
+                      className="fixed inset-0 z-40 cursor-default bg-black/45 backdrop-blur-sm lg:hidden"
+                      onClick={() => setResult(null)}
+                      type="button"
+                    />
+                    <div
+                      key={`${result.a}-${result.p}`}
+                      className="fixed left-1/2 top-1/2 z-50 max-h-[85vh] w-[calc(100vw-2rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:static lg:left-auto lg:top-auto lg:max-h-none lg:w-full lg:translate-x-0 lg:translate-y-0 lg:overflow-visible lg:px-10 lg:py-8"
+                      style={{
+                        animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both",
+                      }}
+                    >
                     <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">
                       {t.landed}
                     </p>
@@ -651,6 +661,7 @@ export default function WheelScreen() {
                       </p>
                     )}
                   </div>
+                  </>
                 )}
               </div>
             </div>
@@ -659,24 +670,26 @@ export default function WheelScreen() {
       </div>
 
       {/* dev toolbar, same as the quiz's — not part of the screen */}
-      <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
-        <button
-          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
-        >
-          {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
-        </button>
-        <button
-          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => {
-            setResult(null);
-            setRot(0);
-            setSpinning(false);
-          }}
-        >
-          reset
-        </button>
-      </div>
+      {process.env.NODE_ENV !== "production" && (
+        <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
+          <button
+            className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+            onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
+          >
+            {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
+          </button>
+          <button
+            className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+            onClick={() => {
+              setResult(null);
+              setRot(0);
+              setSpinning(false);
+            }}
+          >
+            reset
+          </button>
+        </div>
+      )}
     </div>
   );
 }

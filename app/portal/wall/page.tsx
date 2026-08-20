@@ -518,6 +518,27 @@ function VariantB({
   const [night, setNight] = useState(false);
   const [pool, setPool] = useState<Quote[]>(ALL);
   const [open, setOpen] = useState(false);
+
+  // pull the approved messages from the sheet and fold them into the rotation
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/rinaverse")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!alive || !Array.isArray(data?.messages)) return;
+        const fetched: Quote[] = data.messages
+          .filter((m: { name?: string; message?: string }) => m.message && m.name)
+          .map((m: { name: string; message: string }) => ({
+            en: { text: m.message, by: m.name },
+            fr: { text: m.message, by: m.name },
+          }));
+        if (fetched.length) setPool((prev) => [...prev, ...fetched]);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
   const [sent, setSent] = useState(false);

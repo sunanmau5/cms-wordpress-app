@@ -372,6 +372,7 @@ export default function FitScreen() {
       </div>
 
       {/* dev toolbar — not part of the screen */}
+      {process.env.NODE_ENV !== "production" && (
       <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
         <button
           className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
@@ -397,6 +398,7 @@ export default function FitScreen() {
           reset
         </button>
       </div>
+      )}
     </div>
   );
 }
