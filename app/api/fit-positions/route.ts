@@ -3,17 +3,18 @@
 // reload. Refuses to run in production, and rejects any id it does not already
 // find in the file rather than silently dropping it.
 
+import { NextResponse } from "next/server";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-
-import { NextResponse } from "next/server";
 
 const FILE = path.join(process.cwd(), "app/portal/fit/accessories.ts");
 
 type Pos = { id: string; x: number; y: number; w: number; rot: number };
 
 const num = (v: unknown, lo: number, hi: number) =>
-  typeof v === "number" && Number.isFinite(v) ? Math.max(lo, Math.min(hi, Math.round(v))) : null;
+  typeof v === "number" && Number.isFinite(v)
+    ? Math.max(lo, Math.min(hi, Math.round(v)))
+    : null;
 
 export async function POST(req: Request) {
   if (process.env.NODE_ENV === "production") {
@@ -34,7 +35,13 @@ export async function POST(req: Request) {
     const y = num(item.y, -60, 160);
     const w = num(item.w, 2, 200);
     const rot = num(item.rot, -180, 180);
-    if (!/^[a-z0-9-]+$/.test(String(item.id)) || x === null || y === null || w === null || rot === null) {
+    if (
+      !/^[a-z0-9-]+$/.test(String(item.id)) ||
+      x === null ||
+      y === null ||
+      w === null ||
+      rot === null
+    ) {
       rejected.push(String(item.id));
       continue;
     }
@@ -50,7 +57,10 @@ export async function POST(req: Request) {
   }
 
   if (rejected.length) {
-    return NextResponse.json({ error: "unknown or invalid ids", rejected }, { status: 400 });
+    return NextResponse.json(
+      { error: "unknown or invalid ids", rejected },
+      { status: 400 },
+    );
   }
 
   await writeFile(FILE, src, "utf8");

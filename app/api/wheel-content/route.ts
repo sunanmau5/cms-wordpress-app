@@ -1,7 +1,6 @@
 import { promises as fs } from "fs";
-import path from "path";
-
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 
 /**
  * DEV ONLY — rewrites the wheel's content file from the editor at
@@ -17,7 +16,13 @@ import { NextRequest, NextResponse } from "next/server";
 const FILE = path.join(process.cwd(), "app", "portal", "wheel", "prizes.ts");
 const s = (v: unknown) => JSON.stringify(typeof v === "string" ? v : "");
 
-type Prize = { fr: string; en: string; shortFr: string; shortEn: string; video?: string };
+type Prize = {
+  fr: string;
+  en: string;
+  shortFr: string;
+  shortEn: string;
+  video?: string;
+};
 type Area = { fr: string; en: string; prizes: Prize[] };
 
 export async function POST(req: NextRequest) {
@@ -32,7 +37,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "expected six areas" }, { status: 400 });
   }
   if (!areas.every((a) => Array.isArray(a?.prizes) && a.prizes.length === 3)) {
-    return NextResponse.json({ error: "each area needs three prizes" }, { status: 400 });
+    return NextResponse.json(
+      { error: "each area needs three prizes" },
+      { status: 400 },
+    );
   }
 
   const file = [
@@ -65,7 +73,9 @@ export async function POST(req: NextRequest) {
         ...a.prizes.map((p) => {
           const vid = (p.video ?? "").trim();
           const tail = vid ? `, video: ${s(vid)}` : "";
-          return `      { fr: ${s(p.fr)}, en: ${s(p.en)}, shortFr: ${s(p.shortFr)}, shortEn: ${s(p.shortEn)}${tail} },`;
+          return `      { fr: ${s(p.fr)}, en: ${s(p.en)}, shortFr: ${s(
+            p.shortFr,
+          )}, shortEn: ${s(p.shortEn)}${tail} },`;
         }),
         "    ],",
         "  },",

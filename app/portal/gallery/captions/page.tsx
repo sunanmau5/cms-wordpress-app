@@ -13,11 +13,14 @@ type Row = { id: string; fr: string; en: string };
 
 export default function CaptionEditor() {
   const [rows, setRows] = useState<Row[]>(PHOTOS.map((p) => ({ ...p })));
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle",
+  );
 
   // warn before losing typing
   useEffect(() => {
-    const dirty = () => rows.some((r, i) => r.fr !== PHOTOS[i]?.fr || r.en !== PHOTOS[i]?.en);
+    const dirty = () =>
+      rows.some((r, i) => r.fr !== PHOTOS[i]?.fr || r.en !== PHOTOS[i]?.en);
     const onLeave = (e: BeforeUnloadEvent) => {
       if (dirty()) e.preventDefault();
     };
@@ -61,20 +64,27 @@ export default function CaptionEditor() {
           >
             {status === "saving" ? "Saving…" : "Save"}
           </button>
-          {status === "saved" && <span className="text-sm text-emerald-400">Saved ✓</span>}
-          {status === "error" && <span className="text-sm text-rose-400">Save failed</span>}
+          {status === "saved" && (
+            <span className="text-sm text-emerald-400">Saved ✓</span>
+          )}
+          {status === "error" && (
+            <span className="text-sm text-rose-400">Save failed</span>
+          )}
         </div>
 
         <p className="mb-8 max-w-[42rem] text-sm leading-relaxed text-white/60">
-          One line per photo. Leave any of them blank and that photo simply opens
-          without a caption. Only the first 16 photos float on desktop (9 on
-          mobile), so the ones you care most about are best near the top — tell
-          Claude if you want the order changed.
+          One line per photo. Leave any of them blank and that photo simply
+          opens without a caption. Only the first 16 photos float on desktop (9
+          on mobile), so the ones you care most about are best near the top —
+          tell Claude if you want the order changed.
         </p>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {rows.map((r, i) => (
-            <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3" key={r.id}>
+            <div
+              key={r.id}
+              className="rounded-lg border border-white/10 bg-white/[0.03] p-3"
+            >
               <div className="mb-1 flex items-baseline justify-between">
                 <span className="text-xs text-white/40">#{i + 1}</span>
                 {i < 16 && (

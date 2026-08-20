@@ -36,7 +36,9 @@ export default function PortalPage() {
   const [stage, setStage] = useState<Stage>("picker");
 
   if (stage === "picker") {
-    return <LanguagePicker onPick={() => slide("left", () => setStage("opening"))} />;
+    return (
+      <LanguagePicker onPick={() => slide("left", () => setStage("opening"))} />
+    );
   }
   if (stage === "joke") return <JokeScreen />;
   return <OpeningScreen onDone={() => slide("left", () => setStage("joke"))} />;

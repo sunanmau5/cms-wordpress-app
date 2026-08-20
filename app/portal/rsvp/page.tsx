@@ -7,12 +7,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif } from "next/font/google";
 
+import { useLocale } from "../locale";
 import { useScreenNav } from "../screen-nav";
+
 import { COPY, DATES } from "./copy";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
@@ -28,7 +27,8 @@ const SERIF_IT = instrumentItalic.className;
 // otherwise fails hydration (paid for on the joke screen)
 const rand = (i: number, salt: number) =>
   Math.round(
-    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) * 1e4,
+    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) *
+      1e4,
   ) / 1e4;
 
 const STARS = Array.from({ length: 110 }).map((_, i) => ({
@@ -129,9 +129,9 @@ function Confetti() {
     <>
       {CONFETTI.map((p, i) => (
         <span
+          key={i}
           aria-hidden
           className="confetti pointer-events-none absolute top-1 block h-2 w-2 rounded-[2px]"
-          key={i}
           style={
             {
               left: p.left,
@@ -164,17 +164,25 @@ function ball(i: number) {
   };
 }
 
-function Balls({ from, count, className = "" }: { from: number; count: number; className?: string }) {
+function Balls({
+  from,
+  count,
+  className = "",
+}: {
+  from: number;
+  count: number;
+  className?: string;
+}) {
   return (
     <div className={`flex items-end gap-2 ${className}`}>
       {Array.from({ length: count }).map((_, n) => {
         const b = ball(from + n);
         return (
           <img
+            key={n}
             alt=""
             className="rl-ball"
             draggable={false}
-            key={n}
             src="/30ans/disco-ball.png"
             style={{
               width: b.size,
@@ -187,7 +195,13 @@ function Balls({ from, count, className = "" }: { from: number; count: number; c
   );
 }
 
-function JumpingText({ text, className }: { text: string; className?: string }) {
+function JumpingText({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
   let n = 0;
   return (
     <span className={className}>
@@ -221,7 +235,11 @@ function JumpingText({ text, className }: { text: string; className?: string }) 
 // The sim writes translate() on the OUTER element and the spin is a CSS
 // animation on the img inside — an animation ending on a transform would
 // otherwise stamp over the position.
-function PartyHorns({ boxRef }: { boxRef: React.RefObject<HTMLDivElement | null> }) {
+function PartyHorns({
+  boxRef,
+}: {
+  boxRef: React.RefObject<HTMLDivElement | null>;
+}) {
   const wrap = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -291,32 +309,57 @@ function PartyHorns({ boxRef }: { boxRef: React.RefObject<HTMLDivElement | null>
         b.x += b.vx * dt;
         b.y += b.vy * dt;
 
-        if (b.x < 0) { b.x = 0; b.vx = Math.abs(b.vx); }
-        if (b.y < b.yMin) { b.y = b.yMin; b.vy = Math.abs(b.vy); }
-        if (b.x + b.s > W) { b.x = W - b.s; b.vx = -Math.abs(b.vx); }
-        if (b.y + b.s > b.yMax) { b.y = b.yMax - b.s; b.vy = -Math.abs(b.vy); }
+        if (b.x < 0) {
+          b.x = 0;
+          b.vx = Math.abs(b.vx);
+        }
+        if (b.y < b.yMin) {
+          b.y = b.yMin;
+          b.vy = Math.abs(b.vy);
+        }
+        if (b.x + b.s > W) {
+          b.x = W - b.s;
+          b.vx = -Math.abs(b.vx);
+        }
+        if (b.y + b.s > b.yMax) {
+          b.y = b.yMax - b.s;
+          b.vy = -Math.abs(b.vy);
+        }
 
         // on wide screens the text column is a solid obstacle: push out along
         // whichever side it overlaps least, exactly as the wall does
         if (!narrow && box) {
           const hit =
-            b.x < box.right && b.x + b.s > box.left &&
-            b.y < box.bottom && b.y + b.s > box.top;
+            b.x < box.right &&
+            b.x + b.s > box.left &&
+            b.y < box.bottom &&
+            b.y + b.s > box.top;
           if (hit) {
             const fromLeft = b.x + b.s - box.left;
             const fromRight = box.right - b.x;
             const fromTop = b.y + b.s - box.top;
             const fromBottom = box.bottom - b.y;
             const min = Math.min(fromLeft, fromRight, fromTop, fromBottom);
-            if (min === fromLeft) { b.x = box.left - b.s; b.vx = -Math.abs(b.vx); }
-            else if (min === fromRight) { b.x = box.right; b.vx = Math.abs(b.vx); }
-            else if (min === fromTop) { b.y = box.top - b.s; b.vy = -Math.abs(b.vy); }
-            else { b.y = box.bottom; b.vy = Math.abs(b.vy); }
+            if (min === fromLeft) {
+              b.x = box.left - b.s;
+              b.vx = -Math.abs(b.vx);
+            } else if (min === fromRight) {
+              b.x = box.right;
+              b.vx = Math.abs(b.vx);
+            } else if (min === fromTop) {
+              b.y = box.top - b.s;
+              b.vy = -Math.abs(b.vy);
+            } else {
+              b.y = box.bottom;
+              b.vy = Math.abs(b.vy);
+            }
           }
         }
 
         // b.x/b.y track the diagonal box; centre the artwork inside it
-        b.el.style.transform = `translate(${Math.round(b.x + (b.s - b.w) / 2)}px, ${Math.round(b.y + (b.s - b.h) / 2)}px)`;
+        b.el.style.transform = `translate(${Math.round(
+          b.x + (b.s - b.w) / 2,
+        )}px, ${Math.round(b.y + (b.s - b.h) / 2)}px)`;
       }
 
       raf = requestAnimationFrame(step);
@@ -344,19 +387,25 @@ function PartyHorns({ boxRef }: { boxRef: React.RefObject<HTMLDivElement | null>
   }, [boxRef]);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-0" ref={wrap}>
+    <div
+      ref={wrap}
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-0"
+    >
       {[
         { w: "w-[96px] sm:w-[190px]", spin: 26, rev: false },
         { w: "w-[82px] sm:w-[165px]", spin: 33, rev: true },
       ].map((h, i) => (
-        <div className={`absolute left-0 top-0 ${h.w}`} key={i}>
+        <div key={i} className={`absolute left-0 top-0 ${h.w}`}>
           <img
             alt=""
             className="w-full max-w-none opacity-75"
             draggable={false}
             src="/30ans/cutout-party-horn.png"
             style={{
-              animation: `${h.rev ? "spinRev" : "spin"} ${h.spin}s linear infinite`,
+              animation: `${h.rev ? "spinRev" : "spin"} ${
+                h.spin
+              }s linear infinite`,
             }}
           />
         </div>
@@ -442,9 +491,18 @@ export default function RsvpScreen() {
   const [message, setMessage] = useState("");
   const [noName, setNoName] = useState("");
   const [busy, setBusy] = useState(false);
-  const [errors, setErrors] = useState<{ name?: boolean; dates?: boolean; send?: boolean }>({});
+  const [errors, setErrors] = useState<{
+    name?: boolean;
+    dates?: boolean;
+    send?: boolean;
+  }>({});
   const [replied, setReplied] = useState(false);
-  const sentRef = useRef<{ name: string; dates: string[]; diet: string; message: string } | null>(null);
+  const sentRef = useRef<{
+    name: string;
+    dates: string[];
+    diet: string;
+    message: string;
+  } | null>(null);
   // the text block the horns bounce off
   const askRef = useRef<HTMLDivElement>(null);
   const t = COPY[locale];
@@ -489,7 +547,9 @@ export default function RsvpScreen() {
       await post({
         response: "yes",
         name: name.trim(),
-        dates: dates.map((k) => DATES.find((d) => d.key === k)?.en ?? k).join(", "),
+        dates: dates
+          .map((k) => DATES.find((d) => d.key === k)?.en ?? k)
+          .join(", "),
         diet: diet.trim(),
         message: message.trim(),
       });
@@ -512,7 +572,13 @@ export default function RsvpScreen() {
     }
     setBusy(true);
     try {
-      await post({ response: "no", name: noName.trim(), dates: "", diet: "", message: "" });
+      await post({
+        response: "no",
+        name: noName.trim(),
+        dates: "",
+        diet: "",
+        message: "",
+      });
       window.localStorage.setItem(REPLIED_KEY, "1");
       go("noSent");
     } catch {
@@ -629,49 +695,57 @@ export default function RsvpScreen() {
                 containing block for position:fixed children — which pinned the
                 horns to the text instead of the viewport */}
             <PartyHorns boxRef={askRef} />
-            <div className="relative" ref={askRef} style={{ animation: "riseIn 900ms cubic-bezier(.16,1,.3,1) both" }}>
-            {/* one line from the sm breakpoint up: the size follows the viewport
-                so neither language ever wraps onto a second line */}
-            <h1
-              className={`${SERIF} relative text-[2.2rem] leading-[1.05] tracking-tight text-white sm:whitespace-nowrap sm:text-center sm:text-[clamp(1.7rem,4.3vw,3.9rem)]`}
+            <div
+              ref={askRef}
+              className="relative"
+              style={{
+                animation: "riseIn 900ms cubic-bezier(.16,1,.3,1) both",
+              }}
             >
-              {t.askTitle}
-              <TitleSparkles />
-            </h1>
-
-            <div className={`${narrow} mt-10 space-y-2.5 sm:text-center`}>
-              <p className={`${SERIF} text-[1.45rem] text-white/95 sm:text-[1.8rem]`}>
-                {t.askWhen}
-              </p>
-              <p className="text-[12px] uppercase tracking-[0.22em] text-white/65 sm:text-[13px]">
-                {t.askEvening}
-              </p>
-              <p
-                className={`${SERIF} mx-auto max-w-[34rem] pt-2 text-[1.3rem] leading-[1.45] text-white/85 sm:text-[1.55rem]`}
+              {/* one line from the sm breakpoint up: the size follows the viewport
+                so neither language ever wraps onto a second line */}
+              <h1
+                className={`${SERIF} relative text-[2.2rem] leading-[1.05] tracking-tight text-white sm:whitespace-nowrap sm:text-center sm:text-[clamp(1.7rem,4.3vw,3.9rem)]`}
               >
-                <Quoted text={t.askVenue} />
-              </p>
-            </div>
+                {t.askTitle}
+                <TitleSparkles />
+              </h1>
 
-            <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <button
-                className="btn-festive btn-solid relative rounded-full bg-white px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-neutral-900"
-                onClick={() => go("form")}
-              >
-                {t.yes}
-                <Confetti />
-              </button>
+              <div className={`${narrow} mt-10 space-y-2.5 sm:text-center`}>
+                <p
+                  className={`${SERIF} text-[1.45rem] text-white/95 sm:text-[1.8rem]`}
+                >
+                  {t.askWhen}
+                </p>
+                <p className="text-[12px] uppercase tracking-[0.22em] text-white/65 sm:text-[13px]">
+                  {t.askEvening}
+                </p>
+                <p
+                  className={`${SERIF} mx-auto max-w-[34rem] pt-2 text-[1.3rem] leading-[1.45] text-white/85 sm:text-[1.55rem]`}
+                >
+                  <Quoted text={t.askVenue} />
+                </p>
+              </div>
 
-              <button
-                className="btn-no relative rounded-full border border-white/30 px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-white/70"
-                onClick={() => go("no")}
-              >
-                {t.no}
-                <span
-                  aria-hidden
-                  className="tear pointer-events-none absolute left-1/2 top-full block h-2.5 w-2 -translate-x-1/2 rounded-b-full rounded-t-[60%] bg-sky-200/70"
-                />
-              </button>
+              <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <button
+                  className="btn-festive btn-solid relative rounded-full bg-white px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-neutral-900"
+                  onClick={() => go("form")}
+                >
+                  {t.yes}
+                  <Confetti />
+                </button>
+
+                <button
+                  className="btn-no relative rounded-full border border-white/30 px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-white/70"
+                  onClick={() => go("no")}
+                >
+                  {t.no}
+                  <span
+                    aria-hidden
+                    className="tear pointer-events-none absolute left-1/2 top-full block h-2.5 w-2 -translate-x-1/2 rounded-b-full rounded-t-[60%] bg-sky-200/70"
+                  />
+                </button>
               </div>
             </div>
           </>
@@ -679,13 +753,17 @@ export default function RsvpScreen() {
 
         {stage === "form" && (
           <div className={narrow}>
-            <h1 className={`${SERIF} relative text-[2.1rem] leading-[1.1] text-white sm:text-[3rem]`}>
+            <h1
+              className={`${SERIF} relative text-[2.1rem] leading-[1.1] text-white sm:text-[3rem]`}
+            >
               {t.formTitle}
               <TitleSparkles />
             </h1>
 
             {replied && (
-              <p className={`${SERIF_IT} mt-5 text-[1.1rem] leading-[1.6] text-amber-200/85`}>
+              <p
+                className={`${SERIF_IT} mt-5 text-[1.1rem] leading-[1.6] text-amber-200/85`}
+              >
                 {t.already}
               </p>
             )}
@@ -715,8 +793,8 @@ export default function RsvpScreen() {
                     const on = dates.includes(d.key);
                     return (
                       <button
-                        className="flex w-full items-center gap-3 text-left"
                         key={d.key}
+                        className="flex w-full items-center gap-3 text-left"
                         onClick={() => toggleDate(d.key)}
                         type="button"
                       >
@@ -784,7 +862,9 @@ export default function RsvpScreen() {
               </div>
             </div>
 
-            {errors.send && <p className="mt-6 text-[14px] text-rose-300">{t.errSend}</p>}
+            {errors.send && (
+              <p className="mt-6 text-[14px] text-rose-300">{t.errSend}</p>
+            )}
 
             <button
               className="btn-festive btn-solid relative mt-11 w-full rounded-full bg-white px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-neutral-900 disabled:opacity-50 sm:w-auto"
@@ -799,48 +879,55 @@ export default function RsvpScreen() {
 
         {stage === "sent" && (
           <>
-          <div className="rsvp-sent-wrap pb-[240px] sm:pb-[200px]">
-            <div className={narrow}>
-              <h1
-                className={`${SERIF} relative text-[2.4rem] text-white sm:text-center sm:text-[3.4rem]`}
-              >
-                {t.sentTitle}
-                <TitleSparkles />
-              </h1>
-              {/* same face and size as "Le lieu arrive bientôt" — the roman
+            <div className="rsvp-sent-wrap pb-[240px] sm:pb-[200px]">
+              <div className={narrow}>
+                <h1
+                  className={`${SERIF} relative text-[2.4rem] text-white sm:text-center sm:text-[3.4rem]`}
+                >
+                  {t.sentTitle}
+                  <TitleSparkles />
+                </h1>
+                {/* same face and size as "Le lieu arrive bientôt" — the roman
                   serif reads fine, it was the italic that was too thin */}
-              <p
-                className={`sent-sub ${SERIF} mx-auto mt-4 max-w-[34rem] text-[1.3rem] leading-[1.45] text-white/85 sm:text-center sm:text-[1.55rem]`}
-              >
-                {t.sentSub}
-              </p>
+                <p
+                  className={`sent-sub ${SERIF} mx-auto mt-4 max-w-[34rem] text-[1.3rem] leading-[1.45] text-white/85 sm:text-center sm:text-[1.55rem]`}
+                >
+                  {t.sentSub}
+                </p>
 
-              {/* echo it back — kills "did that actually send?" */}
-              <dl className="sent-recap mx-auto mt-11 max-w-[28rem] space-y-5">
-                {[
-                  [t.sentName, sentRef.current?.name],
-                  [t.sentDates, dateLabels],
-                  [t.sentDiet, sentRef.current?.diet],
-                  [t.sentMessage, sentRef.current?.message],
-                ].map(([k, v]) => (
-                  <div className="sent-row border-b border-white/10 pb-3" key={k as string}>
-                    <dt className={label}>{k}</dt>
-                    <dd className={`${SERIF} mt-1.5 text-[1.35rem] text-white/90`}>
-                      {(v as string)?.trim() ? (v as string) : t.sentNothing}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+                {/* echo it back — kills "did that actually send?" */}
+                <dl className="sent-recap mx-auto mt-11 max-w-[28rem] space-y-5">
+                  {[
+                    [t.sentName, sentRef.current?.name],
+                    [t.sentDates, dateLabels],
+                    [t.sentDiet, sentRef.current?.diet],
+                    [t.sentMessage, sentRef.current?.message],
+                  ].map(([k, v]) => (
+                    <div
+                      key={k as string}
+                      className="sent-row border-b border-white/10 pb-3"
+                    >
+                      <dt className={label}>{k}</dt>
+                      <dd
+                        className={`${SERIF} mt-1.5 text-[1.35rem] text-white/90`}
+                      >
+                        {(v as string)?.trim() ? (v as string) : t.sentNothing}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </div>
-          </div>
 
-          <RinaLandBanner cta={t.bannerCta} intro={t.bannerIntro} />
+            <RinaLandBanner cta={t.bannerCta} intro={t.bannerIntro} />
           </>
         )}
 
         {stage === "no" && (
           <div className={narrow}>
-            <h1 className={`${SERIF} text-[2.2rem] leading-[1.1] text-white sm:text-[3rem]`}>
+            <h1
+              className={`${SERIF} text-[2.2rem] leading-[1.1] text-white sm:text-[3rem]`}
+            >
               {t.noTitle}
             </h1>
             <p
@@ -862,7 +949,9 @@ export default function RsvpScreen() {
               />
             </div>
 
-            {errors.send && <p className="mt-6 text-[14px] text-rose-300">{t.errSend}</p>}
+            {errors.send && (
+              <p className="mt-6 text-[14px] text-rose-300">{t.errSend}</p>
+            )}
 
             {/* the way back sits beside Send — people misclick, and plans change */}
             <div className="mt-11 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -887,39 +976,38 @@ export default function RsvpScreen() {
 
         {stage === "noSent" && (
           <>
-          <div className="pb-[240px] sm:pb-[200px]">
-            <div className={narrow}>
-              <h1
-                className={`${SERIF} relative text-[2.2rem] text-white sm:text-center sm:text-[3rem]`}
-              >
-                {t.noSentTitle}
-                <TitleSparkles />
-              </h1>
+            <div className="pb-[240px] sm:pb-[200px]">
+              <div className={narrow}>
+                <h1
+                  className={`${SERIF} relative text-[2.2rem] text-white sm:text-center sm:text-[3rem]`}
+                >
+                  {t.noSentTitle}
+                  <TitleSparkles />
+                </h1>
+              </div>
+
+              {/* mobile: left-aligned, in-flow. desktop: full-bleed one line */}
+              <div className="relative mt-7 sm:left-1/2 sm:w-screen sm:-translate-x-1/2 sm:px-6">
+                <p
+                  className={`${SERIF} max-w-[34rem] text-left text-[1.3rem] leading-[1.45] text-white/85 sm:mx-auto sm:max-w-none sm:whitespace-nowrap sm:text-center sm:text-[clamp(0.9rem,1.75vw,1.6rem)]`}
+                >
+                  {t.noSentBody}
+                </p>
+              </div>
+
+              <div className={`${narrow} mt-10 text-left sm:text-center`}>
+                <button
+                  className="btn-festive btn-outline relative rounded-full border border-white/30 px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-white/75"
+                  onClick={() => go("form")}
+                >
+                  {t.backToYes}
+                  <Confetti />
+                </button>
+              </div>
             </div>
 
-            {/* mobile: left-aligned, in-flow. desktop: full-bleed one line */}
-            <div className="relative mt-7 sm:left-1/2 sm:w-screen sm:-translate-x-1/2 sm:px-6">
-              <p
-                className={`${SERIF} max-w-[34rem] text-left text-[1.3rem] leading-[1.45] text-white/85 sm:mx-auto sm:max-w-none sm:whitespace-nowrap sm:text-center sm:text-[clamp(0.9rem,1.75vw,1.6rem)]`}
-              >
-                {t.noSentBody}
-              </p>
-            </div>
-
-            <div className={`${narrow} mt-10 text-left sm:text-center`}>
-              <button
-                className="btn-festive btn-outline relative rounded-full border border-white/30 px-9 py-4 text-[13px] uppercase tracking-[0.2em] text-white/75"
-                onClick={() => go("form")}
-              >
-                {t.backToYes}
-                <Confetti />
-              </button>
-            </div>
-
-          </div>
-
-          {/* no intro sentence here — the line above already says it */}
-          <RinaLandBanner cta={t.bannerCta} />
+            {/* no intro sentence here — the line above already says it */}
+            <RinaLandBanner cta={t.bannerCta} />
           </>
         )}
       </div>
@@ -934,10 +1022,10 @@ export default function RsvpScreen() {
           </button>
           {(["ask", "form", "sent", "no", "noSent"] as Stage[]).map((s) => (
             <button
+              key={s}
               className={`rounded-full px-3 py-1 text-xs font-semibold ${
                 s === stage ? "bg-neutral-900 text-white" : "bg-neutral-200"
               }`}
-              key={s}
               onClick={() => go(s)}
             >
               {s}

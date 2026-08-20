@@ -4,7 +4,11 @@
 export const DATES = [
   { key: "5", fr: "Samedi 5 septembre", en: "Saturday 5 September" },
   { key: "12", fr: "Samedi 12 septembre", en: "Saturday 12 September" },
-  { key: "neither", fr: "Aucune des deux ne me va", en: "I can't make either of these" },
+  {
+    key: "neither",
+    fr: "Aucune des deux ne me va",
+    en: "I can't make either of these",
+  },
 ] as const;
 
 export const COPY = {

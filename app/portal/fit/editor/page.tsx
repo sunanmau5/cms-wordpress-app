@@ -14,10 +14,14 @@ const ALL = SLOTS.flatMap((s) => s.items.map((i) => ({ ...i, slot: s.id })));
 
 export default function FitEditor() {
   const [pos, setPos] = useState<Record<string, Pos>>(() =>
-    Object.fromEntries(ALL.map((i) => [i.id, { x: i.x, y: i.y, w: i.w, rot: i.rot }])),
+    Object.fromEntries(
+      ALL.map((i) => [i.id, { x: i.x, y: i.y, w: i.w, rot: i.rot }]),
+    ),
   );
   const [active, setActive] = useState(ALL[0].id);
-  const [saving, setSaving] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [saving, setSaving] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle",
+  );
   const [msg, setMsg] = useState("");
   const frameRef = useRef<HTMLDivElement>(null);
   const drag = useRef<{ id: string; ox: number; oy: number } | null>(null);
@@ -48,17 +52,24 @@ export default function FitEditor() {
     set(drag.current.id, { x: Math.round(x), y: Math.round(y) });
   };
 
-  const onUp = () => { drag.current = null; };
+  const onUp = () => {
+    drag.current = null;
+  };
 
   // arrow keys nudge the selected piece by one point, shift for five
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       const step = e.shiftKey ? 5 : 1;
       const map: Record<string, Partial<Pos>> = {
-        ArrowLeft: { x: p.x - step }, ArrowRight: { x: p.x + step },
-        ArrowUp: { y: p.y - step }, ArrowDown: { y: p.y + step },
+        ArrowLeft: { x: p.x - step },
+        ArrowRight: { x: p.x + step },
+        ArrowUp: { y: p.y - step },
+        ArrowDown: { y: p.y + step },
       };
-      if (map[e.key]) { e.preventDefault(); set(active, map[e.key]); }
+      if (map[e.key]) {
+        e.preventDefault();
+        set(active, map[e.key]);
+      }
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
@@ -69,11 +80,18 @@ export default function FitEditor() {
     const res = await fetch("/api/fit-positions", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ items: ALL.map((i) => ({ id: i.id, ...pos[i.id] })) }),
+      body: JSON.stringify({
+        items: ALL.map((i) => ({ id: i.id, ...pos[i.id] })),
+      }),
     });
     const json = await res.json().catch(() => ({}));
-    if (res.ok) { setSaving("saved"); setMsg(`written: ${(json.written ?? []).length} pieces`); }
-    else { setSaving("error"); setMsg(json.error ?? "failed"); }
+    if (res.ok) {
+      setSaving("saved");
+      setMsg(`written: ${(json.written ?? []).length} pieces`);
+    } else {
+      setSaving("error");
+      setMsg(json.error ?? "failed");
+    }
     setTimeout(() => setSaving("idle"), 2500);
   }, [pos]);
 
@@ -82,21 +100,33 @@ export default function FitEditor() {
       <div className="mx-auto flex max-w-[74rem] flex-col gap-6 lg:flex-row">
         {/* the portrait — drag anything on it */}
         <div className="mx-auto w-full max-w-[26rem] shrink-0">
-          <div className="relative" onPointerMove={onMove} onPointerUp={onUp} ref={frameRef}>
+          <div
+            ref={frameRef}
+            className="relative"
+            onPointerMove={onMove}
+            onPointerUp={onUp}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block w-full select-none rounded-xl" draggable={false} src={PHOTO.src} />
+            <img
+              alt=""
+              className="block w-full select-none rounded-xl"
+              draggable={false}
+              src={PHOTO.src}
+            />
             {ALL.map((i) => {
               const q = pos[i.id];
               const on = i.id === active;
               return (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
+                  key={i.id}
                   alt=""
                   className={`absolute cursor-grab select-none touch-none active:cursor-grabbing ${
-                    on ? "outline-dashed outline-2 outline-sky-500" : "opacity-25 hover:opacity-60"
+                    on
+                      ? "outline-dashed outline-2 outline-sky-500"
+                      : "opacity-25 hover:opacity-60"
                   }`}
                   draggable={false}
-                  key={i.id}
                   onPointerDown={onDown(i.id)}
                   src={i.src}
                   style={{
@@ -111,7 +141,8 @@ export default function FitEditor() {
             })}
           </div>
           <p className="mt-2 text-xs text-neutral-500">
-            Drag to move · arrow keys nudge (shift = 5) · only the selected piece is solid
+            Drag to move · arrow keys nudge (shift = 5) · only the selected
+            piece is solid
           </p>
         </div>
 
@@ -125,10 +156,12 @@ export default function FitEditor() {
           <div className="mb-4 flex flex-wrap gap-1">
             {ALL.map((i) => (
               <button
-                className={`rounded-full border px-3 py-1 text-sm ${
-                  i.id === active ? "border-sky-600 bg-sky-600 text-white" : "border-neutral-300 bg-white"
-                }`}
                 key={i.id}
+                className={`rounded-full border px-3 py-1 text-sm ${
+                  i.id === active
+                    ? "border-sky-600 bg-sky-600 text-white"
+                    : "border-neutral-300 bg-white"
+                }`}
                 onClick={() => setActive(i.id)}
               >
                 {i.fr}
@@ -138,13 +171,15 @@ export default function FitEditor() {
 
           <div className="rounded-xl border border-neutral-300 bg-white p-4">
             <p className="mb-3 text-sm font-semibold">{item.fr}</p>
-            {([
-              ["size", "w", 5, 120],
-              ["tilt", "rot", -45, 45],
-              ["x", "x", -20, 120],
-              ["y", "y", -40, 120],
-            ] as const).map(([label, key, lo, hi]) => (
-              <label className="mb-3 block text-sm" key={key}>
+            {(
+              [
+                ["size", "w", 5, 120],
+                ["tilt", "rot", -45, 45],
+                ["x", "x", -20, 120],
+                ["y", "y", -40, 120],
+              ] as const
+            ).map(([label, key, lo, hi]) => (
+              <label key={key} className="mb-3 block text-sm">
                 <span className="mb-1 flex justify-between text-neutral-600">
                   <span>{label}</span>
                   <code>{p[key]}</code>
@@ -153,7 +188,11 @@ export default function FitEditor() {
                   className="w-full"
                   max={hi}
                   min={lo}
-                  onChange={(e) => set(active, { [key]: Number(e.target.value) } as Partial<Pos>)}
+                  onChange={(e) =>
+                    set(active, {
+                      [key]: Number(e.target.value),
+                    } as Partial<Pos>)
+                  }
                   type="range"
                   value={p[key]}
                 />
@@ -165,15 +204,30 @@ export default function FitEditor() {
               disabled={saving === "saving"}
               onClick={save}
             >
-              {saving === "saving" ? "Saving…" : saving === "saved" ? "Saved ✓" : "Save all positions"}
+              {saving === "saving"
+                ? "Saving…"
+                : saving === "saved"
+                  ? "Saved ✓"
+                  : "Save all positions"}
             </button>
             {msg && (
-              <p className={`mt-2 text-sm ${saving === "error" ? "text-red-600" : "text-neutral-600"}`}>{msg}</p>
+              <p
+                className={`mt-2 text-sm ${
+                  saving === "error" ? "text-red-600" : "text-neutral-600"
+                }`}
+              >
+                {msg}
+              </p>
             )}
           </div>
 
           <pre className="mt-4 overflow-x-auto rounded-lg bg-neutral-900 p-3 text-[11px] text-neutral-100">
-{ALL.map((i) => `${i.id}: x ${pos[i.id].x}, y ${pos[i.id].y}, w ${pos[i.id].w}, rot ${pos[i.id].rot}`).join("\n")}
+            {ALL.map(
+              (i) =>
+                `${i.id}: x ${pos[i.id].x}, y ${pos[i.id].y}, w ${
+                  pos[i.id].w
+                }, rot ${pos[i.id].rot}`,
+            ).join("\n")}
           </pre>
         </div>
       </div>

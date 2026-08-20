@@ -12,7 +12,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { AREAS } from "../prizes";
 
-type Prize = { fr: string; en: string; shortFr: string; shortEn: string; video?: string };
+type Prize = {
+  fr: string;
+  en: string;
+  shortFr: string;
+  shortEn: string;
+  video?: string;
+};
 type Area = { fr: string; en: string; prizes: Prize[] };
 
 const DRAFT_KEY = "rinaverse-wheel-draft";
@@ -55,25 +61,36 @@ function Pair({
   max?: number;
 }) {
   const C = area ? "textarea" : "input";
-  const over = (v: string) => (max && v.trim().length > max ? v.trim().length : null);
+  const over = (v: string) =>
+    max && v.trim().length > max ? v.trim().length : null;
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      {([
-        ["Français", fr, onFr],
-        ["English", en, onEn],
-      ] as const).map(([name, val, on]) => (
+      {(
+        [
+          ["Français", fr, onFr],
+          ["English", en, onEn],
+        ] as const
+      ).map(([name, val, on]) => (
         <div key={name}>
           <span className={lbl}>
             {name}
             {max && (
-              <span className={over(val) ? "ml-2 text-amber-400" : "ml-2 text-white/25"}>
+              <span
+                className={
+                  over(val) ? "ml-2 text-amber-400" : "ml-2 text-white/25"
+                }
+              >
                 {val.trim().length}/{max}
               </span>
             )}
           </span>
           <C
-            className={`${field} ${area ? "resize-y" : ""} ${over(val) ? "border-amber-500/50" : ""}`}
-            onChange={(e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => on(e.target.value)}
+            className={`${field} ${area ? "resize-y" : ""} ${
+              over(val) ? "border-amber-500/50" : ""
+            }`}
+            onChange={(
+              e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>,
+            ) => on(e.target.value)}
             placeholder={placeholder}
             rows={area ? 2 : undefined}
             value={val}
@@ -89,7 +106,9 @@ const clone = (): Area[] =>
 
 export default function WheelEditor() {
   const [areas, setAreas] = useState<Area[]>(clone);
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle",
+  );
   const [draftAt, setDraftAt] = useState<string | null>(null);
   const [offer, setOffer] = useState<null | { at: string; data: Area[] }>(null);
   const loaded = useRef(false);
@@ -102,7 +121,8 @@ export default function WheelEditor() {
       const raw = window.localStorage.getItem(DRAFT_KEY);
       if (!raw) return;
       const { at, data } = JSON.parse(raw);
-      if (JSON.stringify(data) !== JSON.stringify(AREAS)) setOffer({ at, data });
+      if (JSON.stringify(data) !== JSON.stringify(AREAS))
+        setOffer({ at, data });
     } catch {
       /* a corrupt draft is not worth blocking the editor for */
     }
@@ -133,13 +153,22 @@ export default function WheelEditor() {
     setAreas((cur) =>
       cur.map((a, n) =>
         n === ai
-          ? { ...a, prizes: a.prizes.map((p, m) => (m === pi ? { ...p, ...patch } : p)) }
+          ? {
+              ...a,
+              prizes: a.prizes.map((p, m) =>
+                m === pi ? { ...p, ...patch } : p,
+              ),
+            }
           : a,
       ),
     );
 
   const videoCount = useMemo(
-    () => areas.reduce((n, a) => n + a.prizes.filter((p) => (p.video ?? "").trim()).length, 0),
+    () =>
+      areas.reduce(
+        (n, a) => n + a.prizes.filter((p) => (p.video ?? "").trim()).length,
+        0,
+      ),
     [areas],
   );
 
@@ -147,13 +176,17 @@ export default function WheelEditor() {
     const out: string[] = [];
     areas.forEach((a, n) => {
       const label = a.en.trim() || a.fr.trim() || `Area ${n + 1}`;
-      if (!a.fr.trim() || !a.en.trim()) out.push(`${label}: area name missing a language`);
+      if (!a.fr.trim() || !a.en.trim())
+        out.push(`${label}: area name missing a language`);
       a.prizes.forEach((p, m) => {
         const at = `${label} — prize ${m + 1}`;
-        if (!p.fr.trim() || !p.en.trim()) out.push(`${at}: full line missing a language`);
-        if (!p.shortFr.trim() || !p.shortEn.trim()) out.push(`${at}: cell label missing a language`);
+        if (!p.fr.trim() || !p.en.trim())
+          out.push(`${at}: full line missing a language`);
+        if (!p.shortFr.trim() || !p.shortEn.trim())
+          out.push(`${at}: cell label missing a language`);
         const v = (p.video ?? "").trim();
-        if (v && !youtubeId(v)) out.push(`${at}: video isn't a recognisable YouTube link`);
+        if (v && !youtubeId(v))
+          out.push(`${at}: video isn't a recognisable YouTube link`);
       });
     });
     return out;
@@ -182,8 +215,14 @@ export default function WheelEditor() {
       <div className="mx-auto max-w-[62rem]">
         <div className="sticky top-0 z-10 -mx-5 mb-8 flex flex-wrap items-center gap-4 border-b border-white/10 bg-neutral-950/95 px-5 py-4 backdrop-blur">
           <h1 className="text-xl font-semibold">Wheel of fortune</h1>
-          <span className={`text-sm ${problems.length ? "text-amber-400" : "text-emerald-400"}`}>
-            {problems.length ? `${problems.length} still to fill` : "all complete"}
+          <span
+            className={`text-sm ${
+              problems.length ? "text-amber-400" : "text-emerald-400"
+            }`}
+          >
+            {problems.length
+              ? `${problems.length} still to fill`
+              : "all complete"}
           </span>
           <span className="text-xs text-white/40">
             🎬 {videoCount} video{videoCount === 1 ? "" : "s"}
@@ -195,18 +234,22 @@ export default function WheelEditor() {
           >
             {status === "saving" ? "Saving…" : "Save"}
           </button>
-          {status === "saved" && <span className="text-sm text-emerald-400">Saved ✓</span>}
+          {status === "saved" && (
+            <span className="text-sm text-emerald-400">Saved ✓</span>
+          )}
           {draftAt && status !== "saved" && (
             <span className="text-xs text-white/40">draft kept {draftAt}</span>
           )}
-          {status === "error" && <span className="text-sm text-rose-400">Save failed</span>}
+          {status === "error" && (
+            <span className="text-sm text-rose-400">Save failed</span>
+          )}
         </div>
 
         {offer && (
           <div className="mb-6 rounded-lg border border-amber-500/40 bg-amber-500/[0.08] p-4">
             <p className="mb-3 text-sm text-amber-200">
-              An unsaved draft from <strong>{offer.at}</strong> is stored in this
-              browser, and it differs from what is on disk.
+              An unsaved draft from <strong>{offer.at}</strong> is stored in
+              this browser, and it differs from what is on disk.
             </p>
             <div className="flex gap-3">
               <button
@@ -233,17 +276,17 @@ export default function WheelEditor() {
 
         <p className="mb-8 max-w-[46rem] text-sm leading-relaxed text-white/55">
           Everything is pre-filled with my placeholder gags — edit over it. Each
-          area has a name and three prizes. The <strong>cell label</strong> is the
-          short word painted on the wheel (keep it tight — the counter turns amber
-          past {SHORT_MAX}); the <strong>full line</strong> is what the guest reads
-          when the pointer lands. Saving rewrites the wheel&apos;s content file
-          directly; you can save part-way and come back.
+          area has a name and three prizes. The <strong>cell label</strong> is
+          the short word painted on the wheel (keep it tight — the counter turns
+          amber past {SHORT_MAX}); the <strong>full line</strong> is what the
+          guest reads when the pointer lands. Saving rewrites the wheel&apos;s
+          content file directly; you can save part-way and come back.
         </p>
 
         {areas.map((a, ai) => (
           <section
-            className="mb-8 rounded-lg border border-white/10 bg-white/[0.03] p-5"
             key={ai}
+            className="mb-8 rounded-lg border border-white/10 bg-white/[0.03] p-5"
           >
             <div className="mb-4 flex items-center gap-3">
               <span className="grid h-7 w-7 place-items-center rounded-full bg-amber-400/20 text-[12px] font-bold text-amber-300">
@@ -273,12 +316,18 @@ export default function WheelEditor() {
                 const vidOk = isVideo && !!youtubeId(vraw);
                 return (
                   <div
-                    className={`rounded border p-4 ${isVideo ? "border-fuchsia-500/40 bg-fuchsia-500/[0.05]" : "border-white/10"}`}
                     key={pi}
+                    className={`rounded border p-4 ${
+                      isVideo
+                        ? "border-fuchsia-500/40 bg-fuchsia-500/[0.05]"
+                        : "border-white/10"
+                    }`}
                   >
                     <p className="mb-3 text-[11px] uppercase tracking-wider text-white/40">
                       Prize {pi + 1}
-                      {isVideo && <span className="ml-2 text-fuchsia-300">🎬 video</span>}
+                      {isVideo && (
+                        <span className="ml-2 text-fuchsia-300">🎬 video</span>
+                      )}
                     </p>
 
                     <p className="mb-1 text-[11px] uppercase tracking-wider text-white/40">
@@ -295,7 +344,9 @@ export default function WheelEditor() {
 
                     <div className="mt-3">
                       <p className="mb-1 text-[11px] uppercase tracking-wider text-white/40">
-                        {isVideo ? "Legend — shown under the video" : "Full line — shown when the pointer lands here"}
+                        {isVideo
+                          ? "Legend — shown under the video"
+                          : "Full line — shown when the pointer lands here"}
                       </p>
                       <Pair
                         area
@@ -309,16 +360,31 @@ export default function WheelEditor() {
 
                     <div className="mt-3">
                       <p className="mb-1 text-[11px] uppercase tracking-wider text-white/40">
-                        YouTube video <span className="text-white/30">(optional — makes this a video prize)</span>
+                        YouTube video{" "}
+                        <span className="text-white/30">
+                          (optional — makes this a video prize)
+                        </span>
                       </p>
                       <input
-                        className={`${field} ${isVideo && !vidOk ? "border-rose-500/60" : isVideo ? "border-fuchsia-500/50" : ""}`}
-                        onChange={(e) => setPrize(ai, pi, { video: e.target.value })}
+                        className={`${field} ${
+                          isVideo && !vidOk
+                            ? "border-rose-500/60"
+                            : isVideo
+                              ? "border-fuchsia-500/50"
+                              : ""
+                        }`}
+                        onChange={(e) =>
+                          setPrize(ai, pi, { video: e.target.value })
+                        }
                         placeholder="https://www.youtube.com/watch?v=…  or  https://youtu.be/…"
                         value={p.video ?? ""}
                       />
                       {isVideo && (
-                        <p className={`mt-1 text-[11px] ${vidOk ? "text-fuchsia-300/80" : "text-rose-300"}`}>
+                        <p
+                          className={`mt-1 text-[11px] ${
+                            vidOk ? "text-fuchsia-300/80" : "text-rose-300"
+                          }`}
+                        >
                           {vidOk
                             ? "Plays on the wheel; the line above is its legend."
                             : "Not a recognisable YouTube link yet."}

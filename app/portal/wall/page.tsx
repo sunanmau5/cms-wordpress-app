@@ -4,16 +4,12 @@
 "use client";
 
 import {
+  type ReactElement,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type ReactElement,
 } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import {
   Fraunces,
   IBM_Plex_Sans,
@@ -23,7 +19,10 @@ import {
   Poppins,
 } from "next/font/google";
 
-import { QUOTES, type Quote } from "./quotes";
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
+
+import { type Quote, QUOTES } from "./quotes";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 const fraunces = Fraunces({ subsets: ["latin"], weight: "400" });
@@ -39,7 +38,11 @@ const plexItalic = IBM_Plex_Sans({
 });
 
 const SERIFS = [
-  { key: "instrument", label: "Instrument Serif", className: instrument.className },
+  {
+    key: "instrument",
+    label: "Instrument Serif",
+    className: instrument.className,
+  },
   { key: "fraunces", label: "Fraunces", className: fraunces.className },
   { key: "newsreader", label: "Newsreader", className: newsreader.className },
 ];
@@ -135,7 +138,10 @@ function SphereLine({
   const n = chars.length;
 
   return (
-    <span className="flex items-center justify-center" style={{ fontSize: size }}>
+    <span
+      className="flex items-center justify-center"
+      style={{ fontSize: size }}
+    >
       {chars.map((c, i) => {
         // u: -1 at the left edge of the line, +1 at the right
         const u = n === 1 ? 0 : (i / (n - 1)) * 2 - 1;
@@ -237,7 +243,9 @@ function UnwindingMessage({
       const ny = nat.top + nat.height / 2 - (box.top + box.height / 2);
       const deg = (theta * 180) / Math.PI + 90;
       placed.push(
-        `translate(${(px - nx).toFixed(1)}px, ${(py - ny).toFixed(1)}px) rotate(${deg.toFixed(1)}deg) scale(${SCALE})`,
+        `translate(${(px - nx).toFixed(1)}px, ${(py - ny).toFixed(
+          1,
+        )}px) rotate(${deg.toFixed(1)}deg) scale(${SCALE})`,
       );
       theta += (w + 1.5) / Math.max(rad, 1);
     });
@@ -255,7 +263,12 @@ function UnwindingMessage({
         const rad = A + B * theta;
         repeats.push({
           c: ch,
-          t: `translate(-50%, -50%) translate(${(Math.cos(theta) * rad).toFixed(1)}px, ${(Math.sin(theta) * rad).toFixed(1)}px) rotate(${((theta * 180) / Math.PI + 90).toFixed(1)}deg) scale(${SCALE})`,
+          t: `translate(-50%, -50%) translate(${(Math.cos(theta) * rad).toFixed(
+            1,
+          )}px, ${(Math.sin(theta) * rad).toFixed(1)}px) rotate(${(
+            (theta * 180) / Math.PI +
+            90
+          ).toFixed(1)}deg) scale(${SCALE})`,
         });
         theta += (w + 1.5) / Math.max(rad, 1);
         guard++;
@@ -331,12 +344,13 @@ function UnwindingMessage({
             style={{
               display: "inline-block",
               whiteSpace: "pre",
-              transform:
-                phase === "unwound" || !coil[i] ? "none" : coil[i],
+              transform: phase === "unwound" || !coil[i] ? "none" : coil[i],
               opacity: phase === "measuring" ? 0 : 1,
               transition:
                 phase === "unwound"
-                  ? `transform 1300ms cubic-bezier(.25,.9,.3,1) ${i * 12}ms, opacity 300ms ease`
+                  ? `transform 1300ms cubic-bezier(.25,.9,.3,1) ${
+                      i * 12
+                    }ms, opacity 300ms ease`
                   : `opacity 300ms ease ${i * 10}ms`,
             }}
           >
@@ -417,17 +431,20 @@ function VariantA({
   return (
     <div
       className="relative h-full w-full cursor-grab overflow-hidden active:cursor-grabbing"
-      style={PAPER}
       onPointerDown={(e) => {
         drag.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
       }}
       onPointerMove={(e) => {
         if (!drag.current) return;
-        setPos({ x: e.clientX - drag.current.x, y: e.clientY - drag.current.y });
+        setPos({
+          x: e.clientX - drag.current.x,
+          y: e.clientY - drag.current.y,
+        });
       }}
       onPointerUp={() => {
         drag.current = null;
       }}
+      style={PAPER}
     >
       <div
         className="absolute left-1/2 top-1/2"
@@ -441,7 +458,9 @@ function VariantA({
               left: cellPos(i, 3).x,
               top: cellPos(i, 3).y,
               transform: `rotate(${(rand(i, 3) - 0.5) * 7}deg)`,
-              animation: `bob ${7 + rand(i, 4) * 6}s ease-in-out ${rand(i, 5) * 3}s infinite alternate`,
+              animation: `bob ${7 + rand(i, 4) * 6}s ease-in-out ${
+                rand(i, 5) * 3
+              }s infinite alternate`,
             }}
           >
             <QuoteCard
@@ -465,7 +484,14 @@ function VariantA({
 
 /* ── B — Drift: a tiny physics sim. Quotes bounce off the walls, off each
    other, and off the invisible box around the button. ───────────────────── */
-type Body = { x: number; y: number; vx: number; vy: number; w: number; h: number };
+type Body = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  w: number;
+  h: number;
+};
 
 function VariantB({
   locale,
@@ -499,9 +525,12 @@ function VariantB({
   // stays true from Send until the message has landed, so the wall stays dark
   // through the whole ceremony — on a phone there is no hover to hold it
   const [sending, setSending] = useState(false);
-  const [arriving, setArriving] = useState<
-    { text: string; by: string; x: number; y: number } | null
-  >(null);
+  const [arriving, setArriving] = useState<{
+    text: string;
+    by: string;
+    x: number;
+    y: number;
+  } | null>(null);
   const [closing, setClosing] = useState(false);
   const [justAdded, setJustAdded] = useState(-1);
   const touch = useRef(false);
@@ -666,10 +695,22 @@ function VariantB({
         b.y += b.vy * dt;
 
         // walls
-        if (b.x < 0) { b.x = 0; b.vx = Math.abs(b.vx); }
-        if (b.y < 0) { b.y = 0; b.vy = Math.abs(b.vy); }
-        if (b.x + b.w > F.width) { b.x = F.width - b.w; b.vx = -Math.abs(b.vx); }
-        if (b.y + b.h > F.height) { b.y = F.height - b.h; b.vy = -Math.abs(b.vy); }
+        if (b.x < 0) {
+          b.x = 0;
+          b.vx = Math.abs(b.vx);
+        }
+        if (b.y < 0) {
+          b.y = 0;
+          b.vy = Math.abs(b.vy);
+        }
+        if (b.x + b.w > F.width) {
+          b.x = F.width - b.w;
+          b.vx = -Math.abs(b.vx);
+        }
+        if (b.y + b.h > F.height) {
+          b.y = F.height - b.h;
+          b.vy = -Math.abs(b.vy);
+        }
 
         // the invisible boxes (button, title)
         for (const box of boxes) {
@@ -679,10 +720,19 @@ function VariantB({
           const fromTop = b.y + b.h - box.y;
           const fromBottom = box.y + box.h - b.y;
           const min = Math.min(fromLeft, fromRight, fromTop, fromBottom);
-          if (min === fromLeft) { b.x = box.x - b.w; b.vx = -Math.abs(b.vx); }
-          else if (min === fromRight) { b.x = box.x + box.w; b.vx = Math.abs(b.vx); }
-          else if (min === fromTop) { b.y = box.y - b.h; b.vy = -Math.abs(b.vy); }
-          else { b.y = box.y + box.h; b.vy = Math.abs(b.vy); }
+          if (min === fromLeft) {
+            b.x = box.x - b.w;
+            b.vx = -Math.abs(b.vx);
+          } else if (min === fromRight) {
+            b.x = box.x + box.w;
+            b.vx = Math.abs(b.vx);
+          } else if (min === fromTop) {
+            b.y = box.y - b.h;
+            b.vy = -Math.abs(b.vy);
+          } else {
+            b.y = box.y + box.h;
+            b.vy = Math.abs(b.vy);
+          }
         }
 
         // each other — push apart along the shallower axis, then swap velocity
@@ -692,10 +742,8 @@ function VariantB({
           const o = bs[j];
           if (!overlap(b, o)) continue;
 
-          const overlapX =
-            Math.min(b.x + b.w, o.x + o.w) - Math.max(b.x, o.x);
-          const overlapY =
-            Math.min(b.y + b.h, o.y + o.h) - Math.max(b.y, o.y);
+          const overlapX = Math.min(b.x + b.w, o.x + o.w) - Math.max(b.x, o.x);
+          const overlapY = Math.min(b.y + b.h, o.y + o.h) - Math.max(b.y, o.y);
 
           if (overlapX < overlapY) {
             const dir = b.x + b.w / 2 < o.x + o.w / 2 ? -1 : 1;
@@ -743,11 +791,11 @@ function VariantB({
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={PAPER}
       onTouchStart={() => {
         touch.current = true;
         setNight(false);
       }}
+      style={PAPER}
     >
       {/* title, high on the page */}
       <h1
@@ -765,9 +813,7 @@ function VariantB({
       <div
         className="pointer-events-none absolute inset-0 z-[5] bg-[#030305]"
         style={{
-          clipPath: dark
-            ? "circle(150% at 50% 50%)"
-            : "circle(0% at 50% 50%)",
+          clipPath: dark ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)",
           transition:
             "clip-path 1100ms cubic-bezier(.22,1,.36,1), opacity 600ms ease",
           opacity: dark ? 1 : 0,
@@ -787,7 +833,6 @@ function VariantB({
             }}
           />
         ))}
-
       </div>
 
       {/* the field */}
@@ -813,13 +858,13 @@ function VariantB({
                     : "none",
               }}
             >
-            <QuoteCard
-              locale={locale}
-              night={dark}
-              q={pool[quoteIndex]}
-              scale={scale}
-              serif={serif}
-            />
+              <QuoteCard
+                locale={locale}
+                night={dark}
+                q={pool[quoteIndex]}
+                scale={scale}
+                serif={serif}
+              />
             </span>
           </div>
         ))}
@@ -854,6 +899,10 @@ function VariantB({
       {open && (
         <div
           className="absolute inset-0 z-40 flex items-center justify-center px-5"
+          onClick={() => {
+            closeModal();
+            setSent(false);
+          }}
           style={{
             background: "rgba(3,3,5,.72)",
             backdropFilter: "blur(4px)",
@@ -862,13 +911,10 @@ function VariantB({
               ? "fadeUp 200ms ease-in both reverse"
               : "fadeUp 260ms ease-out both",
           }}
-          onClick={() => {
-            closeModal();
-            setSent(false);
-          }}
         >
           <div
             className="w-full max-w-md rounded-2xl p-7"
+            onClick={(e) => e.stopPropagation()}
             style={{
               background: "rgba(20,20,24,.92)",
               boxShadow:
@@ -877,7 +923,6 @@ function VariantB({
                 ? "panelIn 200ms ease-in both reverse"
                 : "panelIn 320ms cubic-bezier(.2,1,.3,1) both",
             }}
-            onClick={(e) => e.stopPropagation()}
           >
             {sent ? (
               <div className="py-8 text-center">
@@ -936,7 +981,9 @@ function VariantB({
 
                 <div className="mt-6 flex items-center justify-end">
                   <button
-                    className={`${inter.className} relative rounded-full bg-white px-6 py-2.5 text-sm font-medium text-neutral-900 transition-all duration-300 disabled:opacity-30 ${
+                    className={`${
+                      inter.className
+                    } relative rounded-full bg-white px-6 py-2.5 text-sm font-medium text-neutral-900 transition-all duration-300 disabled:opacity-30 ${
                       name.trim() && msg.trim()
                         ? "hover:-translate-y-0.5 hover:shadow-[0_0_0_6px_rgba(255,255,255,.10),0_0_28px_6px_rgba(255,255,255,.35)]"
                         : ""
@@ -971,7 +1018,9 @@ function VariantB({
                           const next = [...prev, entry];
                           setSlots((cur) =>
                             cur.length
-                              ? cur.map((v, i) => (i === 0 ? next.length - 1 : v))
+                              ? cur.map((v, i) =>
+                                  i === 0 ? next.length - 1 : v,
+                                )
                               : cur,
                           );
                           return next;
@@ -1011,23 +1060,23 @@ function VariantB({
       <div
         ref={buttonRef}
         className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+        onClick={() => {
+          if (!touch.current) setOpen(true);
+        }}
         onFocus={() => setNight(true)}
+        // no hover on a phone: the first tap plays the transition, and the
+        // second one would open the message form
         onMouseEnter={() => {
           if (!touch.current) setNight(true);
         }}
         onMouseLeave={() => {
           if (!touch.current && !open) setNight(false);
         }}
-        // no hover on a phone: the first tap plays the transition, and the
-        // second one would open the message form
         onTouchStart={(e) => {
           e.stopPropagation();
           touch.current = true;
           if (night) setOpen(true);
           else setNight(true);
-        }}
-        onClick={() => {
-          if (!touch.current) setOpen(true);
         }}
       >
         <button
@@ -1176,10 +1225,30 @@ function VariantB({
               transition: "color 500ms ease",
             }}
           >
-            <Sparkle delay={0} left={dark ? "-8%" : "-2%"} size={dark ? 20 : 14} top={dark ? "-4%" : "6%"} />
-            <Sparkle delay={0.7} left={dark ? "96%" : "92%"} size={dark ? 16 : 12} top={dark ? "10%" : "14%"} />
-            <Sparkle delay={1.3} left={dark ? "-6%" : "2%"} size={dark ? 15 : 11} top={dark ? "78%" : "82%"} />
-            <Sparkle delay={0.4} left={dark ? "92%" : "88%"} size={dark ? 18 : 13} top={dark ? "84%" : "76%"} />
+            <Sparkle
+              delay={0}
+              left={dark ? "-8%" : "-2%"}
+              size={dark ? 20 : 14}
+              top={dark ? "-4%" : "6%"}
+            />
+            <Sparkle
+              delay={0.7}
+              left={dark ? "96%" : "92%"}
+              size={dark ? 16 : 12}
+              top={dark ? "10%" : "14%"}
+            />
+            <Sparkle
+              delay={1.3}
+              left={dark ? "-6%" : "2%"}
+              size={dark ? 15 : 11}
+              top={dark ? "78%" : "82%"}
+            />
+            <Sparkle
+              delay={0.4}
+              left={dark ? "92%" : "88%"}
+              size={dark ? 18 : 13}
+              top={dark ? "84%" : "76%"}
+            />
           </span>
         </button>
       </div>
@@ -1204,9 +1273,13 @@ function VariantC({
             key={i}
             className="mb-16"
             style={{
-              marginLeft: `${i % 2 === 0 ? 2 + rand(i, 1) * 12 : 34 + rand(i, 1) * 14}%`,
+              marginLeft: `${
+                i % 2 === 0 ? 2 + rand(i, 1) * 12 : 34 + rand(i, 1) * 14
+              }%`,
               transform: `rotate(${(rand(i, 3) - 0.5) * 5}deg)`,
-              animation: `bob ${8 + rand(i, 4) * 5}s ease-in-out ${rand(i, 5) * 3}s infinite alternate`,
+              animation: `bob ${8 + rand(i, 4) * 5}s ease-in-out ${
+                rand(i, 5) * 3
+              }s infinite alternate`,
             }}
           >
             <QuoteCard
@@ -1245,7 +1318,8 @@ export default function WallPrototype() {
 
   useEffect(() => {
     const fromUrl = new URLSearchParams(window.location.search).get("variant");
-    if (fromUrl && VARIANTS.some((v) => v.key === fromUrl)) setVariantKey(fromUrl);
+    if (fromUrl && VARIANTS.some((v) => v.key === fromUrl))
+      setVariantKey(fromUrl);
   }, []);
 
   const go = useCallback((delta: number) => {

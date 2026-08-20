@@ -16,7 +16,10 @@ const TOKEN = process.env.GOOGLE_SHEET_TOKEN;
 
 export async function POST(req: NextRequest) {
   if (!WEBHOOK || !TOKEN) {
-    return NextResponse.json({ error: "storage not configured" }, { status: 500 });
+    return NextResponse.json(
+      { error: "storage not configured" },
+      { status: 500 },
+    );
   }
 
   const body = await req.json();
@@ -40,7 +43,10 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   if (!WEBHOOK) {
-    return NextResponse.json({ error: "storage not configured" }, { status: 500 });
+    return NextResponse.json(
+      { error: "storage not configured" },
+      { status: 500 },
+    );
   }
 
   const res = await fetch(WEBHOOK, { next: { revalidate: 60 } });

@@ -80,11 +80,20 @@ export const GUEST_MESSAGES: Quote[] = [
   },
   {
     en: { text: "Thirty and still the loudest laugh in any room", by: "Léa" },
-    fr: { text: "Trente ans et toujours le rire le plus fort de la pièce", by: "Léa" },
+    fr: {
+      text: "Trente ans et toujours le rire le plus fort de la pièce",
+      by: "Léa",
+    },
   },
   {
-    en: { text: "Has never once arrived on time. Worth the wait.", by: "Julien" },
-    fr: { text: "N'est jamais arrivée à l'heure. Ça vaut l'attente.", by: "Julien" },
+    en: {
+      text: "Has never once arrived on time. Worth the wait.",
+      by: "Julien",
+    },
+    fr: {
+      text: "N'est jamais arrivée à l'heure. Ça vaut l'attente.",
+      by: "Julien",
+    },
   },
   {
     en: { text: "My favourite person to be unreasonable with", by: "Inès" },

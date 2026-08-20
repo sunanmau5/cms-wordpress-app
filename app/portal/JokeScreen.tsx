@@ -5,13 +5,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-
-import { useLocale } from "./locale";
-
 import { Instrument_Serif } from "next/font/google";
 
-import { useScreenNav } from "./screen-nav";
 import { COPY, TARGET } from "./joke-copy";
+import { useLocale } from "./locale";
+import { useScreenNav } from "./screen-nav";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 // Instrument Serif ships a true italic; without asking for it the browser only
@@ -28,7 +26,8 @@ const SERIF_IT = instrumentItalic.className;
 // and the raw values made the starfield fail hydration
 const rand = (i: number, salt: number) =>
   Math.round(
-    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) * 1e4,
+    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) *
+      1e4,
   ) / 1e4;
 
 const STARS = Array.from({ length: 110 }).map((_, i) => ({
@@ -111,7 +110,9 @@ function StaggerText({
                 // identical wrapping, but no animation to measure through
                 animation: still
                   ? undefined
-                  : `charIn 900ms cubic-bezier(.16,1,.3,1) ${delay + n++ * step}ms both`,
+                  : `charIn 900ms cubic-bezier(.16,1,.3,1) ${
+                      delay + n++ * step
+                    }ms both`,
               }}
             >
               {c}
@@ -164,7 +165,9 @@ function ColumnBody({
         className={`mt-7 h-px w-16 bg-white/25 sm:mx-auto ${
           short ? "sm:mt-5" : "sm:mt-9"
         }`}
-        style={still ? undefined : { animation: "fadeIn 900ms ease 900ms both" }}
+        style={
+          still ? undefined : { animation: "fadeIn 900ms ease 900ms both" }
+        }
       />
 
       {/* the note is two parts; the break between them comes from copy.ts */}
@@ -177,7 +180,9 @@ function ColumnBody({
         style={
           still
             ? undefined
-            : { animation: "riseIn 1000ms cubic-bezier(.16,1,.3,1) 1100ms both" }
+            : {
+                animation: "riseIn 1000ms cubic-bezier(.16,1,.3,1) 1100ms both",
+              }
         }
       >
         <Quoted text={t.joke} />
@@ -278,10 +283,7 @@ export function JokeScreen() {
         : 0;
       const headroom =
         (window.innerHeight - colBottom - TEXT_GAP) / BROOM_REACH;
-      const sh = Math.max(
-        isNarrow ? 180 : 240,
-        Math.min(wanted, headroom),
-      );
+      const sh = Math.max(isNarrow ? 180 : 240, Math.min(wanted, headroom));
       const hw = sh * (742 / 1400); // the wider, broom-holding cutout
       const bw = sh * (BROOM_H_PCT / 100) * (236 / 1400);
       const stageLeft = window.innerWidth * 0.04;
@@ -292,7 +294,9 @@ export function JokeScreen() {
       // Narrow screens keep the accordion: fixed spacing, and the view pans so
       // the newest broom stays in frame while older ones slide off to the left.
       // Wide screens fit all thirty instead, because they can.
-      setStep(isNarrow ? Math.max(16, bw * 0.5) : Math.max(6, room / (TARGET - 1)));
+      setStep(
+        isNarrow ? Math.max(16, bw * 0.5) : Math.max(6, room / (TARGET - 1)),
+      );
     };
     sync();
     window.addEventListener("resize", sync);
@@ -343,26 +347,29 @@ export function JokeScreen() {
 
   // `hold` is how long the brooms sit there before folding away: a short beat
   // when the line is full, a longer one when the guest simply stopped halfway.
-  const startCountdown = useCallback((hold = 1400) => {
-    stopCountdown();
-    timers.current.hold = setTimeout(() => {
-      // from wherever the line actually got to, not always from 30
-      let n = broomsRef.current;
-      timers.current.tick = setInterval(() => {
-        n -= 1;
-        setExitFrom(Math.max(0, n));
-        if (n <= 0) {
-          if (timers.current.tick) clearInterval(timers.current.tick);
-          timers.current.tick = undefined;
-          // only drop them from the row once the last one has finished fading
-          timers.current.clear = setTimeout(() => {
-            setBrooms(0);
-            setExitFrom(TARGET);
-          }, EXIT_MS + 60);
-        }
-      }, EXIT_STEP_MS);
-    }, hold);
-  }, [stopCountdown]);
+  const startCountdown = useCallback(
+    (hold = 1400) => {
+      stopCountdown();
+      timers.current.hold = setTimeout(() => {
+        // from wherever the line actually got to, not always from 30
+        let n = broomsRef.current;
+        timers.current.tick = setInterval(() => {
+          n -= 1;
+          setExitFrom(Math.max(0, n));
+          if (n <= 0) {
+            if (timers.current.tick) clearInterval(timers.current.tick);
+            timers.current.tick = undefined;
+            // only drop them from the row once the last one has finished fading
+            timers.current.clear = setTimeout(() => {
+              setBrooms(0);
+              setExitFrom(TARGET);
+            }, EXIT_MS + 60);
+          }
+        }, EXIT_STEP_MS);
+      }, hold);
+    },
+    [stopCountdown],
+  );
 
   // reaching 30 starts the countdown; letting go at 30 restarts it, so a press
   // that cancelled it never leaves the screen stuck full of brooms
@@ -585,8 +592,8 @@ export function JokeScreen() {
           The stage is measured against the taller of the two so switching
           language never changes how big she is. */}
       <div
-        aria-hidden
         ref={mirrorRef}
+        aria-hidden
         className={`pointer-events-none invisible absolute inset-x-0 top-0 z-0 px-6 pt-12 sm:px-10 ${
           short ? "sm:pt-6" : "sm:pt-16"
         }`}
@@ -609,11 +616,13 @@ export function JokeScreen() {
         >
           <div style={{ animation: "tumble 90s linear infinite" }}>
             <img
-              draggable={false}
               alt=""
               className="w-[32vw] max-w-[178px] sm:max-w-[226px]"
+              draggable={false}
               src={`/30ans/surprised-cutout-web.png${BUST}`}
-              style={{ animation: "riseIn 1100ms cubic-bezier(.16,1,.3,1) both" }}
+              style={{
+                animation: "riseIn 1100ms cubic-bezier(.16,1,.3,1) both",
+              }}
             />
           </div>
         </div>
@@ -641,9 +650,9 @@ export function JokeScreen() {
               {/* both photos are stacked and cross-faded, so picking up the
                   broom is a dissolve rather than a jump cut */}
               <img
-                draggable={false}
                 alt=""
                 className="pointer-events-none h-full w-auto max-w-none opacity-0"
+                draggable={false}
                 src={`/30ans/cutout2-web.png${BUST}`}
                 style={{ visibility: "hidden" }}
               />
@@ -652,10 +661,10 @@ export function JokeScreen() {
                 { src: `/30ans/cutout2-web.png${BUST}`, on: brooms > 0 },
               ].map((img) => (
                 <img
-                  draggable={false}
                   key={img.src}
                   alt=""
                   className="pointer-events-none absolute bottom-0 left-0 h-full w-auto max-w-none"
+                  draggable={false}
                   src={img.src}
                   style={{
                     opacity: img.on ? 1 : 0,
@@ -694,20 +703,23 @@ export function JokeScreen() {
                       transformOrigin: "bottom center",
                       opacity: leaving ? 0 : 1,
                       transform: leaving
-                        ? `translateY(-${Math.round(stageH * 0.22)}px) rotate(${(rand(i, 11) - 0.5) * 26}deg) scale(.94)`
+                        ? `translateY(-${Math.round(stageH * 0.22)}px) rotate(${
+                            (rand(i, 11) - 0.5) * 26
+                          }deg) scale(.94)`
                         : "none",
                       filter: leaving ? "blur(3px)" : "blur(0px)",
                       transition: `opacity ${EXIT_MS}ms ease, transform ${EXIT_MS}ms cubic-bezier(.36,0,.24,1), filter ${EXIT_MS}ms ease`,
                     }}
                   >
                     <img
-                      draggable={false}
                       alt=""
                       className="h-full w-auto max-w-none"
+                      draggable={false}
                       src="/30ans/broom-full-web.png"
                       style={{
                         transformOrigin: "bottom center",
-                        animation: "broomIn 420ms cubic-bezier(.2,1.3,.4,1) both",
+                        animation:
+                          "broomIn 420ms cubic-bezier(.2,1.3,.4,1) both",
                       }}
                     />
                   </div>
@@ -743,7 +755,13 @@ export function JokeScreen() {
           onClick={() => nav("/portal/rsvp", "left")}
           type="button"
         >
-          <svg aria-hidden fill="none" height="24" viewBox="0 0 40 24" width="40">
+          <svg
+            aria-hidden
+            fill="none"
+            height="24"
+            viewBox="0 0 40 24"
+            width="40"
+          >
             <path
               d="M3 12h33M26 3l10 9-10 9"
               stroke="currentColor"

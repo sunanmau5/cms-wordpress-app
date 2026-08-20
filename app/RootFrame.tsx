@@ -1,14 +1,17 @@
 "use client";
 
 import type { ReactNode } from "react";
-
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 
 import Transitions, { Animate } from "@/components/hoc/transitions";
 
-const NoSSRHeader = dynamic(() => import("@/components/header"), { ssr: false });
-const NoSSRFooter = dynamic(() => import("@/components/footer"), { ssr: false });
+const NoSSRHeader = dynamic(() => import("@/components/header"), {
+  ssr: false,
+});
+const NoSSRFooter = dynamic(() => import("@/components/footer"), {
+  ssr: false,
+});
 
 // The birthday portal is a full-screen, standalone experience. Everywhere else
 // (the portfolio) keeps the header, footer, and page-transition chrome exactly

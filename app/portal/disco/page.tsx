@@ -8,11 +8,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif, Rye } from "next/font/google";
+
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 const SERIF = instrument.className;
@@ -57,7 +56,8 @@ const COPY = {
 // from the opening game's FlyingBroom, but keyed off a unique id so each tap
 // throws a fresh one in its own direction
 function FlyingBroom({ seed }: { seed: number }) {
-  const angle = ((seed * 137.508 + (rand(seed, 11) - 0.5) * 40) * Math.PI) / 180;
+  const angle =
+    ((seed * 137.508 + (rand(seed, 11) - 0.5) * 40) * Math.PI) / 180;
   const dist = 30 + rand(seed, 12) * 26;
   const dx = Math.cos(angle) * dist;
   const dy = Math.sin(angle) * dist * 0.82;
@@ -75,15 +75,25 @@ function FlyingBroom({ seed }: { seed: number }) {
       className="pointer-events-none absolute left-1/2 top-1/2 z-20"
       style={
         {
-          "--mx": `${midX}vmin`, "--my": `${midY}vmin`,
-          "--dx": `${dx}vmin`, "--dy": `${dy}vmin`, "--dy2": `${restY}vmin`,
-          "--rotMid": `${spin * 0.45}deg`, "--rot": `${spin}deg`, "--rot2": `${spin * 1.12}deg`,
+          "--mx": `${midX}vmin`,
+          "--my": `${midY}vmin`,
+          "--dx": `${dx}vmin`,
+          "--dy": `${dy}vmin`,
+          "--dy2": `${restY}vmin`,
+          "--rotMid": `${spin * 0.45}deg`,
+          "--rot": `${spin}deg`,
+          "--rot2": `${spin * 1.12}deg`,
           "--scale": scale,
           animation: `flyOut ${dur}ms cubic-bezier(.16,.7,.32,1) both`,
         } as React.CSSProperties
       }
     >
-      <img alt="" className="w-12 max-w-none sm:w-16" src="/30ans/broom.png" style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.8))" }} />
+      <img
+        alt=""
+        className="w-12 max-w-none sm:w-16"
+        src="/30ans/broom.png"
+        style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.8))" }}
+      />
     </div>
   );
 }
@@ -101,13 +111,18 @@ export default function DiscoTap() {
   const ballRef = useRef<HTMLImageElement>(null);
   const t = COPY[locale];
 
-  useEffect(() => { phaseRef.current = phase; }, [phase]);
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== "playing") return;
     const id = window.setInterval(() => {
       setLeft((l) => {
-        if (l <= 1) { setPhase("done"); return 0; }
+        if (l <= 1) {
+          setPhase("done");
+          return 0;
+        }
         return l - 1;
       });
     }, 1000);
@@ -130,24 +145,53 @@ export default function DiscoTap() {
     window.setTimeout(() => setBrooms((b) => b.filter((x) => x !== id)), 1700);
     const el = ballRef.current;
     if (el?.animate) {
-      el.animate([{ transform: "scale(1)" }, { transform: "scale(1.14)" }, { transform: "scale(1)" }], { duration: 160, easing: "ease-out" });
+      el.animate(
+        [
+          { transform: "scale(1)" },
+          { transform: "scale(1.14)" },
+          { transform: "scale(1)" },
+        ],
+        { duration: 160, easing: "ease-out" },
+      );
     }
-    if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(10);
+    if (typeof navigator !== "undefined" && navigator.vibrate)
+      navigator.vibrate(10);
   }, [start]);
 
   const C = 2 * Math.PI * 45; // ring circumference
   const frac = phase === "ready" ? 1 : left / DURATION;
-  const ringColor = phase !== "playing" ? "#9aa3ad" : left <= 15 ? "#ff5a4a" : left <= 30 ? "#f2c14e" : "#9aa3ad";
+  const ringColor =
+    phase !== "playing"
+      ? "#9aa3ad"
+      : left <= 15
+        ? "#ff5a4a"
+        : left <= 30
+          ? "#f2c14e"
+          : "#9aa3ad";
 
   return (
-    <div className="disco fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden select-none" onPointerDown={tap}>
+    <div
+      className="disco fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden select-none"
+      onPointerDown={tap}
+    >
       <BackToHub />
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* starfield */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         {STARS.map((s, i) => (
-          <span key={i} className="star" style={{ left: `${s.left}%`, top: `${s.top}%`, width: s.size, height: s.size, opacity: s.opacity, animation: `twinkle ${s.duration}s ease-in-out ${s.delay}s infinite` }} />
+          <span
+            key={i}
+            className="star"
+            style={{
+              left: `${s.left}%`,
+              top: `${s.top}%`,
+              width: s.size,
+              height: s.size,
+              opacity: s.opacity,
+              animation: `twinkle ${s.duration}s ease-in-out ${s.delay}s infinite`,
+            }}
+          />
         ))}
       </div>
 
@@ -155,22 +199,39 @@ export default function DiscoTap() {
 
       {/* the stage: ball with timer ring + counter around it, brooms bursting out */}
       <div className="stage">
-        {brooms.map((id) => <FlyingBroom key={id} seed={id} />)}
+        {brooms.map((id) => (
+          <FlyingBroom key={id} seed={id} />
+        ))}
 
         <button aria-label={t.start} className="ball" type="button">
-          <img alt="" className="ball-img" ref={ballRef} src="/30ans/disco-ball.png" />
+          <img
+            ref={ballRef}
+            alt=""
+            className="ball-img"
+            src="/30ans/disco-ball.png"
+          />
         </button>
 
         {phase === "ready" && <span className="ball-hint">{t.start}</span>}
 
         {/* counter AROUND the ball: taps on top, seconds at the bottom */}
-        {phase === "playing" && <span className="badge badge-top">{count}<i>{t.taps}</i></span>}
+        {phase === "playing" && (
+          <span className="badge badge-top">
+            {count}
+            <i>{t.taps}</i>
+          </span>
+        )}
       </div>
 
       {phase === "playing" && (
         <div className="timer">
           <span className={`secs ${SERIF}`}>{left}s</span>
-          <div className="bar"><div className="bar-fill" style={{ width: `${frac * 100}%`, background: ringColor }} /></div>
+          <div className="bar">
+            <div
+              className="bar-fill"
+              style={{ width: `${frac * 100}%`, background: ringColor }}
+            />
+          </div>
         </div>
       )}
 
@@ -180,12 +241,20 @@ export default function DiscoTap() {
           <p className={`${SERIF} result-top`}>{t.timeUp}</p>
           <p className="result-score">{count}</p>
           <p className={`${SERIF} result-line`}>{t.result(count)}</p>
-          <button className="again" onClick={start} type="button">↻ {t.again}</button>
+          <button className="again" onClick={start} type="button">
+            ↻ {t.again}
+          </button>
         </div>
       )}
 
       <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
-        <button className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200" onClick={(e) => { e.stopPropagation(); setLocale((l) => (l === "fr" ? "en" : "fr")); }}>
+        <button
+          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            setLocale((l) => (l === "fr" ? "en" : "fr"));
+          }}
+        >
           {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
         </button>
       </div>
