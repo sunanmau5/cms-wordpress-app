@@ -53,7 +53,12 @@ const TUNE: Record<string, { rot: number; delay: number; scale: number }> = {
 // mixed-shape sparkles scattered around (avoiding the title). The heroes are
 // 8-point COMPASS stars (long cardinals, short diagonals) per the user's ref;
 // smaller twinkles and dots fill in around them.
-function starPath(spikes: number, longR: number, shortR: number, valleyR: number) {
+function starPath(
+  spikes: number,
+  longR: number,
+  shortR: number,
+  valleyR: number,
+) {
   const c = 12;
   let d = "";
   for (let i = 0; i < spikes; i++) {
@@ -124,7 +129,8 @@ function HubContent() {
   const { locale, setLocale } = useLocale();
   const nav = useScreenNav();
   const t = HUB[locale];
-  const plane = locale === "fr" ? "/30ans/THANKS-FR.png" : "/30ans/THANKS-airplane.png";
+  const plane =
+    locale === "fr" ? "/30ans/THANKS-FR.png" : "/30ans/THANKS-airplane.png";
 
   return (
     <div className="hub fixed inset-0 z-50 overflow-y-auto">
@@ -134,8 +140,23 @@ function HubContent() {
 
       <div aria-hidden className="sparkles">
         {SPARKS.map((s, k) => (
-          <span key={k} className="spark" style={{ left: `${s.l}%`, top: `${s.t}%`, animationDelay: `${s.d}s` }}>
-            <svg viewBox="0 0 24 24" width={s.s}><path d={SPARK_SHAPES[s.k]} fill={s.c} stroke={INK} strokeWidth="1" /></svg>
+          <span
+            key={k}
+            className="spark"
+            style={{
+              left: `${s.l}%`,
+              top: `${s.t}%`,
+              animationDelay: `${s.d}s`,
+            }}
+          >
+            <svg viewBox="0 0 24 24" width={s.s}>
+              <path
+                d={SPARK_SHAPES[s.k]}
+                fill={s.c}
+                stroke={INK}
+                strokeWidth="1"
+              />
+            </svg>
           </span>
         ))}
       </div>
@@ -145,13 +166,31 @@ function HubContent() {
         <div className="title-row shrink-0">
           <div aria-hidden className="side-banner">
             {Array.from({ length: 5 }).map((_, i) => (
-              <img key={i} alt="" src={i % 2 ? "/30ans/hub/joker-icon.png" : "/30ans/hub/ferris-wheel-icon.png"} />
+              <img
+                key={i}
+                alt=""
+                src={
+                  i % 2
+                    ? "/30ans/hub/joker-icon.png"
+                    : "/30ans/hub/ferris-wheel-icon.png"
+                }
+              />
             ))}
           </div>
-          <div className="title-slot"><Sign /></div>
+          <div className="title-slot">
+            <Sign />
+          </div>
           <div aria-hidden className="side-banner">
             {Array.from({ length: 5 }).map((_, i) => (
-              <img key={i} alt="" src={i % 2 ? "/30ans/hub/ferris-wheel-icon.png" : "/30ans/hub/joker-icon.png"} />
+              <img
+                key={i}
+                alt=""
+                src={
+                  i % 2
+                    ? "/30ans/hub/ferris-wheel-icon.png"
+                    : "/30ans/hub/joker-icon.png"
+                }
+              />
             ))}
           </div>
         </div>
@@ -175,9 +214,22 @@ function HubContent() {
                   style={{ transform: `rotate(${tn.rot}deg)` }}
                 >
                   <span className="ent-lift">
-                    <span className="ent-art" style={{ animationDelay: `${tn.delay}s` }}>
+                    <span
+                      className="ent-art"
+                      style={{ animationDelay: `${tn.delay}s` }}
+                    >
                       {art ? (
-                        <Image fill alt={a[locale].name} className="ent-img" sizes="(max-width:900px) 40vw, 160px" src={art} style={{ objectFit: "contain", transform: `scale(${tn.scale})` }} />
+                        <Image
+                          fill
+                          alt={a[locale].name}
+                          className="ent-img"
+                          sizes="(max-width:900px) 40vw, 160px"
+                          src={art}
+                          style={{
+                            objectFit: "contain",
+                            transform: `scale(${tn.scale})`,
+                          }}
+                        />
                       ) : null}
                     </span>
                     <span className="ent-label">
@@ -218,8 +270,12 @@ function HubContent() {
 
 function Sign() {
   const bulbs: { x: number; y: number }[] = [];
-  const x0 = 34, x1 = 526, y0 = 30, y1 = 130;
-  const nx = 14, ny = 3;
+  const x0 = 34,
+    x1 = 526,
+    y0 = 30,
+    y1 = 130;
+  const nx = 14,
+    ny = 3;
   for (let i = 0; i <= nx; i++) {
     const x = +(x0 + (i * (x1 - x0)) / nx).toFixed(1);
     bulbs.push({ x, y: y0 }, { x, y: y1 });
@@ -230,11 +286,38 @@ function Sign() {
   }
   return (
     <svg className="rina-sign" viewBox="0 0 560 160">
-      <rect fill={DEEPRED} height="140" rx="26" stroke={GOLD} strokeWidth="4" width="536" x="12" y="10" />
+      <rect
+        fill={DEEPRED}
+        height="140"
+        rx="26"
+        stroke={GOLD}
+        strokeWidth="4"
+        width="536"
+        x="12"
+        y="10"
+      />
       {bulbs.map((b, i) => (
-        <circle key={i} className="mbulb" cx={b.x} cy={b.y} fill={i % 2 ? CREAM : GOLD} r="4.4" style={{ animationDelay: `${(i * 100) % 1200}ms` }} />
+        <circle
+          key={i}
+          className="mbulb"
+          cx={b.x}
+          cy={b.y}
+          fill={i % 2 ? CREAM : GOLD}
+          r="4.4"
+          style={{ animationDelay: `${(i * 100) % 1200}ms` }}
+        />
       ))}
-      <text className={FUNFAIR} dominantBaseline="central" fill="#ffffff" fontSize="62" lengthAdjust="spacingAndGlyphs" textAnchor="middle" textLength="410" x="280" y="84">
+      <text
+        className={FUNFAIR}
+        dominantBaseline="central"
+        fill="#ffffff"
+        fontSize="62"
+        lengthAdjust="spacingAndGlyphs"
+        textAnchor="middle"
+        textLength="410"
+        x="280"
+        y="84"
+      >
         RINA-LAND
       </text>
     </svg>

@@ -18,7 +18,7 @@ export const FONTS = [
 
 // deterministic pseudo-random so the layout is stable across renders
 const rand = (i: number, salt: number) =>
-  ((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1 + 1) % 1;
+  (((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1;
 
 // faint starfield — many small dots, low light
 const STARS = Array.from({ length: 130 }).map((_, i) => ({
@@ -78,7 +78,14 @@ function TitleSparkles({
   return (
     <>
       {points.map(([x, y, size, delay], i) => (
-        <Sparkle key={i} calm={calm} delay={delay} left={x} size={size} top={y} />
+        <Sparkle
+          key={i}
+          calm={calm}
+          delay={delay}
+          left={x}
+          size={size}
+          top={y}
+        />
       ))}
     </>
   );
@@ -130,7 +137,9 @@ function FlyingBroom({ index, calm }: { index: number; calm: boolean }) {
         style={{
           animation: calm
             ? "none"
-            : `drift ${4 + rand(index, 16) * 4}s ease-in-out ${rand(index, 17) * 2}s infinite alternate`,
+            : `drift ${4 + rand(index, 16) * 4}s ease-in-out ${
+                rand(index, 17) * 2
+              }s infinite alternate`,
         }}
       />
     </div>
@@ -335,7 +344,9 @@ export function VariantD({
               className="w-52 sm:w-72 lg:w-[24rem]"
               src="/30ans/disco-ball.png"
               style={{
-                filter: `drop-shadow(0 0 ${20 + progress * 60}px rgba(203,213,225,${0.2 + progress * 0.5}))`,
+                filter: `drop-shadow(0 0 ${
+                  20 + progress * 60
+                }px rgba(203,213,225,${0.2 + progress * 0.5}))`,
                 transform: `scale(${1 + progress * 0.07})`,
                 transition: "transform 240ms ease-out, filter 240ms ease-out",
               }}
@@ -379,7 +390,9 @@ export function VariantD({
                       boxShadow: sparkle
                         ? `0 0 8px ${colors[i % colors.length]}`
                         : "none",
-                      animation: `confetti ${1100 + rand(i, 24) * 1400}ms cubic-bezier(.15,.8,.3,1) forwards`,
+                      animation: `confetti ${
+                        1100 + rand(i, 24) * 1400
+                      }ms cubic-bezier(.15,.8,.3,1) forwards`,
                     } as React.CSSProperties
                   }
                 />
@@ -391,7 +404,9 @@ export function VariantD({
                 alt={locale === "fr" ? "30 balais !" : "30 brooms !"}
                 className="w-full"
                 src={
-                  locale === "fr" ? "/30ans/30-balais.png" : "/30ans/30-brooms.png"
+                  locale === "fr"
+                    ? "/30ans/30-balais.png"
+                    : "/30ans/30-brooms.png"
                 }
                 style={{
                   animation: "landIn 620ms cubic-bezier(.2,1.5,.4,1) both",

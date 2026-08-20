@@ -10,7 +10,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { INTRO, SCORES } from "../content";
 import { QUESTIONS } from "../questions";
 
-type Option = { fr: string; en: string; correct?: boolean; noteFr: string; noteEn: string };
+type Option = {
+  fr: string;
+  en: string;
+  correct?: boolean;
+  noteFr: string;
+  noteEn: string;
+};
 type Question = { fr: string; en: string; options: Option[] };
 type Draft = {
   intro: { fr: string[]; en: string[] };
@@ -56,7 +62,9 @@ function Pair({
         <span className={lbl}>Français</span>
         <C
           className={`${field} ${area ? "resize-y" : ""}`}
-          onChange={(e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => onFr(e.target.value)}
+          onChange={(
+            e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>,
+          ) => onFr(e.target.value)}
           placeholder={placeholder}
           rows={area ? 2 : undefined}
           value={fr}
@@ -66,7 +74,9 @@ function Pair({
         <span className={lbl}>English</span>
         <C
           className={`${field} ${area ? "resize-y" : ""}`}
-          onChange={(e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => onEn(e.target.value)}
+          onChange={(
+            e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>,
+          ) => onEn(e.target.value)}
           placeholder={placeholder}
           rows={area ? 2 : undefined}
           value={en}
@@ -78,11 +88,16 @@ function Pair({
 
 export default function QuizEditor() {
   const [intro, setIntro] = useState({ fr: [...INTRO.fr], en: [...INTRO.en] });
-  const [scores, setScores] = useState({ fr: { ...SCORES.fr }, en: { ...SCORES.en } });
+  const [scores, setScores] = useState({
+    fr: { ...SCORES.fr },
+    en: { ...SCORES.en },
+  });
   const [questions, setQuestions] = useState<Question[]>(
     QUESTIONS.map((q) => ({ ...q, options: q.options.map((o) => ({ ...o })) })),
   );
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle",
+  );
   // A draft is kept in the browser on every keystroke. Editing this file while
   // the page is open hot-reloads the component and wipes its state, which once
   // cost a session's typing — the draft survives that, and a reload.
@@ -97,7 +112,11 @@ export default function QuizEditor() {
       const { at, data } = JSON.parse(raw);
       // compare EVERYTHING against what is on disk — checking only the
       // questions missed edits made to the intro lines or score messages
-      const onDisk = JSON.stringify({ intro: INTRO, scores: SCORES, questions: QUESTIONS });
+      const onDisk = JSON.stringify({
+        intro: INTRO,
+        scores: SCORES,
+        questions: QUESTIONS,
+      });
       const inDraft = JSON.stringify({
         intro: data.intro,
         scores: data.scores,
@@ -132,13 +151,20 @@ export default function QuizEditor() {
   }, [status]);
 
   const setQ = (qi: number, patch: Partial<Question>) =>
-    setQuestions((cur) => cur.map((q, n) => (n === qi ? { ...q, ...patch } : q)));
+    setQuestions((cur) =>
+      cur.map((q, n) => (n === qi ? { ...q, ...patch } : q)),
+    );
 
   const setOpt = (qi: number, oi: number, patch: Partial<Option>) =>
     setQuestions((cur) =>
       cur.map((q, n) =>
         n === qi
-          ? { ...q, options: q.options.map((o, m) => (m === oi ? { ...o, ...patch } : o)) }
+          ? {
+              ...q,
+              options: q.options.map((o, m) =>
+                m === oi ? { ...o, ...patch } : o,
+              ),
+            }
           : q,
       ),
     );
@@ -150,7 +176,13 @@ export default function QuizEditor() {
     setQuestions((cur) =>
       cur.map((q, n) =>
         n === qi && q.options.length < MAX_OPTS
-          ? { ...q, options: [...q.options, { fr: "", en: "", noteFr: "", noteEn: "" }] }
+          ? {
+              ...q,
+              options: [
+                ...q.options,
+                { fr: "", en: "", noteFr: "", noteEn: "" },
+              ],
+            }
           : q,
       ),
     );
@@ -169,7 +201,10 @@ export default function QuizEditor() {
     setQuestions((cur) =>
       cur.map((q, n) =>
         n === qi
-          ? { ...q, options: q.options.map((o, m) => ({ ...o, correct: m === oi })) }
+          ? {
+              ...q,
+              options: q.options.map((o, m) => ({ ...o, correct: m === oi })),
+            }
           : q,
       ),
     );
@@ -178,7 +213,8 @@ export default function QuizEditor() {
     const out: string[] = [];
     questions.forEach((q, n) => {
       const label = `Q${n + 1}`;
-      if (!q.fr.trim() || !q.en.trim()) out.push(`${label}: question missing a language`);
+      if (!q.fr.trim() || !q.en.trim())
+        out.push(`${label}: question missing a language`);
       const rights = q.options.filter((o) => o.correct).length;
       if (rights === 0) out.push(`${label}: no correct answer marked`);
       if (rights > 1) out.push(`${label}: more than one correct answer`);
@@ -190,7 +226,8 @@ export default function QuizEditor() {
       });
     });
     intro.fr.forEach((l, n) => {
-      if (!l.trim() || !intro.en[n]?.trim()) out.push(`Intro line ${n + 1} missing a language`);
+      if (!l.trim() || !intro.en[n]?.trim())
+        out.push(`Intro line ${n + 1} missing a language`);
     });
     BANDS.forEach(({ key, label }) => {
       if (!scores.fr[key]?.trim() || !scores.en[key]?.trim())
@@ -222,8 +259,14 @@ export default function QuizEditor() {
       <div className="mx-auto max-w-[62rem]">
         <div className="sticky top-0 z-10 -mx-5 mb-8 flex flex-wrap items-center gap-4 border-b border-white/10 bg-neutral-950/95 px-5 py-4 backdrop-blur">
           <h1 className="text-xl font-semibold">Quiz copy</h1>
-          <span className={`text-sm ${problems.length ? "text-amber-400" : "text-emerald-400"}`}>
-            {problems.length ? `${problems.length} still to fill` : "all complete"}
+          <span
+            className={`text-sm ${
+              problems.length ? "text-amber-400" : "text-emerald-400"
+            }`}
+          >
+            {problems.length
+              ? `${problems.length} still to fill`
+              : "all complete"}
           </span>
           <button
             className="ml-auto rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-neutral-900 disabled:opacity-50"
@@ -232,18 +275,22 @@ export default function QuizEditor() {
           >
             {status === "saving" ? "Saving…" : "Save"}
           </button>
-          {status === "saved" && <span className="text-sm text-emerald-400">Saved ✓</span>}
+          {status === "saved" && (
+            <span className="text-sm text-emerald-400">Saved ✓</span>
+          )}
           {draftAt && status !== "saved" && (
             <span className="text-xs text-white/40">draft kept {draftAt}</span>
           )}
-          {status === "error" && <span className="text-sm text-rose-400">Save failed</span>}
+          {status === "error" && (
+            <span className="text-sm text-rose-400">Save failed</span>
+          )}
         </div>
 
         {offer && (
           <div className="mb-6 rounded-lg border border-amber-500/40 bg-amber-500/[0.08] p-4">
             <p className="mb-3 text-sm text-amber-200">
-              An unsaved draft from <strong>{offer.at}</strong> is stored in this
-              browser, and it differs from what is on disk.
+              An unsaved draft from <strong>{offer.at}</strong> is stored in
+              this browser, and it differs from what is on disk.
             </p>
             <div className="flex gap-3">
               <button
@@ -271,9 +318,9 @@ export default function QuizEditor() {
         )}
 
         <p className="mb-8 max-w-[46rem] text-sm leading-relaxed text-white/55">
-          Everything is pre-filled with my placeholder text — edit over it. Saving
-          rewrites the quiz&apos;s content files directly; you can save part-way
-          and come back. Incomplete fields are listed at the bottom.
+          Everything is pre-filled with my placeholder text — edit over it.
+          Saving rewrites the quiz&apos;s content files directly; you can save
+          part-way and come back. Incomplete fields are listed at the bottom.
         </p>
 
         {/* intro */}
@@ -289,10 +336,16 @@ export default function QuizEditor() {
                 en={intro.en[n] ?? ""}
                 fr={intro.fr[n] ?? ""}
                 onEn={(v) =>
-                  setIntro((c) => ({ ...c, en: c.en.map((x, m) => (m === n ? v : x)) }))
+                  setIntro((c) => ({
+                    ...c,
+                    en: c.en.map((x, m) => (m === n ? v : x)),
+                  }))
                 }
                 onFr={(v) =>
-                  setIntro((c) => ({ ...c, fr: c.fr.map((x, m) => (m === n ? v : x)) }))
+                  setIntro((c) => ({
+                    ...c,
+                    fr: c.fr.map((x, m) => (m === n ? v : x)),
+                  }))
                 }
               />
             ))}
@@ -315,8 +368,12 @@ export default function QuizEditor() {
                   area
                   en={scores.en[key]}
                   fr={scores.fr[key]}
-                  onEn={(v) => setScores((c) => ({ ...c, en: { ...c.en, [key]: v } }))}
-                  onFr={(v) => setScores((c) => ({ ...c, fr: { ...c.fr, [key]: v } }))}
+                  onEn={(v) =>
+                    setScores((c) => ({ ...c, en: { ...c.en, [key]: v } }))
+                  }
+                  onFr={(v) =>
+                    setScores((c) => ({ ...c, fr: { ...c.fr, [key]: v } }))
+                  }
                 />
               </div>
             ))}
@@ -344,7 +401,9 @@ export default function QuizEditor() {
                 <div
                   key={oi}
                   className={`rounded border p-4 ${
-                    o.correct ? "border-emerald-500/50 bg-emerald-500/[0.06]" : "border-white/10"
+                    o.correct
+                      ? "border-emerald-500/50 bg-emerald-500/[0.06]"
+                      : "border-white/10"
                   }`}
                 >
                   <div className="mb-3 flex items-center gap-3">

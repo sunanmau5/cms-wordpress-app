@@ -35,7 +35,9 @@ export function VariantA({
               key={i}
               className="absolute h-10 w-5 text-fuchsia-300 drop-shadow-[0_0_10px_rgba(232,121,249,0.8)]"
               style={{
-                transform: `rotate(${angle}deg) translate(${dist}px) rotate(${angle * 2}deg)`,
+                transform: `rotate(${angle}deg) translate(${dist}px) rotate(${
+                  angle * 2
+                }deg)`,
                 transition: "transform 500ms cubic-bezier(.2,1.4,.4,1)",
               }}
             />

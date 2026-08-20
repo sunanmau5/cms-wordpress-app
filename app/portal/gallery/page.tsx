@@ -19,7 +19,8 @@ const SERIF = instrument.className;
 
 const rand = (i: number, salt: number) =>
   Math.round(
-    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) * 1e4,
+    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) *
+      1e4,
   ) / 1e4;
 
 const STARS = Array.from({ length: 120 }).map((_, i) => ({
@@ -79,7 +80,12 @@ export default function GalleryScreen() {
 
     let W = window.innerWidth;
     let H = window.innerHeight;
-    let titleBox: { left: number; right: number; top: number; bottom: number } | null = null;
+    let titleBox: {
+      left: number;
+      right: number;
+      top: number;
+      bottom: number;
+    } | null = null;
 
     // Seeded onto a jittered grid rather than at random points: pure random
     // clumps, and clumping is what made this read as a collage instead of a
@@ -113,7 +119,12 @@ export default function GalleryScreen() {
       H = window.innerHeight;
       const tb = titleRef.current?.getBoundingClientRect();
       titleBox = tb
-        ? { left: tb.left - 10, right: tb.right + 10, top: tb.top - 8, bottom: tb.bottom + 12 }
+        ? {
+            left: tb.left - 10,
+            right: tb.right + 10,
+            top: tb.top - 8,
+            bottom: tb.bottom + 12,
+          }
         : null;
       bodies.current.forEach((b) => {
         if (!b.el) return;
@@ -137,26 +148,49 @@ export default function GalleryScreen() {
         b.x += b.vx * dt * scale;
         b.y += b.vy * dt * scale;
 
-        if (b.x < 0) { b.x = 0; b.vx = Math.abs(b.vx); }
-        if (b.y < 0) { b.y = 0; b.vy = Math.abs(b.vy); }
-        if (b.x + b.w > W) { b.x = W - b.w; b.vx = -Math.abs(b.vx); }
-        if (b.y + b.h > H) { b.y = H - b.h; b.vy = -Math.abs(b.vy); }
+        if (b.x < 0) {
+          b.x = 0;
+          b.vx = Math.abs(b.vx);
+        }
+        if (b.y < 0) {
+          b.y = 0;
+          b.vy = Math.abs(b.vy);
+        }
+        if (b.x + b.w > W) {
+          b.x = W - b.w;
+          b.vx = -Math.abs(b.vx);
+        }
+        if (b.y + b.h > H) {
+          b.y = H - b.h;
+          b.vy = -Math.abs(b.vy);
+        }
 
         // the title is a solid box: nothing drifts across the words
         if (titleBox) {
           const hit =
-            b.x < titleBox.right && b.x + b.w > titleBox.left &&
-            b.y < titleBox.bottom && b.y + b.h > titleBox.top;
+            b.x < titleBox.right &&
+            b.x + b.w > titleBox.left &&
+            b.y < titleBox.bottom &&
+            b.y + b.h > titleBox.top;
           if (hit) {
             const fromLeft = b.x + b.w - titleBox.left;
             const fromRight = titleBox.right - b.x;
             const fromTop = b.y + b.h - titleBox.top;
             const fromBottom = titleBox.bottom - b.y;
             const m = Math.min(fromLeft, fromRight, fromTop, fromBottom);
-            if (m === fromLeft) { b.x = titleBox.left - b.w; b.vx = -Math.abs(b.vx); }
-            else if (m === fromRight) { b.x = titleBox.right; b.vx = Math.abs(b.vx); }
-            else if (m === fromTop) { b.y = titleBox.top - b.h; b.vy = -Math.abs(b.vy); }
-            else { b.y = titleBox.bottom; b.vy = Math.abs(b.vy); }
+            if (m === fromLeft) {
+              b.x = titleBox.left - b.w;
+              b.vx = -Math.abs(b.vx);
+            } else if (m === fromRight) {
+              b.x = titleBox.right;
+              b.vx = Math.abs(b.vx);
+            } else if (m === fromTop) {
+              b.y = titleBox.top - b.h;
+              b.vy = -Math.abs(b.vy);
+            } else {
+              b.y = titleBox.bottom;
+              b.vy = Math.abs(b.vy);
+            }
           }
         }
       }
@@ -176,15 +210,25 @@ export default function GalleryScreen() {
 
           if (dx < dy) {
             const push = dx / 2;
-            if (a.x < c.x) { a.x -= push; c.x += push; }
-            else { a.x += push; c.x -= push; }
+            if (a.x < c.x) {
+              a.x -= push;
+              c.x += push;
+            } else {
+              a.x += push;
+              c.x -= push;
+            }
             const t = a.vx;
             a.vx = c.vx;
             c.vx = t;
           } else {
             const push = dy / 2;
-            if (a.y < c.y) { a.y -= push; c.y += push; }
-            else { a.y += push; c.y -= push; }
+            if (a.y < c.y) {
+              a.y -= push;
+              c.y += push;
+            } else {
+              a.y += push;
+              c.y -= push;
+            }
             const t = a.vy;
             a.vy = c.vy;
             c.vy = t;
@@ -194,7 +238,9 @@ export default function GalleryScreen() {
 
       for (const b of list) {
         if (!b.el) continue;
-        b.el.style.transform = `translate(${Math.round(b.x)}px, ${Math.round(b.y)}px)`;
+        b.el.style.transform = `translate(${Math.round(b.x)}px, ${Math.round(
+          b.y,
+        )}px)`;
       }
       raf = requestAnimationFrame(step);
     };
@@ -225,7 +271,9 @@ export default function GalleryScreen() {
       <BackToHub />
       {/* set as raw HTML rather than a text child: React diffs a <style>'s text
           content on hydration, and dev rebuilds desync it */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @keyframes twinkle { 0%,100% { opacity:.15 } 50% { opacity:1 } }
         @keyframes dance { 0%,100% { transform: translateY(0) rotate(-8deg) } 50% { transform: translateY(-13px) rotate(8deg) } }
         @keyframes openIn { from { opacity:0; transform: scale(.9) } to { opacity:1; transform: none } }
@@ -273,7 +321,9 @@ export default function GalleryScreen() {
            normal one until a funkier one is chosen. */
         .gallery, .gallery * { cursor: auto; }
         .gallery button { cursor: pointer; }
-      ` }} />
+      `,
+        }}
+      />
 
       <div className="pointer-events-none absolute inset-0">
         {STARS.map((s, i) => (
@@ -326,7 +376,9 @@ export default function GalleryScreen() {
       {/* title + hint, out of the way of the field */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[40] px-6 pt-10 text-center sm:pt-14">
         <div ref={titleRef} className="mx-auto w-max">
-          <h1 className={`${SERIF} text-[2.2rem] text-white sm:text-[3rem]`}>{t.title}</h1>
+          <h1 className={`${SERIF} text-[2.2rem] text-white sm:text-[3rem]`}>
+            {t.title}
+          </h1>
           <p className="mt-2 text-[13px] uppercase tracking-[0.2em] text-white/55">
             {t.hint}
           </p>

@@ -110,7 +110,12 @@ export default function WheelScreen() {
     return () => m.removeEventListener("change", set);
   }, []);
 
-  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
 
   const spin = useCallback(() => {
     if (spinning) return;
@@ -130,7 +135,11 @@ export default function WheelScreen() {
     setSpinning(true);
     setRot(nextRot);
     timer.current = setTimeout(
-      () => { setSpinning(false); setSettled(nextRot); setResult({ a, p }); },
+      () => {
+        setSpinning(false);
+        setSettled(nextRot);
+        setResult({ a, p });
+      },
       reduced ? 700 : 4400,
     );
   }, [rot, spinning, reduced]);
@@ -240,15 +249,33 @@ export default function WheelScreen() {
       <div aria-hidden className="stripes turning" />
 
       {/* bunting, kept short so it never reaches the sign */}
-      <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-14 sm:h-16">
-        <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 1200 90">
-          <path d="M0 8 Q 600 78 1200 8" fill="none" stroke="#8a7550" strokeWidth="2" />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-14 sm:h-16"
+      >
+        <svg
+          className="absolute inset-0 h-full w-full"
+          preserveAspectRatio="none"
+          viewBox="0 0 1200 90"
+        >
+          <path
+            d="M0 8 Q 600 78 1200 8"
+            fill="none"
+            stroke="#8a7550"
+            strokeWidth="2"
+          />
           {Array.from({ length: 26 }).map((_, i) => {
             const x = (i + 0.5) * (1200 / 26);
             const s = x / 1200;
             const y = 8 + 70 * (4 * s * (1 - s)) * 0.72;
             const c = ["#d63a30", "#e8a33d", "#3f8f79", "#e8705f"][i % 4];
-            return <polygon key={i} fill={c} points={`${x - 11},${y} ${x + 11},${y} ${x},${y + 26}`} />;
+            return (
+              <polygon
+                key={i}
+                fill={c}
+                points={`${x - 11},${y} ${x + 11},${y} ${x},${y + 26}`}
+              />
+            );
           })}
         </svg>
       </div>
@@ -256,9 +283,15 @@ export default function WheelScreen() {
       <div className="relative mx-auto flex min-h-full max-w-[46rem] lg:max-w-[76rem] flex-col px-6 py-6 sm:px-10">
         <div className="m-auto w-full">
           {/* the sign, same construction as the quiz's */}
-          <div className="mb-6 mt-14 text-center sm:mb-7 sm:mt-16" style={{ animation: "sway 5s ease-in-out infinite" }}>
+          <div
+            className="mb-6 mt-14 text-center sm:mb-7 sm:mt-16"
+            style={{ animation: "sway 5s ease-in-out infinite" }}
+          >
             <span className="relative inline-block rounded-[1.25rem] px-8 py-3">
-              <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35" />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35"
+              />
               {Array.from({ length: BULBS }).map((_, i) => (
                 <span
                   key={i}
@@ -272,8 +305,12 @@ export default function WheelScreen() {
                   }}
                 />
               ))}
-              <span className={`${FUNFAIR} block text-[1.85rem] leading-none text-[#d63a30] sm:text-[2.6rem]`}
-                style={{ textShadow: "0 2px 0 #a8281f, 0 4px 10px rgba(168,40,31,.35)" }}>
+              <span
+                className={`${FUNFAIR} block text-[1.85rem] leading-none text-[#d63a30] sm:text-[2.6rem]`}
+                style={{
+                  textShadow: "0 2px 0 #a8281f, 0 4px 10px rgba(168,40,31,.35)",
+                }}
+              >
                 {t.title.toUpperCase()}
               </span>
             </span>
@@ -284,230 +321,338 @@ export default function WheelScreen() {
             style={{ animation: "riseIn 500ms cubic-bezier(.16,1,.3,1) both" }}
           >
             <div className="mx-auto flex max-w-[72rem] flex-col items-center lg:flex-row lg:items-center lg:justify-center">
-            {/* pointer sits outside the turning disc */}
-            <button
-              aria-label={result ? t.again : t.spin}
-              className="spinner wheel-size relative block shrink-0 disabled:cursor-default"
-              disabled={spinning}
-              onClick={spin}
-              type="button"
-            >
-              {/* a fixed overlay sharing the disc's coordinates, so the tip lands
+              {/* pointer sits outside the turning disc */}
+              <button
+                aria-label={result ? t.again : t.spin}
+                className="spinner wheel-size relative block shrink-0 disabled:cursor-default"
+                disabled={spinning}
+                onClick={spin}
+                type="button"
+              >
+                {/* a fixed overlay sharing the disc's coordinates, so the tip lands
                   exactly on the prize ring's outer edge and points at a cell */}
-              <svg aria-hidden className="pointer-events-none absolute inset-0 z-20 h-full w-full" viewBox="0 0 200 200">
-                <path
-                  d={`M 100 ${100 - R_PRZ + 1} L 94.5 ${100 - R_PRZ - 8} L 105.5 ${100 - R_PRZ - 8} Z`}
-                  fill="#d63a30"
-                  stroke="#fff6ef"
-                  strokeLinejoin="round"
-                  strokeWidth="1.4"
-                  style={{ filter: "drop-shadow(0 2px 3px rgba(120,60,20,.45))" }}
-                />
-              </svg>
+                <svg
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 z-20 h-full w-full"
+                  viewBox="0 0 200 200"
+                >
+                  <path
+                    d={`M 100 ${100 - R_PRZ + 1} L 94.5 ${
+                      100 - R_PRZ - 8
+                    } L 105.5 ${100 - R_PRZ - 8} Z`}
+                    fill="#d63a30"
+                    stroke="#fff6ef"
+                    strokeLinejoin="round"
+                    strokeWidth="1.4"
+                    style={{
+                      filter: "drop-shadow(0 2px 3px rgba(120,60,20,.45))",
+                    }}
+                  />
+                </svg>
 
-              <svg className="disc block w-full" style={{ transform: `rotate(${rot}deg)` }} viewBox="0 0 200 200">
-                {/* cream ground, so the outer ring's tints have something to sit on */}
-                <circle cx="100" cy="100" fill="#fffdf4" r={R_OUT} />
+                <svg
+                  className="disc block w-full"
+                  style={{ transform: `rotate(${rot}deg)` }}
+                  viewBox="0 0 200 200"
+                >
+                  {/* cream ground, so the outer ring's tints have something to sit on */}
+                  <circle cx="100" cy="100" fill="#fffdf4" r={R_OUT} />
 
-                {/* outer band: the six areas — this is the ring the pointer meets */}
-                {AREAS.map((_, i) => {
-                  const a0 = i * SLICE;
-                  const a1 = a0 + SLICE;
-                  const [ox1, oy1] = pt(a0, R_OUT);
-                  const [ox2, oy2] = pt(a1, R_OUT);
-                  const [ix2, iy2] = pt(a1, R_PRZ);
-                  const [ix1, iy1] = pt(a0, R_PRZ);
-                  return (
-                    <path
-                      key={`a${i}`}
-                      d={`M ${ox1.toFixed(2)} ${oy1.toFixed(2)} A ${R_OUT} ${R_OUT} 0 0 1 ${ox2.toFixed(2)} ${oy2.toFixed(2)} L ${ix2.toFixed(2)} ${iy2.toFixed(2)} A ${R_PRZ} ${R_PRZ} 0 0 0 ${ix1.toFixed(2)} ${iy1.toFixed(2)} Z`}
-                      fill={hsl(PALETTE[i % PALETTE.length].h, PALETTE[i % PALETTE.length].s, PALETTE[i % PALETTE.length].band)}
-                      stroke="#fffdf4"
-                      strokeWidth="1.2"
-                    />
-                  );
-                })}
-
-                {/* inner band: twenty-four prize cells, four steps per area */}
-                {AREAS.flatMap((ar, i) =>
-                  ar.prizes.map((_, n) => {
-                    const k = i * PER + n;
-                    const a0 = k * CELL;
-                    const a1 = a0 + CELL;
-                    const [ox1, oy1] = pt(a0, R_PRZ);
-                    const [ox2, oy2] = pt(a1, R_PRZ);
-                    const [ix2, iy2] = pt(a1, R_HUB);
-                    const [ix1, iy1] = pt(a0, R_HUB);
-                    return (
-                      <path
-                        key={`p${k}`}
-                        d={`M ${ox1.toFixed(2)} ${oy1.toFixed(2)} A ${R_PRZ} ${R_PRZ} 0 0 1 ${ox2.toFixed(2)} ${oy2.toFixed(2)} L ${ix2.toFixed(2)} ${iy2.toFixed(2)} A ${R_HUB} ${R_HUB} 0 0 0 ${ix1.toFixed(2)} ${iy1.toFixed(2)} Z`}
-                        fill={hsl(PALETTE[i % PALETTE.length].h, PALETTE[i % PALETTE.length].s, cellL(i, n))}
-                        stroke="#fffdf4"
-                        strokeWidth="0.8"
-                      />
-                    );
-                  }),
-                )}
-
-                {cells.map((c) => (
-                  <text
-                    key={c.k}
-                    className={SERIF}
-                    dominantBaseline="central"
-                    fill={CELL_INK}
-                    fontSize="8"
-                    textAnchor={c.anchor}
-                    transform={`rotate(${c.rot.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)})`}
-                    x={c.x}
-                    y={c.y}
-                  >
-                    {c.label}
-                  </text>
-                ))}
-
-                <circle cx="100" cy="100" fill="none" r={R_PRZ} stroke="#fffdf4" strokeWidth="2" />
-                {/* ivory rim, the bulbs sitting in it rather than on the edge */}
-                <circle
-                  cx="100"
-                  cy="100"
-                  fill="none"
-                  r={(R_OUT + R_RIM) / 2}
-                  stroke="#f0dfb4"
-                  strokeWidth={R_RIM - R_OUT}
-                />
-                <circle cx="100" cy="100" fill="none" r={R_RIM} stroke="#c9ab72" strokeWidth="0.9" />
-                <circle cx="100" cy="100" fill="none" r={R_OUT} stroke="#c9ab72" strokeWidth="0.9" />
-                {/* one arc per area. In the lower half the arc is drawn the other
-                    way round and slightly tighter, so the name reads along the
-                    curve instead of standing on its head. */}
-                <defs>
-                  <filter height="300%" id="bulb-glow" width="300%" x="-100%" y="-100%">
-                    <feGaussianBlur stdDeviation="2.4" />
-                  </filter>
+                  {/* outer band: the six areas — this is the ring the pointer meets */}
                   {AREAS.map((_, i) => {
-                    const a0 = i * SLICE + 2;
-                    const a1 = (i + 1) * SLICE - 2;
-                    const onScreen = (((i * SLICE + SLICE / 2 + settled) % 360) + 360) % 360;
-                    const up = onScreen <= 90 || onScreen >= 270;
-                    const r = (R_PRZ + R_OUT) / 2; // vertical middle of the band
-                    const [sx, sy] = pt(up ? a0 : a1, r);
-                    const [ex, ey] = pt(up ? a1 : a0, r);
+                    const a0 = i * SLICE;
+                    const a1 = a0 + SLICE;
+                    const [ox1, oy1] = pt(a0, R_OUT);
+                    const [ox2, oy2] = pt(a1, R_OUT);
+                    const [ix2, iy2] = pt(a1, R_PRZ);
+                    const [ix1, iy1] = pt(a0, R_PRZ);
                     return (
                       <path
-                        key={i}
-                        d={`M ${sx.toFixed(2)} ${sy.toFixed(2)} A ${r} ${r} 0 0 ${up ? 1 : 0} ${ex.toFixed(2)} ${ey.toFixed(2)}`}
-                        id={`arc-${i}`}
+                        key={`a${i}`}
+                        d={`M ${ox1.toFixed(2)} ${oy1.toFixed(
+                          2,
+                        )} A ${R_OUT} ${R_OUT} 0 0 1 ${ox2.toFixed(
+                          2,
+                        )} ${oy2.toFixed(2)} L ${ix2.toFixed(2)} ${iy2.toFixed(
+                          2,
+                        )} A ${R_PRZ} ${R_PRZ} 0 0 0 ${ix1.toFixed(
+                          2,
+                        )} ${iy1.toFixed(2)} Z`}
+                        fill={hsl(
+                          PALETTE[i % PALETTE.length].h,
+                          PALETTE[i % PALETTE.length].s,
+                          PALETTE[i % PALETTE.length].band,
+                        )}
+                        stroke="#fffdf4"
+                        strokeWidth="1.2"
                       />
                     );
                   })}
-                </defs>
-                {AREAS.map((ar, i) => {
-                  const name = (locale === "fr" ? ar.fr : ar.en).toUpperCase();
-                  // "OBJETS INUTILES" ran off the end of its arc and was clipped
-                  const size = name.length > 13 ? 6 : name.length > 10 ? 6.8 : 7.6;
-                  return (
-                  <text key={`t${i}`} className={FUNFAIR} dominantBaseline="central" fill={PALETTE[i % PALETTE.length].ink} fontSize={size}>
-                    <textPath href={`#arc-${i}`} startOffset="50%" textAnchor="middle">
-                      {name}
-                    </textPath>
-                  </text>
-                  );
-                })}
-                {Array.from({ length: RIM_BULBS }).map((_, i) => {
-                  const [x, y] = pt((i * 360) / RIM_BULBS, (R_OUT + R_RIM) / 2);
-                  return (
-                    <g key={`g${i}`}>
-                    <circle
-                      className="rimglow"
-                      cx={x}
-                      cy={y}
-                      fill="#ffc44f"
-                      filter="url(#bulb-glow)"
-                      r="4.2"
-                      style={{ animationDelay: `${i % 2 ? 500 : 0}ms` }}
-                    />
-                    <circle
-                      key={i}
-                      className="rimbulb"
-                      cx={x}
-                      cy={y}
-                      fill="#f0a92c"
-                      r="2.4"
-                      stroke="#8a5f1e"
-                      strokeWidth="0.35"
-                      style={{ animationDelay: `${i % 2 ? 500 : 0}ms` }}
-                    />
-                    </g>
-                  );
-                })}
-              </svg>
 
-              {/* the hub is the button — tapping the wheel is the gesture */}
-              {/* a brass boss, not a button — the whole wheel is the tap target */}
-              <span
-                aria-hidden
-                className="hub pointer-events-none absolute left-1/2 top-1/2 z-20 block h-[6%] w-[6%] rounded-full border border-[#2e1d12] bg-[radial-gradient(circle_at_34%_28%,#b98a5c,#6d4a2c_55%,#3f2a1c)] shadow-[inset_0_-1px_2px_rgba(0,0,0,.45),0_2px_5px_rgba(60,40,25,.5)]"
-              />
-            </button>
-
-            {/* the second beat: the area, then the prize inside it */}
-            <div
-              className={`mt-5 flex min-h-[8rem] w-full max-w-[30rem] flex-col justify-center sm:min-h-[8.5rem] lg:mt-0 lg:overflow-hidden lg:transition-all lg:duration-[600ms] lg:ease-[cubic-bezier(.2,.9,.25,1)] ${
-                result ? "lg:ml-10 lg:max-w-[24rem] lg:opacity-100" : "lg:ml-0 lg:max-w-0 lg:opacity-0"
-              }`}
-            >
-              {result === null ? (
-                <>
-                  <p className={`${FUNFAIR} text-center text-[0.95rem] text-[#d63a30] sm:text-[1.1rem]`}>
-                    {t.spin.toUpperCase()}
-                  </p>
-                  <p className={`${SERIF} mt-2 text-center text-[1.05rem] leading-snug text-[#2b1512]/70 sm:text-[1.2rem]`}>
-                    {t.intro}
-                  </p>
-                </>
-              ) : (
-                <div
-                  key={`${result.a}-${result.p}`}
-                  className="flex flex-col justify-center rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:px-10 lg:py-8"
-                  style={{ animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both" }}
-                >
-                  <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">{t.landed}</p>
-                  <p className={`${FUNFAIR} mt-2 text-[1.15rem] text-[#d63a30] sm:text-[1.35rem]`}>
-                    {(locale === "fr" ? area!.fr : area!.en).toUpperCase()}
-                  </p>
-                  {vid ? (
-                    <div
-                      className="mt-3"
-                      style={{ animation: "riseIn 420ms cubic-bezier(.16,1,.3,1) 260ms both" }}
-                    >
-                      <div
-                        className="relative w-full overflow-hidden rounded-2xl border-2 border-[#d63a30]/25 shadow-[0_10px_28px_rgba(160,100,40,.2)]"
-                        style={{ aspectRatio: "16 / 9" }}
-                      >
-                        <iframe
-                          allowFullScreen
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          className="absolute inset-0 h-full w-full"
-                          src={`https://www.youtube-nocookie.com/embed/${vid}`}
-                          title={locale === "fr" ? prize!.fr : prize!.en}
+                  {/* inner band: twenty-four prize cells, four steps per area */}
+                  {AREAS.flatMap((ar, i) =>
+                    ar.prizes.map((_, n) => {
+                      const k = i * PER + n;
+                      const a0 = k * CELL;
+                      const a1 = a0 + CELL;
+                      const [ox1, oy1] = pt(a0, R_PRZ);
+                      const [ox2, oy2] = pt(a1, R_PRZ);
+                      const [ix2, iy2] = pt(a1, R_HUB);
+                      const [ix1, iy1] = pt(a0, R_HUB);
+                      return (
+                        <path
+                          key={`p${k}`}
+                          d={`M ${ox1.toFixed(2)} ${oy1.toFixed(
+                            2,
+                          )} A ${R_PRZ} ${R_PRZ} 0 0 1 ${ox2.toFixed(
+                            2,
+                          )} ${oy2.toFixed(2)} L ${ix2.toFixed(
+                            2,
+                          )} ${iy2.toFixed(
+                            2,
+                          )} A ${R_HUB} ${R_HUB} 0 0 0 ${ix1.toFixed(
+                            2,
+                          )} ${iy1.toFixed(2)} Z`}
+                          fill={hsl(
+                            PALETTE[i % PALETTE.length].h,
+                            PALETTE[i % PALETTE.length].s,
+                            cellL(i, n),
+                          )}
+                          stroke="#fffdf4"
+                          strokeWidth="0.8"
                         />
+                      );
+                    }),
+                  )}
+
+                  {cells.map((c) => (
+                    <text
+                      key={c.k}
+                      className={SERIF}
+                      dominantBaseline="central"
+                      fill={CELL_INK}
+                      fontSize="8"
+                      textAnchor={c.anchor}
+                      transform={`rotate(${c.rot.toFixed(2)} ${c.x.toFixed(
+                        2,
+                      )} ${c.y.toFixed(2)})`}
+                      x={c.x}
+                      y={c.y}
+                    >
+                      {c.label}
+                    </text>
+                  ))}
+
+                  <circle
+                    cx="100"
+                    cy="100"
+                    fill="none"
+                    r={R_PRZ}
+                    stroke="#fffdf4"
+                    strokeWidth="2"
+                  />
+                  {/* ivory rim, the bulbs sitting in it rather than on the edge */}
+                  <circle
+                    cx="100"
+                    cy="100"
+                    fill="none"
+                    r={(R_OUT + R_RIM) / 2}
+                    stroke="#f0dfb4"
+                    strokeWidth={R_RIM - R_OUT}
+                  />
+                  <circle
+                    cx="100"
+                    cy="100"
+                    fill="none"
+                    r={R_RIM}
+                    stroke="#c9ab72"
+                    strokeWidth="0.9"
+                  />
+                  <circle
+                    cx="100"
+                    cy="100"
+                    fill="none"
+                    r={R_OUT}
+                    stroke="#c9ab72"
+                    strokeWidth="0.9"
+                  />
+                  {/* one arc per area. In the lower half the arc is drawn the other
+                    way round and slightly tighter, so the name reads along the
+                    curve instead of standing on its head. */}
+                  <defs>
+                    <filter
+                      height="300%"
+                      id="bulb-glow"
+                      width="300%"
+                      x="-100%"
+                      y="-100%"
+                    >
+                      <feGaussianBlur stdDeviation="2.4" />
+                    </filter>
+                    {AREAS.map((_, i) => {
+                      const a0 = i * SLICE + 2;
+                      const a1 = (i + 1) * SLICE - 2;
+                      const onScreen =
+                        (((i * SLICE + SLICE / 2 + settled) % 360) + 360) % 360;
+                      const up = onScreen <= 90 || onScreen >= 270;
+                      const r = (R_PRZ + R_OUT) / 2; // vertical middle of the band
+                      const [sx, sy] = pt(up ? a0 : a1, r);
+                      const [ex, ey] = pt(up ? a1 : a0, r);
+                      return (
+                        <path
+                          key={i}
+                          d={`M ${sx.toFixed(2)} ${sy.toFixed(
+                            2,
+                          )} A ${r} ${r} 0 0 ${up ? 1 : 0} ${ex.toFixed(
+                            2,
+                          )} ${ey.toFixed(2)}`}
+                          id={`arc-${i}`}
+                        />
+                      );
+                    })}
+                  </defs>
+                  {AREAS.map((ar, i) => {
+                    const name = (
+                      locale === "fr" ? ar.fr : ar.en
+                    ).toUpperCase();
+                    // "OBJETS INUTILES" ran off the end of its arc and was clipped
+                    const size =
+                      name.length > 13 ? 6 : name.length > 10 ? 6.8 : 7.6;
+                    return (
+                      <text
+                        key={`t${i}`}
+                        className={FUNFAIR}
+                        dominantBaseline="central"
+                        fill={PALETTE[i % PALETTE.length].ink}
+                        fontSize={size}
+                      >
+                        <textPath
+                          href={`#arc-${i}`}
+                          startOffset="50%"
+                          textAnchor="middle"
+                        >
+                          {name}
+                        </textPath>
+                      </text>
+                    );
+                  })}
+                  {Array.from({ length: RIM_BULBS }).map((_, i) => {
+                    const [x, y] = pt(
+                      (i * 360) / RIM_BULBS,
+                      (R_OUT + R_RIM) / 2,
+                    );
+                    return (
+                      <g key={`g${i}`}>
+                        <circle
+                          className="rimglow"
+                          cx={x}
+                          cy={y}
+                          fill="#ffc44f"
+                          filter="url(#bulb-glow)"
+                          r="4.2"
+                          style={{ animationDelay: `${i % 2 ? 500 : 0}ms` }}
+                        />
+                        <circle
+                          key={i}
+                          className="rimbulb"
+                          cx={x}
+                          cy={y}
+                          fill="#f0a92c"
+                          r="2.4"
+                          stroke="#8a5f1e"
+                          strokeWidth="0.35"
+                          style={{ animationDelay: `${i % 2 ? 500 : 0}ms` }}
+                        />
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* the hub is the button — tapping the wheel is the gesture */}
+                {/* a brass boss, not a button — the whole wheel is the tap target */}
+                <span
+                  aria-hidden
+                  className="hub pointer-events-none absolute left-1/2 top-1/2 z-20 block h-[6%] w-[6%] rounded-full border border-[#2e1d12] bg-[radial-gradient(circle_at_34%_28%,#b98a5c,#6d4a2c_55%,#3f2a1c)] shadow-[inset_0_-1px_2px_rgba(0,0,0,.45),0_2px_5px_rgba(60,40,25,.5)]"
+                />
+              </button>
+
+              {/* the second beat: the area, then the prize inside it */}
+              <div
+                className={`mt-5 flex min-h-[8rem] w-full max-w-[30rem] flex-col justify-center sm:min-h-[8.5rem] lg:mt-0 lg:overflow-hidden lg:transition-all lg:duration-[600ms] lg:ease-[cubic-bezier(.2,.9,.25,1)] ${
+                  result
+                    ? "lg:ml-10 lg:max-w-[24rem] lg:opacity-100"
+                    : "lg:ml-0 lg:max-w-0 lg:opacity-0"
+                }`}
+              >
+                {result === null ? (
+                  <>
+                    <p
+                      className={`${FUNFAIR} text-center text-[0.95rem] text-[#d63a30] sm:text-[1.1rem]`}
+                    >
+                      {t.spin.toUpperCase()}
+                    </p>
+                    <p
+                      className={`${SERIF} mt-2 text-center text-[1.05rem] leading-snug text-[#2b1512]/70 sm:text-[1.2rem]`}
+                    >
+                      {t.intro}
+                    </p>
+                  </>
+                ) : (
+                  <div
+                    key={`${result.a}-${result.p}`}
+                    className="flex flex-col justify-center rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:px-10 lg:py-8"
+                    style={{
+                      animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both",
+                    }}
+                  >
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">
+                      {t.landed}
+                    </p>
+                    <p
+                      className={`${FUNFAIR} mt-2 text-[1.15rem] text-[#d63a30] sm:text-[1.35rem]`}
+                    >
+                      {(locale === "fr" ? area!.fr : area!.en).toUpperCase()}
+                    </p>
+                    {vid ? (
+                      <div
+                        className="mt-3"
+                        style={{
+                          animation:
+                            "riseIn 420ms cubic-bezier(.16,1,.3,1) 260ms both",
+                        }}
+                      >
+                        <div
+                          className="relative w-full overflow-hidden rounded-2xl border-2 border-[#d63a30]/25 shadow-[0_10px_28px_rgba(160,100,40,.2)]"
+                          style={{ aspectRatio: "16 / 9" }}
+                        >
+                          <iframe
+                            allowFullScreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            className="absolute inset-0 h-full w-full"
+                            src={`https://www.youtube-nocookie.com/embed/${vid}`}
+                            title={locale === "fr" ? prize!.fr : prize!.en}
+                          />
+                        </div>
+                        <p
+                          className={`${SERIF} mt-2.5 text-[1.1rem] leading-snug text-[#2b1512] sm:text-[1.25rem]`}
+                        >
+                          {locale === "fr" ? prize!.fr : prize!.en}
+                        </p>
                       </div>
-                      <p className={`${SERIF} mt-2.5 text-[1.1rem] leading-snug text-[#2b1512] sm:text-[1.25rem]`}>
+                    ) : (
+                      <p
+                        className={`${SERIF} mt-3 text-[1.5rem] leading-[1.25] text-[#2b1512] sm:text-[1.85rem]`}
+                        style={{
+                          animation:
+                            "riseIn 420ms cubic-bezier(.16,1,.3,1) 260ms both",
+                        }}
+                      >
                         {locale === "fr" ? prize!.fr : prize!.en}
                       </p>
-                    </div>
-                  ) : (
-                    <p
-                      className={`${SERIF} mt-3 text-[1.5rem] leading-[1.25] text-[#2b1512] sm:text-[1.85rem]`}
-                      style={{ animation: "riseIn 420ms cubic-bezier(.16,1,.3,1) 260ms both" }}
-                    >
-                      {locale === "fr" ? prize!.fr : prize!.en}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -515,12 +660,20 @@ export default function WheelScreen() {
 
       {/* dev toolbar, same as the quiz's — not part of the screen */}
       <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
-        <button className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}>
+        <button
+          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+          onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
+        >
           {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
         </button>
-        <button className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => { setResult(null); setRot(0); setSpinning(false); }}>
+        <button
+          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+          onClick={() => {
+            setResult(null);
+            setRot(0);
+            setSpinning(false);
+          }}
+        >
           reset
         </button>
       </div>

@@ -72,7 +72,11 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
   }, [phase]);
 
   return (
-    <div className={`tick fixed inset-0 z-50 overflow-hidden${leaving ? " leaving" : ""}`}>
+    <div
+      className={`tick fixed inset-0 z-50 overflow-hidden${
+        leaving ? " leaving" : ""
+      }`}
+    >
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -145,15 +149,32 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
 
       {phase !== "ticket" ? (
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6">
-          <p className={`${FUNFAIR} mb-6 text-[1.2rem] tracking-wide text-[#c4302b] sm:text-[1.6rem]`}>
+          <p
+            className={`${FUNFAIR} mb-6 text-[1.2rem] tracking-wide text-[#c4302b] sm:text-[1.6rem]`}
+          >
             {phase === "printing" ? t.printing : t.invite}
           </p>
 
           {/* the machine */}
-          <div className={phase === "printing" ? "machine-shake relative" : "relative"}>
-            <svg className="block w-[16rem] sm:w-[19rem]" height="300" viewBox="0 0 240 300" width="240">
+          <div
+            className={
+              phase === "printing" ? "machine-shake relative" : "relative"
+            }
+          >
+            <svg
+              className="block w-[16rem] sm:w-[19rem]"
+              height="300"
+              viewBox="0 0 240 300"
+              width="240"
+            >
               {/* canopy */}
-              <path d="M14 44 120 8l106 36z" fill="#c4302b" stroke="#3a2118" strokeLinejoin="round" strokeWidth="4" />
+              <path
+                d="M14 44 120 8l106 36z"
+                fill="#c4302b"
+                stroke="#3a2118"
+                strokeLinejoin="round"
+                strokeWidth="4"
+              />
               {Array.from({ length: 7 }).map((_, i) => (
                 <circle
                   key={i}
@@ -163,13 +184,33 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
                   r="5"
                   stroke="#3a2118"
                   strokeWidth="3"
-                  style={{ animation: `bulb 1.2s ease-in-out ${i * 130}ms infinite` }}
+                  style={{
+                    animation: `bulb 1.2s ease-in-out ${i * 130}ms infinite`,
+                  }}
                 />
               ))}
               {/* body */}
-              <rect fill="#f7ead0" height="220" rx="14" stroke="#3a2118" strokeWidth="4" width="196" x="22" y="56" />
+              <rect
+                fill="#f7ead0"
+                height="220"
+                rx="14"
+                stroke="#3a2118"
+                strokeWidth="4"
+                width="196"
+                x="22"
+                y="56"
+              />
               {/* red panel */}
-              <rect fill="#c4302b" height="86" rx="8" stroke="#3a2118" strokeWidth="4" width="164" x="38" y="72" />
+              <rect
+                fill="#c4302b"
+                height="86"
+                rx="8"
+                stroke="#3a2118"
+                strokeWidth="4"
+                width="164"
+                x="38"
+                y="72"
+              />
               <text
                 className={FUNFAIR}
                 fill="#f7ead0"
@@ -194,14 +235,42 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
               {/* the button */}
               <g className={phase === "printing" ? "btn-press" : undefined}>
                 <circle cx="120" cy="192" fill="#3a2118" r="30" />
-                <circle cx="120" cy="188" fill="#e8462f" r="27" stroke="#3a2118" strokeWidth="4" />
+                <circle
+                  cx="120"
+                  cy="188"
+                  fill="#e8462f"
+                  r="27"
+                  stroke="#3a2118"
+                  strokeWidth="4"
+                />
                 <circle cx="112" cy="180" fill="#fff" opacity=".35" r="7" />
               </g>
 
               {/* the slot */}
-              <rect fill="#3a2118" height="12" rx="3" width="120" x="60" y="240" />
-              <rect fill="#f7ead0" height="4" opacity=".25" rx="2" width="104" x="68" y="244" />
-              <path d="M50 268h140" opacity=".35" stroke="#3a2118" strokeLinecap="round" strokeWidth="4" />
+              <rect
+                fill="#3a2118"
+                height="12"
+                rx="3"
+                width="120"
+                x="60"
+                y="240"
+              />
+              <rect
+                fill="#f7ead0"
+                height="4"
+                opacity=".25"
+                rx="2"
+                width="104"
+                x="68"
+                y="244"
+              />
+              <path
+                d="M50 268h140"
+                opacity=".35"
+                stroke="#3a2118"
+                strokeLinecap="round"
+                strokeWidth="4"
+              />
             </svg>
 
             {/* the ticket feeding out of the slot */}
@@ -227,7 +296,11 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
         </div>
       ) : (
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-5">
-          <p className={`${FUNFAIR} fade-up mb-5 text-[1.4rem] text-[#c4302b] sm:text-[2rem]`}>{t.here}</p>
+          <p
+            className={`${FUNFAIR} fade-up mb-5 text-[1.4rem] text-[#c4302b] sm:text-[2rem]`}
+          >
+            {t.here}
+          </p>
 
           <div className="presented w-full max-w-[44rem]">
             <BigTicket copy={t} locale={locale} />
@@ -263,14 +336,28 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
 }
 
 /* the ticket as it appears coming out of the slot — same design, small */
-function MiniTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" | "en" }) {
+function MiniTicket({
+  copy,
+  locale,
+}: {
+  copy: (typeof COPY)["fr"];
+  locale: "fr" | "en";
+}) {
   return (
     <div className="overflow-hidden rounded-[10px] border-[3px] border-[#c4302b] bg-[#fdf3d8] px-3 py-2.5">
-      <p className={`${FUNFAIR} text-center text-[0.8rem] text-[#c4302b]`}>RINA-LAND</p>
-      <p className={`${SERIF} text-center text-[0.7rem] text-[#3a2118]/70`}>{copy.date}</p>
+      <p className={`${FUNFAIR} text-center text-[0.8rem] text-[#c4302b]`}>
+        RINA-LAND
+      </p>
+      <p className={`${SERIF} text-center text-[0.7rem] text-[#3a2118]/70`}>
+        {copy.date}
+      </p>
       <div className="mt-1.5 flex justify-center gap-[3px]">
         {Array.from({ length: 22 }).map((_, i) => (
-          <span key={i} className="block h-3 bg-[#3a2118]" style={{ width: i % 3 ? 1 : 2.5 }} />
+          <span
+            key={i}
+            className="block h-3 bg-[#3a2118]"
+            style={{ width: i % 3 ? 1 : 2.5 }}
+          />
         ))}
       </div>
       <p className="sr-only">{locale}</p>
@@ -279,7 +366,13 @@ function MiniTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" 
 }
 
 /* the full-screen ticket: stub, sunburst cartouche, barcode */
-function BigTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" | "en" }) {
+function BigTicket({
+  copy,
+  locale,
+}: {
+  copy: (typeof COPY)["fr"];
+  locale: "fr" | "en";
+}) {
   return (
     <div className="rounded-[18px] border-[6px] border-[#c4302b] bg-[#c4302b] p-2 shadow-[0_18px_50px_rgba(90,30,20,.28)]">
       <div className="flex overflow-hidden rounded-[10px] bg-[#fdf3d8]">
@@ -294,13 +387,21 @@ function BigTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" |
           >
             {/* the cartouche */}
             <div className="mx-auto max-w-[22rem] rounded-[36%_36%_36%_36%/22%_22%_22%_22%] border-2 border-[#c4302b] bg-[#fdf3d8] px-5 py-4 text-center">
-              <p className={`${FUNFAIR} text-[1.4rem] leading-none text-[#c4302b] sm:text-[2.1rem]`}>
+              <p
+                className={`${FUNFAIR} text-[1.4rem] leading-none text-[#c4302b] sm:text-[2.1rem]`}
+              >
                 RINA-LAND
               </p>
-              <p className={`${SERIF} mt-2 text-[0.95rem] text-[#3a2118]/80 sm:text-[1.1rem]`}>
+              <p
+                className={`${SERIF} mt-2 text-[0.95rem] text-[#3a2118]/80 sm:text-[1.1rem]`}
+              >
                 ✦ {copy.admit} ✦
               </p>
-              <p className={`${SERIF} mt-1 text-[0.85rem] text-[#3a2118]/60 sm:text-[0.95rem]`}>{copy.date}</p>
+              <p
+                className={`${SERIF} mt-1 text-[0.85rem] text-[#3a2118]/60 sm:text-[0.95rem]`}
+              >
+                {copy.date}
+              </p>
             </div>
           </div>
         </div>
@@ -318,7 +419,11 @@ function BigTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" |
           </p>
           <div className="flex h-[70%] items-stretch gap-[2px]">
             {Array.from({ length: 16 }).map((_, i) => (
-              <span key={i} className="block bg-[#3a2118]" style={{ width: i % 3 ? 2 : 4 }} />
+              <span
+                key={i}
+                className="block bg-[#3a2118]"
+                style={{ width: i % 3 ? 2 : 4 }}
+              />
             ))}
           </div>
           <p className="sr-only">

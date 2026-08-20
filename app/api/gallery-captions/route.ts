@@ -28,16 +28,24 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const photos: Entry[] = body?.photos;
   if (!Array.isArray(photos)) {
-    return NextResponse.json({ error: "expected { photos: [] }" }, { status: 400 });
+    return NextResponse.json(
+      { error: "expected { photos: [] }" },
+      { status: 400 },
+    );
   }
 
   // ids come from the generated manifest, so keep them to that shape rather
   // than trusting whatever arrives — this writes to disk. REJECT rather than
   // filter: quietly dropping entries once cost eight captions.
-  const bad = photos.filter((p) => typeof p?.id !== "string" || !/^[\w.-]+$/.test(p.id));
+  const bad = photos.filter(
+    (p) => typeof p?.id !== "string" || !/^[\w.-]+$/.test(p.id),
+  );
   if (bad.length) {
     return NextResponse.json(
-      { error: "unsafe photo ids — rename the files", ids: bad.map((p) => p?.id) },
+      {
+        error: "unsafe photo ids — rename the files",
+        ids: bad.map((p) => p?.id),
+      },
       { status: 400 },
     );
   }
@@ -45,7 +53,11 @@ export async function POST(req: NextRequest) {
   // was deleted still holds it in memory, and saving from that tab would
   // otherwise resurrect the entry as a broken image.
   const thumbs = new Set(
-    (await fs.readdir(path.join(process.cwd(), "public", "30ans", "gallery", "thumbs")))
+    (
+      await fs.readdir(
+        path.join(process.cwd(), "public", "30ans", "gallery", "thumbs"),
+      )
+    )
       .filter((f) => f.endsWith(".jpg"))
       .map((f) => f.slice(0, -4)),
   );
@@ -61,7 +73,9 @@ export async function POST(req: NextRequest) {
     "export const PHOTOS: Photo[] = [",
     ...safe.map(
       (p) =>
-        `  { id: ${JSON.stringify(p.id)}, fr: ${JSON.stringify(p.fr ?? "")}, en: ${JSON.stringify(p.en ?? "")} },`,
+        `  { id: ${JSON.stringify(p.id)}, fr: ${JSON.stringify(
+          p.fr ?? "",
+        )}, en: ${JSON.stringify(p.en ?? "")} },`,
     ),
     "];",
     "",

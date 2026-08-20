@@ -43,7 +43,12 @@ export function FortuneCookie({ locale }: { locale: "fr" | "en" }) {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* the packaging waiting in the corner */}
-      <button aria-label={label} className="fc-pack" onClick={roll} type="button">
+      <button
+        aria-label={label}
+        className="fc-pack"
+        onClick={roll}
+        type="button"
+      >
         <img alt="" className="fc-pack-img" src={PACK} />
       </button>
 
@@ -53,8 +58,18 @@ export function FortuneCookie({ locale }: { locale: "fr" | "en" }) {
         <div aria-hidden className="fc-hint">
           <span className={`fc-hint-word ${SERIF}`}>{label}</span>
           <svg className="fc-hint-arrow" fill="none" viewBox="0 0 44 40">
-            <path d="M7 5 C5 19 12 28 30 32" stroke="#9e241f" strokeLinecap="round" strokeWidth="2.2" />
-            <path d="M32 33 L21 36 M32 33 L24 26" stroke="#9e241f" strokeLinecap="round" strokeWidth="2.2" />
+            <path
+              d="M7 5 C5 19 12 28 30 32"
+              stroke="#9e241f"
+              strokeLinecap="round"
+              strokeWidth="2.2"
+            />
+            <path
+              d="M32 33 L21 36 M32 33 L24 26"
+              stroke="#9e241f"
+              strokeLinecap="round"
+              strokeWidth="2.2"
+            />
           </svg>
         </div>
       )}
@@ -62,16 +77,28 @@ export function FortuneCookie({ locale }: { locale: "fr" | "en" }) {
       {/* the opened cookie, centre stage */}
       {phase !== "idle" && (
         <div
-          aria-label={locale === "fr" ? "Ton biscuit de la fortune" : "Your fortune cookie"}
+          aria-label={
+            locale === "fr"
+              ? "Ton biscuit de la fortune"
+              : "Your fortune cookie"
+          }
           className="fc-overlay"
           onClick={close}
           role="dialog"
         >
-          <button aria-label="Close" className="fc-x" onClick={close} type="button">
+          <button
+            aria-label="Close"
+            className="fc-x"
+            onClick={close}
+            type="button"
+          >
             ✕
           </button>
 
-          <div className={`fc-stage ${phase === "cracked" ? "is-cracked" : ""}`} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={`fc-stage ${phase === "cracked" ? "is-cracked" : ""}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="fc-cookie">
               <img alt="" className="fc-half fc-half-l" src={COOKIE} />
               <img alt="" className="fc-half fc-half-r" src={COOKIE} />

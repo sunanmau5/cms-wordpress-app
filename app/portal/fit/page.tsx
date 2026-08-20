@@ -42,14 +42,19 @@ export default function FitScreen() {
   const { locale, setLocale } = useLocale();
   // -1 means the slot is empty; the arrows walk through the variants and back to
   // empty, so "no hat" is always one press away
-  const [picked, setPicked] = useState<Record<string, number>>({ hat: -1, glasses: -1 });
+  const [picked, setPicked] = useState<Record<string, number>>({
+    hat: -1,
+    glasses: -1,
+  });
   const [missing, setMissing] = useState<Record<string, boolean>>({});
   const [nudge, setNudge] = useState(false);
   const [photo, setPhoto] = useState(PHOTO.src);
   // every change of piece throws confetti and knocks the frame
   const [burst, setBurst] = useState(0);
   const frameRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState<Record<string, { dx: number; dy: number; dw: number }>>({});
+  const [offset, setOffset] = useState<
+    Record<string, { dx: number; dy: number; dw: number }>
+  >({});
   const t = COPY[locale];
 
   const cycle = useCallback((slotId: string, count: number, dir: number) => {
@@ -82,7 +87,10 @@ export default function FitScreen() {
   const bump = (id: string, dx: number, dy: number, dw: number) =>
     setOffset((o) => {
       const cur = o[id] ?? { dx: 0, dy: 0, dw: 0 };
-      return { ...o, [id]: { dx: cur.dx + dx, dy: cur.dy + dy, dw: cur.dw + dw } };
+      return {
+        ...o,
+        [id]: { dx: cur.dx + dx, dy: cur.dy + dy, dw: cur.dw + dw },
+      };
     });
 
   return (
@@ -133,24 +141,48 @@ export default function FitScreen() {
 
       <div aria-hidden className="stripes turning" />
 
-      <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-14 sm:h-16">
-        <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 1200 90">
-          <path d="M0 8 Q 600 78 1200 8" fill="none" stroke="#8a7550" strokeWidth="2" />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-14 sm:h-16"
+      >
+        <svg
+          className="absolute inset-0 h-full w-full"
+          preserveAspectRatio="none"
+          viewBox="0 0 1200 90"
+        >
+          <path
+            d="M0 8 Q 600 78 1200 8"
+            fill="none"
+            stroke="#8a7550"
+            strokeWidth="2"
+          />
           {Array.from({ length: 26 }).map((_, i) => {
             const x = (i + 0.5) * (1200 / 26);
             const s = x / 1200;
             const y = 8 + 70 * (4 * s * (1 - s)) * 0.72;
             const c = ["#d63a30", "#e8a33d", "#3f8f79", "#e8705f"][i % 4];
-            return <polygon key={i} fill={c} points={`${x - 11},${y} ${x + 11},${y} ${x},${y + 26}`} />;
+            return (
+              <polygon
+                key={i}
+                fill={c}
+                points={`${x - 11},${y} ${x + 11},${y} ${x},${y + 26}`}
+              />
+            );
           })}
         </svg>
       </div>
 
       <div className="relative mx-auto flex min-h-full max-w-[46rem] flex-col px-6 py-6 sm:px-10 lg:max-w-[70rem]">
         <div className="m-auto w-full">
-          <div className="mb-5 mt-9 text-center sm:mb-7 sm:mt-16" style={{ animation: "sway 5s ease-in-out infinite" }}>
+          <div
+            className="mb-5 mt-9 text-center sm:mb-7 sm:mt-16"
+            style={{ animation: "sway 5s ease-in-out infinite" }}
+          >
             <span className="relative inline-block rounded-[1.25rem] px-8 py-3">
-              <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35" />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35"
+              />
               {Array.from({ length: BULBS }).map((_, i) => (
                 <span
                   key={i}
@@ -166,7 +198,9 @@ export default function FitScreen() {
               ))}
               <span
                 className={`${FUNFAIR} block text-[1.85rem] leading-none text-[#d63a30] sm:text-[2.6rem]`}
-                style={{ textShadow: "0 2px 0 #a8281f, 0 4px 10px rgba(168,40,31,.35)" }}
+                style={{
+                  textShadow: "0 2px 0 #a8281f, 0 4px 10px rgba(168,40,31,.35)",
+                }}
               >
                 {t.title.toUpperCase()}
               </span>
@@ -175,15 +209,29 @@ export default function FitScreen() {
 
           <div className="mx-auto flex max-w-[64rem] flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-12">
             {/* the photo, with the accessories pinned on top of it */}
-            <div className="relative w-full shrink-0" style={{ maxWidth: "min(22rem, 43vh)" }}>
+            <div
+              className="relative w-full shrink-0"
+              style={{ maxWidth: "min(22rem, 43vh)" }}
+            >
               {/* behind the frame, so pieces fly out from under it */}
               {burst > 0 && (
-                <div key={burst} aria-hidden className="pointer-events-none absolute inset-0 z-0">
+                <div
+                  key={burst}
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 z-0"
+                >
                   {Array.from({ length: 26 }).map((_, i) => {
                     const a = (i / 26) * Math.PI * 2 + (burst % 7) * 0.3;
                     // far enough to clear the frame, which is ~350px across
                     const dist = 240 + ((i * 53) % 190);
-                    const c = ["#d63a30", "#e8a33d", "#3f8f79", "#2f6fd0", "#c9257e", "#ffd166"][i % 6];
+                    const c = [
+                      "#d63a30",
+                      "#e8a33d",
+                      "#3f8f79",
+                      "#2f6fd0",
+                      "#c9257e",
+                      "#ffd166",
+                    ][i % 6];
                     return (
                       <span
                         key={i}
@@ -236,7 +284,9 @@ export default function FitScreen() {
                       key={item.id}
                       alt=""
                       className="acc absolute"
-                      onError={() => setMissing((m) => ({ ...m, [item.src]: true }))}
+                      onError={() =>
+                        setMissing((m) => ({ ...m, [item.src]: true }))
+                      }
                       src={item.src}
                       style={style}
                     />
@@ -247,7 +297,9 @@ export default function FitScreen() {
 
             {/* the controls */}
             <div className="relative z-20 w-full max-w-[24rem]">
-              <p className={`${SERIF} mb-5 text-center text-[1.05rem] leading-snug text-[#2b1512]/70 sm:text-[1.2rem] lg:text-left`}>
+              <p
+                className={`${SERIF} mb-5 text-center text-[1.05rem] leading-snug text-[#2b1512]/70 sm:text-[1.2rem] lg:text-left`}
+              >
                 {t.intro}
               </p>
 
@@ -255,7 +307,10 @@ export default function FitScreen() {
                 const n = picked[slot.id] ?? -1;
                 const item = n >= 0 ? slot.items[n] : null;
                 return (
-                  <div key={slot.id} className="mb-3 rounded-[1rem] border border-[#d63a30]/20 bg-[#fffdf4] px-3 py-2">
+                  <div
+                    key={slot.id}
+                    className="mb-3 rounded-[1rem] border border-[#d63a30]/20 bg-[#fffdf4] px-3 py-2"
+                  >
                     <div className="flex items-center gap-2">
                       <span className="w-[4.5rem] shrink-0 text-[10px] uppercase tracking-[0.18em] text-[#a8281f]/70">
                         {locale === "fr" ? slot.fr : slot.en}
@@ -267,7 +322,9 @@ export default function FitScreen() {
                       >
                         ‹
                       </button>
-                      <span className={`${SERIF} flex-1 text-center text-[1.05rem] leading-tight text-[#2b1512]`}>
+                      <span
+                        className={`${SERIF} flex-1 text-center text-[1.05rem] leading-tight text-[#2b1512]`}
+                      >
                         {item ? (locale === "fr" ? item.fr : item.en) : t.none}
                       </span>
                       <button
@@ -281,10 +338,16 @@ export default function FitScreen() {
 
                     {nudge && item && (
                       <div className="mt-3 flex flex-wrap items-center gap-1 border-t border-[#d63a30]/15 pt-2 text-[11px]">
-                        {([
-                          ["←", -1, 0, 0], ["→", 1, 0, 0], ["↑", 0, -1, 0], ["↓", 0, 1, 0],
-                          ["−", 0, 0, -2], ["+", 0, 0, 2],
-                        ] as const).map(([label, dx, dy, dw]) => (
+                        {(
+                          [
+                            ["←", -1, 0, 0],
+                            ["→", 1, 0, 0],
+                            ["↑", 0, -1, 0],
+                            ["↓", 0, 1, 0],
+                            ["−", 0, 0, -2],
+                            ["+", 0, 0, 2],
+                          ] as const
+                        ).map(([label, dx, dy, dw]) => (
                           <button
                             key={label}
                             className="rounded-md border border-[#d63a30]/30 px-2 py-1 text-[#a8281f]"
@@ -317,14 +380,19 @@ export default function FitScreen() {
           {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
         </button>
         <button
-          className={`rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200 ${nudge ? "bg-neutral-900 text-white" : ""}`}
+          className={`rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200 ${
+            nudge ? "bg-neutral-900 text-white" : ""
+          }`}
           onClick={() => setNudge((v) => !v)}
         >
           {COPY[locale].nudge}
         </button>
         <button
           className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => { setPicked({ hat: -1, glasses: -1 }); setOffset({}); }}
+          onClick={() => {
+            setPicked({ hat: -1, glasses: -1 });
+            setOffset({});
+          }}
         >
           reset
         </button>

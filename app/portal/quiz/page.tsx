@@ -31,7 +31,8 @@ const BULBS = 13;
 
 const rand = (i: number, salt: number) =>
   Math.round(
-    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) * 1e4,
+    ((((Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453) % 1) + 1) % 1) *
+      1e4,
   ) / 1e4;
 
 const COPY = {
@@ -391,9 +392,11 @@ export default function QuizScreen() {
             : "h-24 sm:h-40"
         }`}
         style={{
-          transform: started || beat >= 1 ? "translateY(0)" : "translateY(-110%)",
+          transform:
+            started || beat >= 1 ? "translateY(0)" : "translateY(-110%)",
           opacity: started || beat >= 1 ? 1 : 0,
-          transition: "transform 1200ms cubic-bezier(.22,.61,.36,1), opacity 900ms ease",
+          transition:
+            "transform 1200ms cubic-bezier(.22,.61,.36,1), opacity 900ms ease",
         }}
       >
         <svg
@@ -438,393 +441,499 @@ export default function QuizScreen() {
             : started && !done
               ? "min-h-full py-6"
               : compact
-              ? "min-h-full py-6"
-              : "min-h-full py-14"
+                ? "min-h-full py-6"
+                : "min-h-full py-14"
         }`}
       >
         {/* m-auto, not justify-center: centring a flex column clips the
             top once the content is taller than the viewport */}
-        <div className={`w-full ${started && !done && tallEnough ? "flex h-full min-h-0 flex-col" : "m-auto"}`}>
-        {/* the hero sign, swinging very slightly, bulbs chasing along it */}
         <div
-          ref={heroRef}
-          className={`shrink-0 text-center ${
-            started && !done
-              ? compact
-                /* the sign's top margin is NOT part of the compact tightening:
+          className={`w-full ${
+            started && !done && tallEnough
+              ? "flex h-full min-h-0 flex-col"
+              : "m-auto"
+          }`}
+        >
+          {/* the hero sign, swinging very slightly, bulbs chasing along it */}
+          <div
+            ref={heroRef}
+            className={`shrink-0 text-center ${
+              started && !done
+                ? compact
+                  ? /* the sign's top margin is NOT part of the compact tightening:
                    the bunting is 96px tall while the quiz runs, so pulling the
                    sign up lands it in the flags */
-                ? "mb-4 mt-9 sm:mb-2 sm:mt-10"
-                : "mb-4 mt-9 sm:mb-5 sm:mt-10"
-              : compact
-              ? "mb-6 mt-8 sm:mt-10"
-              : "mb-12 mt-16 sm:mt-28"
-          }`}
-          style={{
-            transform: `translateY(${flip}px)`,
-            transition: gliding
-              ? "transform 1250ms cubic-bezier(.22,.61,.36,1)"
-              : "none",
-          }}
-        >
-        {(started || beat >= 2) && (
-        <div
-          style={{
-            animation:
-              started || beat >= 3
-                ? "swing 6s ease-in-out infinite"
-                : "signPop 1150ms cubic-bezier(.25,.9,.3,1) both, signWiggle 640ms ease-in-out 1150ms 2",
-          }}
-        >
-          <div
-            className={`relative inline-block ${
-              started && !done ? "px-6 py-2.5" : "px-9 py-5"
+                    "mb-4 mt-9 sm:mb-2 sm:mt-10"
+                  : "mb-4 mt-9 sm:mb-5 sm:mt-10"
+                : compact
+                  ? "mb-6 mt-8 sm:mt-10"
+                  : "mb-12 mt-16 sm:mt-28"
             }`}
+            style={{
+              transform: `translateY(${flip}px)`,
+              transition: gliding
+                ? "transform 1250ms cubic-bezier(.22,.61,.36,1)"
+                : "none",
+            }}
           >
-            <span className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35" />
-            {(["top", "bottom"] as const).map((edge) =>
-              Array.from({ length: BULBS }).map((_, n) => (
-                <span
-                  key={`${edge}-${n}`}
-                  className="pointer-events-none absolute h-2 w-2 rounded-full bg-[#ffb43c]"
-                  style={{
-                    left: `${((n + 0.5) / BULBS) * 100}%`,
-                    [edge]: -4,
-                    animation: `bulb 1.6s ease-in-out ${(n % 5) * 0.18}s infinite`,
-                  }}
-                />
-              )),
-            )}
-            <h1
-              className={`${FUNFAIR} uppercase leading-none tracking-[0.04em] text-[#d63a30] ${
-                started && !done ? "text-[1.3rem] sm:text-[1.9rem]" : "text-[1.85rem] sm:text-[3rem]"
-              }`}
-              style={{
-                // the fairground sign: cream inner highlight, then a stack of
-                // darker reds under it so the letters sit up off the canvas
-                textShadow:
-                  "0 1px 0 rgba(255,245,235,.85), 0 3px 0 #a8281f, 0 5px 0 #8d1f18, 0 8px 14px rgba(140,40,30,.35)",
-              }}
-            >
-              Rina Quiz
-            </h1>
-          </div>
-        </div>
-        )}
-        </div>
-
-        {/* the presenter's card: everything the guest reads sits on it */}
-        <div
-          className={`relative mx-auto w-full ${
-            started && !done && tallEnough ? "flex min-h-0 flex-1 flex-col" : ""
-          }`}
-        >
-          {/* thrown from the middle of the card, behind it, so the pieces
-              appear to come out from its edges */}
-          {celebrate && (
-            <div
-              key={`burst-${i}`}
-              aria-hidden
-              className="pointer-events-none absolute inset-0 z-0"
-            >
-              {Array.from({ length: 30 }).map((_, n) => {
-                const a = rand(n, 71) * Math.PI * 2;
-                const d = 180 + rand(n, 72) * 260;
-                return (
-                  <span
-                    key={n}
-                    className="confetto absolute left-1/2 top-1/2 block h-2.5 w-1.5 rounded-[1px]"
-                    style={
-                      {
-                        background: ["#d63a30", "#f0b73f", "#3f9f7f", "#e8836a", "#fff3d6"][n % 5],
-                        animationDelay: `${(n % 6) * 40}ms`,
-                        "--dx": `${Math.cos(a) * d}px`,
-                        "--dy": `${Math.sin(a) * d - 60}px`,
-                        "--rot": `${(rand(n, 73) - 0.5) * 900}deg`,
-                      } as React.CSSProperties
-                    }
-                  />
-                );
-              })}
-            </div>
-          )}
-
-        {!started && beat >= 3 && (
-          <div
-            className="card relative z-10 mx-auto w-full rounded-[2.25rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-8 shadow-[0_22px_60px_rgba(160,100,40,.20)] sm:px-10 sm:py-10"
-            style={{ animation: "cardIn 900ms cubic-bezier(.22,.61,.36,1) both" }}
-          >
-            <div
-              style={{
-                opacity: beat >= 4 ? 1 : 0,
-                transform: beat >= 4 ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 800ms ease, transform 800ms cubic-bezier(.22,.61,.36,1)",
-              }}
-            >
-            {/* a fixed column, so all three lines share one left edge —
-                w-max sized the block to its longest line, which put that edge
-                somewhere arbitrary */}
-            <div className="mx-auto max-w-[30rem]">
-            <ul className="space-y-4">
-              {INTRO[locale].map((line) => (
-                <li key={line} className="flex items-center gap-4">
-                  {/* the same lamp the answers use */}
-                  <span aria-hidden className="buzzer-base grid h-9 w-9 shrink-0 place-items-center">
-                    <span className="buzzer-dome h-full w-full" />
-                  </span>
-                  <span className={`${SERIF} text-[1.05rem] leading-snug text-[#2b1512] sm:text-[1.25rem]`}>
-                    {line}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8 text-center">
-              <button
-                className="rounded-full bg-[#d63a30] px-10 py-4 text-[12px] uppercase tracking-[0.2em] text-[#fff6ef] shadow-[0_6px_20px_rgba(214,58,48,.35)] transition-transform hover:scale-[1.04]"
-                onClick={() => setStarted(true)}
-              >
-                {t.start}
-              </button>
-            </div>
-            </div>
-            </div>
-          </div>
-        )}
-
-        {started && !done && picked !== null && (
-          <button
-            aria-label={last ? t.finish : t.next}
-            /* mobile: sitting on the card's bottom-right rim, half on and half off,
-               so it belongs to the card rather than to the screen and can never
-               come down over the notes */
-            className="next-arrow absolute bottom-4 right-4 z-[60] grid h-12 w-12 place-items-center rounded-full bg-[#d63a30] text-[#fff6ef] shadow-[0_8px_24px_rgba(214,58,48,.45)] sm:bottom-auto sm:right-0 sm:top-1/2 sm:h-16 sm:w-16 sm:translate-x-[calc(100%+18px)] sm:-translate-y-1/2"
-            onClick={next}
-            title={last ? t.finish : t.next}
-          >
-            <svg className="h-[22px] w-[22px] sm:h-[26px] sm:w-[26px]" fill="none" viewBox="0 0 24 24">
-              <path
-                d="M4 12h15m0 0-6-6m6 6-6 6"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-              />
-            </svg>
-          </button>
-        )}
-
-        {started && (
-        <div
-          className={`card relative z-10 mx-auto flex w-full flex-col rounded-[2.25rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] shadow-[0_22px_60px_rgba(160,100,40,.20)] ${
-            started && !done && tallEnough
-              ? `min-h-0 flex-1 px-5 py-6 sm:px-8 ${compact ? "sm:py-4" : "sm:py-7"}`
-              : "px-6 py-8 sm:px-10 sm:py-10"
-          }`}
-        >
-        {started && !done && (
-          <div
-            key={i}
-            className="flex min-h-0 flex-1 flex-col"
-            style={{ animation: "riseIn 500ms cubic-bezier(.16,1,.3,1) both" }}
-          >
-            <div className="shrink-0">
-            <p className="text-[12px] uppercase tracking-[0.28em] text-[#a8281f]/70">
-              {i + 1} {t.of} {QUESTIONS.length}
-            </p>
-
-            {/* how far along, without a number to read */}
-            <div className="mt-4 h-px w-full bg-[#d63a30]/15">
+            {(started || beat >= 2) && (
               <div
-                className="h-px bg-[#d63a30] transition-[width] duration-500"
-                style={{ width: `${((i + (picked !== null ? 1 : 0)) / QUESTIONS.length) * 100}%` }}
-              />
-            </div>
-
-            {/* once answered the question shrinks: it has done its job, and
-                the room goes to the answers */}
-            <h1
-              className={`${SERIF} leading-[1.15] text-[#2b1512] transition-all duration-500 ${
-                picked === null
-                  ? "mt-6 text-[1.3rem] sm:text-[1.7rem]"
-                  : "mt-4 text-[1.05rem] text-[#2b1512]/75 sm:text-[1.25rem]"
-              }`}
-            >
-              {q[locale]}
-            </h1>
-
-            {/* a printer's rule: line, diamond, line */}
-            <div
-              aria-hidden
-              className={`flex items-center gap-3 overflow-hidden text-[#d63a30]/45 transition-all duration-500 ${
-                picked === null ? "mt-6 max-h-6 opacity-100" : "mt-3 max-h-0 opacity-0"
-              }`}
-            >
-              <span className="h-px flex-1 bg-current" />
-              <svg fill="none" height="9" viewBox="0 0 40 9" width="40">
-                <path d="M20 .5 24 4.5 20 8.5 16 4.5z" fill="currentColor" />
-                <path d="M8 4.5 11 2v5zM32 4.5 29 2v5z" fill="currentColor" />
-              </svg>
-              <span className="h-px flex-1 bg-current" />
-            </div>
-            </div>
-
-            {/* only this part scrolls, so the question stays put above it and
-                the button stays put below */}
-            <div
-              /* mb-7 on mobile, not pb-7: the 28px the arrow's on-card half
-                 covers must be card, not scrollable text passing underneath */
-              className={`-mr-2 mb-12 space-y-3 pr-2 sm:mb-0 ${
-                compact ? "mt-5 sm:mt-3 sm:space-y-2" : "mt-5"
-              } ${
-                started && !done && tallEnough
-                  ? "quiz-scroll min-h-0 flex-1 overflow-y-auto"
-                  : ""
-              }`}
-            >
-              {q.options.map((o, n) => {
-                const isPicked = picked === n;
-                const reveal = picked !== null;
-                const showAsRight = reveal && o.correct;
-                const showAsWrong = reveal && isPicked && !o.correct;
-                return (
-                  <div key={n} data-correct={o.correct ? "true" : undefined}>
-                    <button
-                      className={`opt flex w-full items-center gap-4 rounded-xl border px-3.5 py-2.5 text-left ${compact ? "sm:py-1" : ""} ${
-                        isPicked ? (o.correct ? "opt-right" : "opt-wrong") : ""
-                      } ${
-                        showAsRight
-                          ? "border-emerald-600/70 bg-emerald-500/10"
-                          : showAsWrong
-                            ? "border-[#d63a30]/70 bg-[#d63a30]/10"
-                            : reveal
-                              ? "border-[#2b1512]/10 opacity-45"
-                              : "border-[#2b1512]/20 bg-white/55"
-                      }`}
-                      disabled={reveal}
-                      onClick={() => pick(n)}
-                    >
-                      <span className={`buzzer-base grid h-8 w-8 shrink-0 place-items-center ${compact ? "sm:h-7 sm:w-7" : ""}`}>
-                        <span
-                          className={`buzzer-dome grid h-full w-full place-items-center text-[12px] font-bold tracking-wider ${
-                            showAsRight
-                              ? "dome-right text-white"
-                              : showAsWrong
-                                ? "dome-wrong text-white"
-                                : "text-[#8a7550]"
-                          }`}
-                          style={
-                            showAsRight || showAsWrong
-                              ? { textShadow: "0 1px 2px rgba(0,0,0,.45)" }
-                              : undefined
-                          }
-                        >
-                          {String.fromCharCode(65 + n)}
-                        </span>
-                      </span>
-                      <span className={`${SERIF} text-[1.25rem] text-[#2b1512] ${compact ? "sm:text-[1.15rem]" : "sm:text-[1.4rem]"}`}>
-                        {o[locale]}
-                      </span>
-                    </button>
-
-                    {/* every note, not just the picked one — the wrong answers
-                        are where the jokes are */}
-                    {reveal && (
-                      <p
-                        className={`mt-1.5 pl-[2.7rem] pr-1 text-[0.8rem] leading-[1.45] ${
-                          isPicked || o.correct ? "text-[#2b1512]/75" : "text-[#2b1512]/50"
-                        }`}
-                        style={{ animation: `noteIn 320ms ease ${n * 70}ms both` }}
-                      >
-                        {locale === "fr" ? o.noteFr : o.noteEn}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-          </div>
-        )}
-
-        {done && (
-          <div
-            className="text-center"
-            style={{ animation: "riseIn 600ms cubic-bezier(.16,1,.3,1) both" }}
-          >
-            <p className="text-[12px] uppercase tracking-[0.28em] text-[#a8281f]/70">
-              {t.scoreTitle}
-            </p>
-
-            {/* full marks only: the medal drops in a beat after the score */}
-            {medal && (
-              <div
-                aria-label="10 / 10"
-                className="relative mx-auto mt-6 h-[124px] w-[104px]"
-                style={{ animation: "medalDrop 1100ms cubic-bezier(.24,1.25,.36,1) both" }}
+                style={{
+                  animation:
+                    started || beat >= 3
+                      ? "swing 6s ease-in-out infinite"
+                      : "signPop 1150ms cubic-bezier(.25,.9,.3,1) both, signWiggle 640ms ease-in-out 1150ms 2",
+                }}
               >
                 <div
-                  className="absolute inset-0"
-                  style={{
-                    animation: "medalSway 3.4s ease-in-out 1100ms infinite",
-                    transformOrigin: "50% 8%",
-                  }}
+                  className={`relative inline-block ${
+                    started && !done ? "px-6 py-2.5" : "px-9 py-5"
+                  }`}
                 >
-                  {/* ribbon */}
-                  <span
-                    className="absolute left-1/2 top-0 block h-16 w-6 -translate-x-[22px]"
-                    style={{ background: "linear-gradient(180deg,#d63a30,#a8281f)", transform: "rotate(12deg)" }}
-                  />
-                  <span
-                    className="absolute left-1/2 top-0 block h-16 w-6 translate-x-[-2px]"
-                    style={{ background: "linear-gradient(180deg,#e8836a,#c0342a)", transform: "rotate(-12deg)" }}
-                  />
-                  {/* disc */}
-                  <span
-                    className="absolute bottom-0 left-1/2 grid h-[78px] w-[78px] -translate-x-1/2 place-items-center overflow-hidden rounded-full"
+                  <span className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35" />
+                  {(["top", "bottom"] as const).map((edge) =>
+                    Array.from({ length: BULBS }).map((_, n) => (
+                      <span
+                        key={`${edge}-${n}`}
+                        className="pointer-events-none absolute h-2 w-2 rounded-full bg-[#ffb43c]"
+                        style={{
+                          left: `${((n + 0.5) / BULBS) * 100}%`,
+                          [edge]: -4,
+                          animation: `bulb 1.6s ease-in-out ${
+                            (n % 5) * 0.18
+                          }s infinite`,
+                        }}
+                      />
+                    )),
+                  )}
+                  <h1
+                    className={`${FUNFAIR} uppercase leading-none tracking-[0.04em] text-[#d63a30] ${
+                      started && !done
+                        ? "text-[1.3rem] sm:text-[1.9rem]"
+                        : "text-[1.85rem] sm:text-[3rem]"
+                    }`}
                     style={{
-                      background:
-                        "radial-gradient(circle at 34% 28%, #fff6d4 0%, #edc45c 42%, #c9973a 72%, #a87a2c 100%)",
-                      boxShadow:
-                        "inset 0 2px 4px rgba(255,255,255,.8), inset 0 -4px 8px rgba(120,80,20,.45), 0 6px 16px rgba(140,100,30,.45)",
+                      // the fairground sign: cream inner highlight, then a stack of
+                      // darker reds under it so the letters sit up off the canvas
+                      textShadow:
+                        "0 1px 0 rgba(255,245,235,.85), 0 3px 0 #a8281f, 0 5px 0 #8d1f18, 0 8px 14px rgba(140,40,30,.35)",
                     }}
                   >
-                    <span
-                      className="absolute inset-[7px] rounded-full"
-                      style={{ boxShadow: "inset 0 0 0 2px rgba(255,246,214,.55)" }}
-                    />
-                    <span className={`${FUNFAIR} relative text-[1.45rem] leading-none text-[#7a5518]`}>
-                      10
-                    </span>
-                    {/* the shine sweep */}
-                    <span
-                      className="pointer-events-none absolute inset-y-[-40%] left-0 w-8 bg-white/70 blur-[3px]"
-                      style={{ animation: "shine 2.6s ease-in-out 1500ms infinite" }}
-                    />
-                  </span>
+                    Rina Quiz
+                  </h1>
                 </div>
               </div>
             )}
-            <p className={`${SERIF} mt-4 text-[4.5rem] leading-none text-[#d63a30] sm:text-[6rem]`}>
-              {score}
-              <span className="text-[#2b1512]/30">/{QUESTIONS.length}</span>
-            </p>
-            <p
-              className={`${SERIF} mx-auto mt-6 max-w-[30rem] text-[1.3rem] leading-[1.45] text-[#2b1512]/85 sm:text-[1.55rem]`}
-            >
-              {verdict}
-            </p>
-            <button
-              className="mt-10 rounded-full border-2 border-[#d63a30]/45 px-8 py-3.5 text-[12px] uppercase tracking-[0.2em] text-[#a8281f] transition-colors hover:border-[#d63a30] hover:bg-[#d63a30]/10"
-              onClick={restart}
-            >
-              {t.again}
-            </button>
           </div>
-        )}
-        </div>
-        )}
-        </div>
+
+          {/* the presenter's card: everything the guest reads sits on it */}
+          <div
+            className={`relative mx-auto w-full ${
+              started && !done && tallEnough
+                ? "flex min-h-0 flex-1 flex-col"
+                : ""
+            }`}
+          >
+            {/* thrown from the middle of the card, behind it, so the pieces
+              appear to come out from its edges */}
+            {celebrate && (
+              <div
+                key={`burst-${i}`}
+                aria-hidden
+                className="pointer-events-none absolute inset-0 z-0"
+              >
+                {Array.from({ length: 30 }).map((_, n) => {
+                  const a = rand(n, 71) * Math.PI * 2;
+                  const d = 180 + rand(n, 72) * 260;
+                  return (
+                    <span
+                      key={n}
+                      className="confetto absolute left-1/2 top-1/2 block h-2.5 w-1.5 rounded-[1px]"
+                      style={
+                        {
+                          background: [
+                            "#d63a30",
+                            "#f0b73f",
+                            "#3f9f7f",
+                            "#e8836a",
+                            "#fff3d6",
+                          ][n % 5],
+                          animationDelay: `${(n % 6) * 40}ms`,
+                          "--dx": `${Math.cos(a) * d}px`,
+                          "--dy": `${Math.sin(a) * d - 60}px`,
+                          "--rot": `${(rand(n, 73) - 0.5) * 900}deg`,
+                        } as React.CSSProperties
+                      }
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            {!started && beat >= 3 && (
+              <div
+                className="card relative z-10 mx-auto w-full rounded-[2.25rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-8 shadow-[0_22px_60px_rgba(160,100,40,.20)] sm:px-10 sm:py-10"
+                style={{
+                  animation: "cardIn 900ms cubic-bezier(.22,.61,.36,1) both",
+                }}
+              >
+                <div
+                  style={{
+                    opacity: beat >= 4 ? 1 : 0,
+                    transform: beat >= 4 ? "translateY(0)" : "translateY(10px)",
+                    transition:
+                      "opacity 800ms ease, transform 800ms cubic-bezier(.22,.61,.36,1)",
+                  }}
+                >
+                  {/* a fixed column, so all three lines share one left edge —
+                w-max sized the block to its longest line, which put that edge
+                somewhere arbitrary */}
+                  <div className="mx-auto max-w-[30rem]">
+                    <ul className="space-y-4">
+                      {INTRO[locale].map((line) => (
+                        <li key={line} className="flex items-center gap-4">
+                          {/* the same lamp the answers use */}
+                          <span
+                            aria-hidden
+                            className="buzzer-base grid h-9 w-9 shrink-0 place-items-center"
+                          >
+                            <span className="buzzer-dome h-full w-full" />
+                          </span>
+                          <span
+                            className={`${SERIF} text-[1.05rem] leading-snug text-[#2b1512] sm:text-[1.25rem]`}
+                          >
+                            {line}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-8 text-center">
+                      <button
+                        className="rounded-full bg-[#d63a30] px-10 py-4 text-[12px] uppercase tracking-[0.2em] text-[#fff6ef] shadow-[0_6px_20px_rgba(214,58,48,.35)] transition-transform hover:scale-[1.04]"
+                        onClick={() => setStarted(true)}
+                      >
+                        {t.start}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {started && !done && picked !== null && (
+              <button
+                aria-label={last ? t.finish : t.next}
+                /* mobile: sitting on the card's bottom-right rim, half on and half off,
+               so it belongs to the card rather than to the screen and can never
+               come down over the notes */
+                className="next-arrow absolute bottom-4 right-4 z-[60] grid h-12 w-12 place-items-center rounded-full bg-[#d63a30] text-[#fff6ef] shadow-[0_8px_24px_rgba(214,58,48,.45)] sm:bottom-auto sm:right-0 sm:top-1/2 sm:h-16 sm:w-16 sm:translate-x-[calc(100%+18px)] sm:-translate-y-1/2"
+                onClick={next}
+                title={last ? t.finish : t.next}
+              >
+                <svg
+                  className="h-[22px] w-[22px] sm:h-[26px] sm:w-[26px]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4 12h15m0 0-6-6m6 6-6 6"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </button>
+            )}
+
+            {started && (
+              <div
+                className={`card relative z-10 mx-auto flex w-full flex-col rounded-[2.25rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] shadow-[0_22px_60px_rgba(160,100,40,.20)] ${
+                  started && !done && tallEnough
+                    ? `min-h-0 flex-1 px-5 py-6 sm:px-8 ${
+                        compact ? "sm:py-4" : "sm:py-7"
+                      }`
+                    : "px-6 py-8 sm:px-10 sm:py-10"
+                }`}
+              >
+                {started && !done && (
+                  <div
+                    key={i}
+                    className="flex min-h-0 flex-1 flex-col"
+                    style={{
+                      animation: "riseIn 500ms cubic-bezier(.16,1,.3,1) both",
+                    }}
+                  >
+                    <div className="shrink-0">
+                      <p className="text-[12px] uppercase tracking-[0.28em] text-[#a8281f]/70">
+                        {i + 1} {t.of} {QUESTIONS.length}
+                      </p>
+
+                      {/* how far along, without a number to read */}
+                      <div className="mt-4 h-px w-full bg-[#d63a30]/15">
+                        <div
+                          className="h-px bg-[#d63a30] transition-[width] duration-500"
+                          style={{
+                            width: `${
+                              ((i + (picked !== null ? 1 : 0)) /
+                                QUESTIONS.length) *
+                              100
+                            }%`,
+                          }}
+                        />
+                      </div>
+
+                      {/* once answered the question shrinks: it has done its job, and
+                the room goes to the answers */}
+                      <h1
+                        className={`${SERIF} leading-[1.15] text-[#2b1512] transition-all duration-500 ${
+                          picked === null
+                            ? "mt-6 text-[1.3rem] sm:text-[1.7rem]"
+                            : "mt-4 text-[1.05rem] text-[#2b1512]/75 sm:text-[1.25rem]"
+                        }`}
+                      >
+                        {q[locale]}
+                      </h1>
+
+                      {/* a printer's rule: line, diamond, line */}
+                      <div
+                        aria-hidden
+                        className={`flex items-center gap-3 overflow-hidden text-[#d63a30]/45 transition-all duration-500 ${
+                          picked === null
+                            ? "mt-6 max-h-6 opacity-100"
+                            : "mt-3 max-h-0 opacity-0"
+                        }`}
+                      >
+                        <span className="h-px flex-1 bg-current" />
+                        <svg
+                          fill="none"
+                          height="9"
+                          viewBox="0 0 40 9"
+                          width="40"
+                        >
+                          <path
+                            d="M20 .5 24 4.5 20 8.5 16 4.5z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M8 4.5 11 2v5zM32 4.5 29 2v5z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <span className="h-px flex-1 bg-current" />
+                      </div>
+                    </div>
+
+                    {/* only this part scrolls, so the question stays put above it and
+                the button stays put below */}
+                    <div
+                      /* mb-7 on mobile, not pb-7: the 28px the arrow's on-card half
+                 covers must be card, not scrollable text passing underneath */
+                      className={`-mr-2 mb-12 space-y-3 pr-2 sm:mb-0 ${
+                        compact ? "mt-5 sm:mt-3 sm:space-y-2" : "mt-5"
+                      } ${
+                        started && !done && tallEnough
+                          ? "quiz-scroll min-h-0 flex-1 overflow-y-auto"
+                          : ""
+                      }`}
+                    >
+                      {q.options.map((o, n) => {
+                        const isPicked = picked === n;
+                        const reveal = picked !== null;
+                        const showAsRight = reveal && o.correct;
+                        const showAsWrong = reveal && isPicked && !o.correct;
+                        return (
+                          <div
+                            key={n}
+                            data-correct={o.correct ? "true" : undefined}
+                          >
+                            <button
+                              className={`opt flex w-full items-center gap-4 rounded-xl border px-3.5 py-2.5 text-left ${
+                                compact ? "sm:py-1" : ""
+                              } ${
+                                isPicked
+                                  ? o.correct
+                                    ? "opt-right"
+                                    : "opt-wrong"
+                                  : ""
+                              } ${
+                                showAsRight
+                                  ? "border-emerald-600/70 bg-emerald-500/10"
+                                  : showAsWrong
+                                    ? "border-[#d63a30]/70 bg-[#d63a30]/10"
+                                    : reveal
+                                      ? "border-[#2b1512]/10 opacity-45"
+                                      : "border-[#2b1512]/20 bg-white/55"
+                              }`}
+                              disabled={reveal}
+                              onClick={() => pick(n)}
+                            >
+                              <span
+                                className={`buzzer-base grid h-8 w-8 shrink-0 place-items-center ${
+                                  compact ? "sm:h-7 sm:w-7" : ""
+                                }`}
+                              >
+                                <span
+                                  className={`buzzer-dome grid h-full w-full place-items-center text-[12px] font-bold tracking-wider ${
+                                    showAsRight
+                                      ? "dome-right text-white"
+                                      : showAsWrong
+                                        ? "dome-wrong text-white"
+                                        : "text-[#8a7550]"
+                                  }`}
+                                  style={
+                                    showAsRight || showAsWrong
+                                      ? {
+                                          textShadow:
+                                            "0 1px 2px rgba(0,0,0,.45)",
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  {String.fromCharCode(65 + n)}
+                                </span>
+                              </span>
+                              <span
+                                className={`${SERIF} text-[1.25rem] text-[#2b1512] ${
+                                  compact
+                                    ? "sm:text-[1.15rem]"
+                                    : "sm:text-[1.4rem]"
+                                }`}
+                              >
+                                {o[locale]}
+                              </span>
+                            </button>
+
+                            {/* every note, not just the picked one — the wrong answers
+                        are where the jokes are */}
+                            {reveal && (
+                              <p
+                                className={`mt-1.5 pl-[2.7rem] pr-1 text-[0.8rem] leading-[1.45] ${
+                                  isPicked || o.correct
+                                    ? "text-[#2b1512]/75"
+                                    : "text-[#2b1512]/50"
+                                }`}
+                                style={{
+                                  animation: `noteIn 320ms ease ${
+                                    n * 70
+                                  }ms both`,
+                                }}
+                              >
+                                {locale === "fr" ? o.noteFr : o.noteEn}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {done && (
+                  <div
+                    className="text-center"
+                    style={{
+                      animation: "riseIn 600ms cubic-bezier(.16,1,.3,1) both",
+                    }}
+                  >
+                    <p className="text-[12px] uppercase tracking-[0.28em] text-[#a8281f]/70">
+                      {t.scoreTitle}
+                    </p>
+
+                    {/* full marks only: the medal drops in a beat after the score */}
+                    {medal && (
+                      <div
+                        aria-label="10 / 10"
+                        className="relative mx-auto mt-6 h-[124px] w-[104px]"
+                        style={{
+                          animation:
+                            "medalDrop 1100ms cubic-bezier(.24,1.25,.36,1) both",
+                        }}
+                      >
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            animation:
+                              "medalSway 3.4s ease-in-out 1100ms infinite",
+                            transformOrigin: "50% 8%",
+                          }}
+                        >
+                          {/* ribbon */}
+                          <span
+                            className="absolute left-1/2 top-0 block h-16 w-6 -translate-x-[22px]"
+                            style={{
+                              background:
+                                "linear-gradient(180deg,#d63a30,#a8281f)",
+                              transform: "rotate(12deg)",
+                            }}
+                          />
+                          <span
+                            className="absolute left-1/2 top-0 block h-16 w-6 translate-x-[-2px]"
+                            style={{
+                              background:
+                                "linear-gradient(180deg,#e8836a,#c0342a)",
+                              transform: "rotate(-12deg)",
+                            }}
+                          />
+                          {/* disc */}
+                          <span
+                            className="absolute bottom-0 left-1/2 grid h-[78px] w-[78px] -translate-x-1/2 place-items-center overflow-hidden rounded-full"
+                            style={{
+                              background:
+                                "radial-gradient(circle at 34% 28%, #fff6d4 0%, #edc45c 42%, #c9973a 72%, #a87a2c 100%)",
+                              boxShadow:
+                                "inset 0 2px 4px rgba(255,255,255,.8), inset 0 -4px 8px rgba(120,80,20,.45), 0 6px 16px rgba(140,100,30,.45)",
+                            }}
+                          >
+                            <span
+                              className="absolute inset-[7px] rounded-full"
+                              style={{
+                                boxShadow:
+                                  "inset 0 0 0 2px rgba(255,246,214,.55)",
+                              }}
+                            />
+                            <span
+                              className={`${FUNFAIR} relative text-[1.45rem] leading-none text-[#7a5518]`}
+                            >
+                              10
+                            </span>
+                            {/* the shine sweep */}
+                            <span
+                              className="pointer-events-none absolute inset-y-[-40%] left-0 w-8 bg-white/70 blur-[3px]"
+                              style={{
+                                animation:
+                                  "shine 2.6s ease-in-out 1500ms infinite",
+                              }}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    <p
+                      className={`${SERIF} mt-4 text-[4.5rem] leading-none text-[#d63a30] sm:text-[6rem]`}
+                    >
+                      {score}
+                      <span className="text-[#2b1512]/30">
+                        /{QUESTIONS.length}
+                      </span>
+                    </p>
+                    <p
+                      className={`${SERIF} mx-auto mt-6 max-w-[30rem] text-[1.3rem] leading-[1.45] text-[#2b1512]/85 sm:text-[1.55rem]`}
+                    >
+                      {verdict}
+                    </p>
+                    <button
+                      className="mt-10 rounded-full border-2 border-[#d63a30]/45 px-8 py-3.5 text-[12px] uppercase tracking-[0.2em] text-[#a8281f] transition-colors hover:border-[#d63a30] hover:bg-[#d63a30]/10"
+                      onClick={restart}
+                    >
+                      {t.again}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

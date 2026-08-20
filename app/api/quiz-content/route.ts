@@ -14,7 +14,13 @@ import path from "path";
 const DIR = path.join(process.cwd(), "app", "portal", "quiz");
 const s = (v: unknown) => JSON.stringify(typeof v === "string" ? v : "");
 
-type Option = { fr: string; en: string; correct?: boolean; noteFr: string; noteEn: string };
+type Option = {
+  fr: string;
+  en: string;
+  correct?: boolean;
+  noteFr: string;
+  noteEn: string;
+};
 type Question = { fr: string; en: string; options: Option[] };
 
 export async function POST(req: NextRequest) {
@@ -92,7 +98,9 @@ export async function POST(req: NextRequest) {
         "    options: [",
         ...(q.options ?? []).map(
           (o) =>
-            `      { fr: ${s(o.fr)}, en: ${s(o.en)},${o.correct ? " correct: true," : ""} noteFr: ${s(o.noteFr)}, noteEn: ${s(o.noteEn)} },`,
+            `      { fr: ${s(o.fr)}, en: ${s(o.en)},${
+              o.correct ? " correct: true," : ""
+            } noteFr: ${s(o.noteFr)}, noteEn: ${s(o.noteEn)} },`,
         ),
         "    ],",
         "  },",
