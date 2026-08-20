@@ -428,13 +428,20 @@ export function JokeScreen() {
     const advance = (dx: number) => {
       const d = drag.current;
       if (!d) return;
+      // distance per broom scales to the viewport, so ~60% of a full-width swipe
+      // reaches 30 on any screen. On a narrow phone the old fixed 26px needed
+      // 780px of drag — more than the screen is wide — so it got stuck.
+      const per = Math.min(
+        DRAG_PER_BROOM,
+        Math.max(9, (window.innerWidth * 0.6) / TARGET),
+      );
       d.acc += dx;
-      while (d.acc >= DRAG_PER_BROOM) {
-        d.acc -= DRAG_PER_BROOM;
+      while (d.acc >= per) {
+        d.acc -= per;
         setBrooms((b) => Math.min(TARGET, b + 1));
       }
-      while (d.acc <= -DRAG_PER_BROOM) {
-        d.acc += DRAG_PER_BROOM;
+      while (d.acc <= -per) {
+        d.acc += per;
         setBrooms((b) => Math.max(0, b - 1));
       }
     };

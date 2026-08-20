@@ -404,10 +404,10 @@ function RinaLandBanner({ intro, cta }: { intro?: string; cta: string }) {
   return (
     // full-bleed: breaks out of the centred column so the balls can run edge
     // to edge
-    <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-3 sm:px-6">
+    <div className="rl-banner fixed inset-x-0 bottom-0 z-40 px-4 pb-3 sm:px-6">
       {intro && (
         <p
-          className={`${SERIF} mx-auto max-w-[32rem] text-center text-[1.3rem] leading-[1.45] text-white/85 sm:max-w-none sm:whitespace-nowrap sm:text-[clamp(0.9rem,1.85vw,1.7rem)]`}
+          className={`rl-intro ${SERIF} mx-auto max-w-[32rem] text-center text-[1.3rem] leading-[1.45] text-white/85 sm:max-w-none sm:whitespace-nowrap sm:text-[clamp(0.9rem,1.85vw,1.7rem)]`}
         >
           {intro}
         </p>
@@ -421,7 +421,7 @@ function RinaLandBanner({ intro, cta }: { intro?: string; cta: string }) {
       </div>
 
       {/* mobile: the layout she liked — words, then a row of balls beneath */}
-      <div className="sm:hidden">
+      <div className="rl-mobile sm:hidden">
         <div className="mx-auto mt-8 w-max">{words}</div>
         {/* justify-between so the row spans edge to edge; a count small enough
             not to overflow 375px and get clipped at the sides */}
@@ -601,6 +601,17 @@ export default function RsvpScreen() {
           .rsvp-col { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
           .sent-recap { margin-top: 0.7rem !important; }
           .sent-recap dd { font-size: 1rem !important; }
+        }
+        /* Small phones (e.g. iPhone 12 mini): the tall mobile footer + a real
+           message overflowed. Shrink the footer's intro and gaps, and the recap,
+           so a typical reply fits without scrolling. */
+        @media (max-width: 639px) and (max-height: 760px) {
+          .rl-intro { font-size: 1.02rem !important; line-height: 1.3 !important; }
+          .rl-mobile > div { margin-top: 0.9rem !important; }
+          .rsvp-sent-wrap { padding-bottom: 200px !important; }
+          .sent-recap { margin-top: 0.7rem !important; }
+          .sent-row { padding-bottom: 0.35rem !important; }
+          .sent-row + .sent-row { margin-top: 0.4rem !important; }
         }
       `}</style>
 
