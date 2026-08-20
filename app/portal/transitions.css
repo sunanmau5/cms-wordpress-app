@@ -1,0 +1,61 @@
+/* Cross-route screen transitions (View Transitions API). Imported by the
+   scoped prototype layout so it stays mounted across route swaps. Older
+   browsers ignore all of this and navigate instantly.
+
+   Direction is set as data-vt on <html> by screen-nav.tsx just before the
+   transition and removed when it finishes. */
+
+/* The shared starfield: named so it can be held perfectly still while only the
+   content slides (the left/right hops keep the same background). It is released
+   back into the page for the vertical hop, so the whole screen travels up as
+   one (RSVP -> ticket crosses from a dark screen to a cream one). */
+/* The portfolio uses a custom black cursor (globals.css, @layer base); the
+   portal doesn't want it. Unlayered rules beat @layer base, so this restores the
+   normal cursor everywhere under /portal, while each screen's own more-specific
+   cursor rules (e.g. .tick button { cursor: pointer }) still win. */
+.portal-root,
+.portal-root * {
+  cursor: auto;
+}
+
+.rinaverse-bg { view-transition-name: rinaverse-bg; }
+html[data-vt="up"] .rinaverse-bg { view-transition-name: none; }
+/* held in place (full-screen box, same in both screens) and gently cross-faded,
+   so the starfield reads as unchanged while the content slides across it */
+::view-transition-old(rinaverse-bg),
+::view-transition-new(rinaverse-bg) {
+  animation-duration: 480ms;
+}
+
+/* Default (no direction, e.g. the RSVP stage changes): a soft cross-fade. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Horizontal: current screen exits left, next enters from the right. */
+@keyframes vt-out-left { to { transform: translateX(-100%); } }
+@keyframes vt-in-right { from { transform: translateX(100%); } }
+html[data-vt="left"]::view-transition-old(root) {
+  animation: 480ms cubic-bezier(0.4, 0, 0.2, 1) both vt-out-left;
+}
+html[data-vt="left"]::view-transition-new(root) {
+  animation: 480ms cubic-bezier(0.4, 0, 0.2, 1) both vt-in-right;
+}
+
+/* Vertical: current screen lifts up, next rises from the bottom.
+   A slightly longer glide with a soft ease-in-out reads smoother than the
+   default. */
+@keyframes vt-out-up { to { transform: translateY(-100%); } }
+@keyframes vt-in-up { from { transform: translateY(100%); } }
+html[data-vt="up"]::view-transition-old(root) {
+  animation: 700ms cubic-bezier(0.65, 0, 0.2, 1) both vt-out-up;
+}
+html[data-vt="up"]::view-transition-new(root) {
+  animation: 700ms cubic-bezier(0.65, 0, 0.2, 1) both vt-in-up;
+}
+
+/* ticket -> hub is handled on the ticket screen itself (a spin-and-fade of the
+   card, then a plain navigation so the hub's entrances pop in on mount) rather
+   than as a cross-route View Transition — see ticket/page.tsx and hub/page.tsx. */

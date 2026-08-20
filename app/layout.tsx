@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/toaster";
 
-import { ClientChrome } from "@/components/client-chrome";
-import Transitions, { Animate } from "@/components/hoc/transitions";
+import RootFrame from "./RootFrame";
 
 import "@/styles/globals.css";
 
@@ -26,10 +25,7 @@ export default function RootLayout({
       <body
         className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
-        <Transitions className="flex flex-col">
-          <ClientChrome />
-          <Animate className="flex-1 no-scrollbar">{children}</Animate>
-        </Transitions>
+        <RootFrame>{children}</RootFrame>
 
         <Toaster />
       </body>
