@@ -52,7 +52,11 @@ export async function POST(req: NextRequest) {
       data = JSON.parse(text);
     } catch {
       return NextResponse.json(
-        { error: "webhook did not return JSON", upstreamStatus: res.status, upstreamBody: text.slice(0, 800) },
+        {
+          error: "webhook did not return JSON",
+          upstreamStatus: res.status,
+          upstreamBody: text.slice(0, 800),
+        },
         { status: 502 },
       );
     }

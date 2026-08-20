@@ -3,9 +3,10 @@ import { Resend } from "resend";
 
 import { EmailTemplate } from "@/components/email-template";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: NextRequest) {
+  // constructed per-request so a missing key at build time can't throw during
+  // Next's route data collection
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const json = req.json();
   const { firstName, lastName, email, service, message, attachments } =
     await json;
@@ -33,11 +34,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      const { statusCode, message } = error;
-      return NextResponse.json(
-        { error: message },
-        { status: statusCode ?? 500 },
-      );
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json(data);

@@ -992,6 +992,19 @@ function VariantB({
                     onClick={() => {
                       const text = msg.trim();
                       const who = name.trim();
+
+                      // persist to the sheet (fire-and-forget: the animation
+                      // plays regardless, and a failed send never blocks it)
+                      fetch("/api/rinaverse", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          kind: "wall",
+                          name: who,
+                          message: text,
+                        }),
+                      }).catch(() => {});
+
                       const entry = {
                         en: { text, by: who },
                         fr: { text, by: who },

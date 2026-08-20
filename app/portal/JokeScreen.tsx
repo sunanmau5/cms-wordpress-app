@@ -174,8 +174,8 @@ function ColumnBody({
       <p
         // wider measure, more leading and more contrast than the first pass —
         // italic serif at low opacity on black was hard going
-        className={`${SERIF_IT} mt-6 max-w-[38rem] whitespace-pre-line text-left text-[1.05rem] leading-[1.7] text-white/85 sm:mx-auto sm:text-center ${
-          short ? "sm:mt-5 sm:text-[1.1rem]" : "sm:mt-8 sm:text-[1.4rem]"
+        className={`${SERIF_IT} mt-6 max-w-[38rem] whitespace-pre-line text-left text-[1.25rem] leading-[1.7] text-white/85 sm:mx-auto sm:text-center ${
+          short ? "sm:mt-5 sm:text-[1.3rem]" : "sm:mt-8 sm:text-[1.7rem]"
         }`}
         style={
           still
@@ -435,13 +435,20 @@ export function JokeScreen() {
     const advance = (dx: number) => {
       const d = drag.current;
       if (!d) return;
+      // distance per broom scales to the viewport, so ~60% of a full-width swipe
+      // reaches 30 on any screen. On a narrow phone the old fixed 26px needed
+      // 780px of drag — more than the screen is wide — so it got stuck.
+      const per = Math.min(
+        DRAG_PER_BROOM,
+        Math.max(9, (window.innerWidth * 0.6) / TARGET),
+      );
       d.acc += dx;
-      while (d.acc >= DRAG_PER_BROOM) {
-        d.acc -= DRAG_PER_BROOM;
+      while (d.acc >= per) {
+        d.acc -= per;
         setBrooms((b) => Math.min(TARGET, b + 1));
       }
-      while (d.acc <= -DRAG_PER_BROOM) {
-        d.acc += DRAG_PER_BROOM;
+      while (d.acc <= -per) {
+        d.acc += per;
         setBrooms((b) => Math.max(0, b - 1));
       }
     };

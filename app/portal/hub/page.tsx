@@ -255,14 +255,15 @@ function HubContent() {
 
       <FortuneCookie locale={locale} />
 
-      <div className="fixed left-3 top-3 z-[60] flex items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
-        <button
-          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
-        >
-          {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
-        </button>
-      </div>
+      {/* language toggle — just a flag, bottom-left */}
+      <button
+        aria-label="Changer de langue · Change language"
+        className="fixed bottom-4 left-4 z-[60] text-[2rem] leading-none drop-shadow-[0_2px_3px_rgba(0,0,0,.3)] transition-transform hover:scale-110"
+        onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
+        type="button"
+      >
+        {locale === "fr" ? "🇫🇷" : "🇬🇧"}
+      </button>
     </div>
   );
 }
