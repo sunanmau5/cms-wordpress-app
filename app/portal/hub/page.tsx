@@ -335,7 +335,7 @@ const CSS = `
   background: repeating-conic-gradient(from 0deg at 50% 50%, ${RED} 0deg 5deg, rgba(196,48,43,0) 5deg 10deg);
   opacity: .2; animation: rayTurn 180s linear infinite;
 }
-@keyframes rayTurn { to { transform: translate(-50%,-50%) rotate(360deg) } }
+@keyframes rayTurn { from { transform: translate(-50%,-50%) rotate(0deg) } to { transform: translate(-50%,-50%) rotate(360deg) } }
 
 /* web-only banner: alternating ferris / joker across the top. Hidden on mobile,
    where the single cutouts looked cramped. */

@@ -532,7 +532,7 @@ function VariantB({
             en: { text: m.message, by: m.name },
             fr: { text: m.message, by: m.name },
           }));
-        if (fetched.length) setPool((prev) => [...prev, ...fetched]);
+        if (fetched.length) setPool((prev) => [...fetched, ...prev]);
       })
       .catch(() => {});
     return () => {

@@ -179,16 +179,15 @@ export default function WheelScreen() {
   return (
     <div className="wheel fixed inset-0 z-50 overflow-y-auto">
       {result !== null && (
-        <>
-          <button
-            aria-label="Fermer"
-            className="fixed inset-0 z-[70] cursor-default bg-black/45 backdrop-blur-sm"
-            onClick={() => setResult(null)}
-            type="button"
-          />
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+          onClick={() => setResult(null)}
+        >
+          <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" />
           <div
             key={`${result.a}-${result.p}`}
-            className="fixed left-1/2 top-1/2 z-[71] max-h-[86vh] w-[calc(100vw-2rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.28)]"
+            className="relative z-[71] max-h-[86vh] w-full max-w-[26rem] overflow-y-auto rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.28)]"
+            onClick={(e) => e.stopPropagation()}
             style={{ animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both" }}
           >
             <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">
@@ -211,7 +210,7 @@ export default function WheelScreen() {
               {locale === "fr" ? "Rejouer" : "Spin again"}
             </button>
           </div>
-        </>
+        </div>
       )}
       <BackToHub />
       <style
