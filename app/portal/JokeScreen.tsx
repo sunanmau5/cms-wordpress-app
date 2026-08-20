@@ -648,7 +648,10 @@ export function JokeScreen() {
           // her cutout came out smaller the more brooms there were
           className="absolute bottom-0 left-[4%] z-10 w-max"
           style={{
-            height: stageH,
+            // on a phone she is scaled down a touch so her head clears the note
+            // above rather than overlapping it — a composition tweak, not a
+            // text shrink
+            height: narrow ? Math.round(stageH * 0.82) : stageH,
             transform: `translateX(${-pan}px)`,
             transition: "transform 420ms cubic-bezier(.2,.9,.3,1)",
           }}

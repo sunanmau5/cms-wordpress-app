@@ -127,10 +127,12 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
 
         /* leaving to the hub: the ticket spins a few turns then fades out, while
            the cream + rays world stays put. The prompt + button fade first. */
+        /* a flat 2D spin — reliable on iOS Safari, where the 3D rotateY version
+           silently failed. The ticket twirls, shrinks and fades away. */
         @keyframes ticketSpinAway {
-          0%   { transform: perspective(1400px) rotateY(0deg) scale(1); opacity: 1; }
-          72%  { transform: perspective(1400px) rotateY(1080deg) scale(1); opacity: 1; }
-          100% { transform: perspective(1400px) rotateY(1260deg) scale(0.82); opacity: 0; }
+          0%   { transform: rotate(0deg) scale(1); opacity: 1; }
+          70%  { transform: rotate(680deg) scale(0.95); opacity: 1; }
+          100% { transform: rotate(760deg) scale(0.25); opacity: 0; }
         }
         .tick.leaving .presented { animation: ticketSpinAway 1150ms cubic-bezier(0.45, 0, 0.25, 1) forwards; }
         .tick.leaving .fade-up { opacity: 0; transition: opacity 250ms ease; pointer-events: none; }
@@ -317,20 +319,22 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
         </div>
       )}
 
-      <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
-        <button
-          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
-        >
-          {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
-        </button>
-        <button
-          className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
-          onClick={() => setPhase("idle")}
-        >
-          reset
-        </button>
-      </div>
+      {process.env.NODE_ENV !== "production" && (
+        <div className="fixed bottom-2 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-1 rounded-full bg-white/95 px-2 py-1.5 text-neutral-900 shadow-2xl ring-1 ring-black/20">
+          <button
+            className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+            onClick={() => setLocale((l) => (l === "fr" ? "en" : "fr"))}
+          >
+            {locale === "fr" ? "🇫🇷 FR" : "🇬🇧 EN"}
+          </button>
+          <button
+            className="rounded-full px-3 py-1 text-sm font-semibold hover:bg-neutral-200"
+            onClick={() => setPhase("idle")}
+          >
+            reset
+          </button>
+        </div>
+      )}
     </div>
   );
 }
