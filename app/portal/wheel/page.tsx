@@ -212,7 +212,7 @@ export default function WheelScreen() {
           </div>
         </div>
       )}
-      <BackToHub />
+      {result === null && <BackToHub />}
       <style
         dangerouslySetInnerHTML={{
           __html: `

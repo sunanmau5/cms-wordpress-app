@@ -601,10 +601,11 @@ function VariantB({
   }, []);
 
   useEffect(() => {
-    const n = Math.min(slotCount, pool.length);
+    // show every message at once (no cap) — same idea as the photo gallery
+    const n = pool.length;
     setSlots(Array.from({ length: n }, (_, i) => i));
     nextUp.current = n % ALL.length;
-  }, [slotCount]);
+  }, [slotCount, pool.length]);
 
   // every 9s one card fades out and returns as a different quote
   useEffect(() => {
