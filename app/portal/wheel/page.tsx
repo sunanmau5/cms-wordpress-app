@@ -612,11 +612,7 @@ export default function WheelScreen() {
 
               {/* the second beat: the area, then the prize inside it */}
               <div
-                className={`mt-5 flex min-h-[8rem] w-full max-w-[30rem] flex-col justify-center sm:min-h-[8.5rem] lg:mt-0 lg:overflow-hidden lg:transition-all lg:duration-[600ms] lg:ease-[cubic-bezier(.2,.9,.25,1)] ${
-                  result
-                    ? "lg:ml-10 lg:max-w-[24rem] lg:opacity-100"
-                    : "lg:ml-0 lg:max-w-0 lg:opacity-0"
-                }`}
+                className="mt-5 flex min-h-[8rem] w-full max-w-[30rem] flex-col justify-center sm:min-h-[8.5rem] lg:mt-0 lg:ml-0 lg:max-w-0 lg:overflow-hidden lg:opacity-0"
               >
                 {result === null ? (
                   <>
