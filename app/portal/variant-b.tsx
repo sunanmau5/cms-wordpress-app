@@ -67,8 +67,8 @@ export function VariantB({
 
         <button
           className="mt-6 rounded-full border-[4px] border-neutral-900 bg-[#ffd66b] px-10 py-4 text-lg font-black uppercase tracking-wide text-neutral-900 active:translate-x-[3px] active:translate-y-[3px]"
-          style={{ boxShadow: "5px 5px 0 rgba(0,0,0,0.9)" }}
           onPointerDown={onTap}
+          style={{ boxShadow: "5px 5px 0 rgba(0,0,0,0.9)" }}
         >
           {done ? "→ suite" : "tape !"}
         </button>

@@ -3,10 +3,9 @@
 // reload. Refuses to run in production, and rejects any id it does not already
 // find in the file rather than silently dropping it.
 
+import { NextResponse } from "next/server";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-
-import { NextResponse } from "next/server";
 
 const FILE = path.join(process.cwd(), "app/portal/fit/accessories.ts");
 

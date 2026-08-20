@@ -2,7 +2,6 @@
 // Real disco-ball PNG, brooms fly out in all directions and spin, liquid-chrome title.
 
 import { useEffect, useState } from "react";
-
 import { Anton, Bagel_Fat_One, Rubik_Bubbles } from "next/font/google";
 
 const bagel = Bagel_Fat_One({ subsets: ["latin"], weight: "400" });

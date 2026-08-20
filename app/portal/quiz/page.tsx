@@ -12,11 +12,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif, Rye } from "next/font/google";
+
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
 
 import { INTRO, SCORES } from "./content";
 import { QUESTIONS } from "./questions";
@@ -416,8 +415,8 @@ export default function QuizScreen() {
           const y = 2 * (1 - t) ** 2 + 64 * 2 * t * (1 - t) + 2 * t ** 2;
           return (
             <span
-              className="absolute block h-5 w-4"
               key={n}
+              className="absolute block h-5 w-4"
               style={{
                 left: `${t * 100}%`,
                 top: `${y}%`,
@@ -448,6 +447,7 @@ export default function QuizScreen() {
         <div className={`w-full ${started && !done && tallEnough ? "flex h-full min-h-0 flex-col" : "m-auto"}`}>
         {/* the hero sign, swinging very slightly, bulbs chasing along it */}
         <div
+          ref={heroRef}
           className={`shrink-0 text-center ${
             started && !done
               ? compact
@@ -460,7 +460,6 @@ export default function QuizScreen() {
               ? "mb-6 mt-8 sm:mt-10"
               : "mb-12 mt-16 sm:mt-28"
           }`}
-          ref={heroRef}
           style={{
             transform: `translateY(${flip}px)`,
             transition: gliding
@@ -486,8 +485,8 @@ export default function QuizScreen() {
             {(["top", "bottom"] as const).map((edge) =>
               Array.from({ length: BULBS }).map((_, n) => (
                 <span
-                  className="pointer-events-none absolute h-2 w-2 rounded-full bg-[#ffb43c]"
                   key={`${edge}-${n}`}
+                  className="pointer-events-none absolute h-2 w-2 rounded-full bg-[#ffb43c]"
                   style={{
                     left: `${((n + 0.5) / BULBS) * 100}%`,
                     [edge]: -4,
@@ -524,17 +523,17 @@ export default function QuizScreen() {
               appear to come out from its edges */}
           {celebrate && (
             <div
+              key={`burst-${i}`}
               aria-hidden
               className="pointer-events-none absolute inset-0 z-0"
-              key={`burst-${i}`}
             >
               {Array.from({ length: 30 }).map((_, n) => {
                 const a = rand(n, 71) * Math.PI * 2;
                 const d = 180 + rand(n, 72) * 260;
                 return (
                   <span
-                    className="confetto absolute left-1/2 top-1/2 block h-2.5 w-1.5 rounded-[1px]"
                     key={n}
+                    className="confetto absolute left-1/2 top-1/2 block h-2.5 w-1.5 rounded-[1px]"
                     style={
                       {
                         background: ["#d63a30", "#f0b73f", "#3f9f7f", "#e8836a", "#fff3d6"][n % 5],
@@ -568,7 +567,7 @@ export default function QuizScreen() {
             <div className="mx-auto max-w-[30rem]">
             <ul className="space-y-4">
               {INTRO[locale].map((line) => (
-                <li className="flex items-center gap-4" key={line}>
+                <li key={line} className="flex items-center gap-4">
                   {/* the same lamp the answers use */}
                   <span aria-hidden className="buzzer-base grid h-9 w-9 shrink-0 place-items-center">
                     <span className="buzzer-dome h-full w-full" />
@@ -625,8 +624,8 @@ export default function QuizScreen() {
         >
         {started && !done && (
           <div
-            className="flex min-h-0 flex-1 flex-col"
             key={i}
+            className="flex min-h-0 flex-1 flex-col"
             style={{ animation: "riseIn 500ms cubic-bezier(.16,1,.3,1) both" }}
           >
             <div className="shrink-0">
@@ -689,7 +688,7 @@ export default function QuizScreen() {
                 const showAsRight = reveal && o.correct;
                 const showAsWrong = reveal && isPicked && !o.correct;
                 return (
-                  <div data-correct={o.correct ? "true" : undefined} key={n}>
+                  <div key={n} data-correct={o.correct ? "true" : undefined}>
                     <button
                       className={`opt flex w-full items-center gap-4 rounded-xl border px-3.5 py-2.5 text-left ${compact ? "sm:py-1" : ""} ${
                         isPicked ? (o.correct ? "opt-right" : "opt-wrong") : ""

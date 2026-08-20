@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-
 import { ViewTransitions } from "next-view-transitions";
 
 import { LocaleProvider } from "./locale";
 import { ScreenNavProvider } from "./screen-nav";
+
 import "./transitions.css";
 
 // Scoped to the prototype only — deliberately NOT the shared root layout, so

@@ -7,10 +7,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { Instrument_Serif, Rye } from "next/font/google";
 
 import { useLocale } from "../locale";
-
-import { Instrument_Serif, Rye } from "next/font/google";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 const SERIF = instrument.className;
@@ -157,10 +156,10 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
               <path d="M14 44 120 8l106 36z" fill="#c4302b" stroke="#3a2118" strokeLinejoin="round" strokeWidth="4" />
               {Array.from({ length: 7 }).map((_, i) => (
                 <circle
+                  key={i}
                   cx={30 + i * 30}
                   cy={46 + Math.abs(3 - i) * 2}
                   fill="#f2c14e"
-                  key={i}
                   r="5"
                   stroke="#3a2118"
                   strokeWidth="3"
@@ -201,8 +200,8 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
 
               {/* the slot */}
               <rect fill="#3a2118" height="12" rx="3" width="120" x="60" y="240" />
-              <rect fill="#f7ead0" height="4" rx="2" width="104" x="68" y="244" opacity=".25" />
-              <path d="M50 268h140" stroke="#3a2118" strokeLinecap="round" strokeWidth="4" opacity=".35" />
+              <rect fill="#f7ead0" height="4" opacity=".25" rx="2" width="104" x="68" y="244" />
+              <path d="M50 268h140" opacity=".35" stroke="#3a2118" strokeLinecap="round" strokeWidth="4" />
             </svg>
 
             {/* the ticket feeding out of the slot */}
@@ -271,7 +270,7 @@ function MiniTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" 
       <p className={`${SERIF} text-center text-[0.7rem] text-[#3a2118]/70`}>{copy.date}</p>
       <div className="mt-1.5 flex justify-center gap-[3px]">
         {Array.from({ length: 22 }).map((_, i) => (
-          <span className="block h-3 bg-[#3a2118]" key={i} style={{ width: i % 3 ? 1 : 2.5 }} />
+          <span key={i} className="block h-3 bg-[#3a2118]" style={{ width: i % 3 ? 1 : 2.5 }} />
         ))}
       </div>
       <p className="sr-only">{locale}</p>
@@ -319,7 +318,7 @@ function BigTicket({ copy, locale }: { copy: (typeof COPY)["fr"]; locale: "fr" |
           </p>
           <div className="flex h-[70%] items-stretch gap-[2px]">
             {Array.from({ length: 16 }).map((_, i) => (
-              <span className="block bg-[#3a2118]" key={i} style={{ width: i % 3 ? 2 : 4 }} />
+              <span key={i} className="block bg-[#3a2118]" style={{ width: i % 3 ? 2 : 4 }} />
             ))}
           </div>
           <p className="sr-only">

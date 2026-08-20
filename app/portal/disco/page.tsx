@@ -8,11 +8,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif, Rye } from "next/font/google";
+
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 const SERIF = instrument.className;
@@ -158,7 +157,7 @@ export default function DiscoTap() {
         {brooms.map((id) => <FlyingBroom key={id} seed={id} />)}
 
         <button aria-label={t.start} className="ball" type="button">
-          <img alt="" className="ball-img" ref={ballRef} src="/30ans/disco-ball.png" />
+          <img ref={ballRef} alt="" className="ball-img" src="/30ans/disco-ball.png" />
         </button>
 
         {phase === "ready" && <span className="ball-hint">{t.start}</span>}

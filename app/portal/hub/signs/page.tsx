@@ -45,16 +45,16 @@ const SIGNS: Sign[] = [
 function SignSVG({ s }: { s: Sign }) {
   const d = s.shape === "rect" ? RECT : SCALLOP;
   return (
-    <svg viewBox="0 0 560 160" width="100%" style={{ display: "block" }}>
+    <svg style={{ display: "block" }} viewBox="0 0 560 160" width="100%">
       {s.border && <path d={d} fill="none" stroke={s.border} strokeWidth="10" />}
       <path d={d} fill={s.bg} stroke={s.border ?? s.bg} strokeWidth="3" />
       {/* bulbs riding the border as round dashes */}
-      <path className="sign-bulbs" d={d} fill="none" stroke={s.bulb} strokeWidth="6" strokeLinecap="round" strokeDasharray="0.1 21" />
+      <path className="sign-bulbs" d={d} fill="none" stroke={s.bulb} strokeDasharray="0.1 21" strokeLinecap="round" strokeWidth="6" />
       {s.bulb2 && (
-        <path className="sign-bulbs2" d={d} fill="none" stroke={s.bulb2} strokeWidth="6" strokeLinecap="round" strokeDasharray="0.1 21" strokeDashoffset="10.5" />
+        <path className="sign-bulbs2" d={d} fill="none" stroke={s.bulb2} strokeDasharray="0.1 21" strokeDashoffset="10.5" strokeLinecap="round" strokeWidth="6" />
       )}
-      <text className={FUNFAIR} x="280" y="88" fill={s.text} textAnchor="middle" dominantBaseline="central" fontSize="66" lengthAdjust="spacingAndGlyphs" textLength="420"
-        style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,.12)", strokeWidth: 1 }}>
+      <text className={FUNFAIR} dominantBaseline="central" fill={s.text} fontSize="66" lengthAdjust="spacingAndGlyphs" style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,.12)", strokeWidth: 1 }} textAnchor="middle" textLength="420" x="280"
+        y="88">
         RINA-LAND
       </text>
     </svg>

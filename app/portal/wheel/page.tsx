@@ -9,11 +9,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif, Oswald, Rye } from "next/font/google";
+
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
 
 import { AREAS } from "./prizes";
 
@@ -262,9 +261,9 @@ export default function WheelScreen() {
               <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35" />
               {Array.from({ length: BULBS }).map((_, i) => (
                 <span
+                  key={i}
                   aria-hidden
                   className="pointer-events-none absolute h-2 w-2 rounded-full bg-[#ffb43c]"
-                  key={i}
                   style={{
                     left: `${(i / (BULBS - 1)) * 100}%`,
                     top: i % 2 ? "-4px" : "calc(100% - 4px)",
@@ -320,9 +319,9 @@ export default function WheelScreen() {
                   const [ix1, iy1] = pt(a0, R_PRZ);
                   return (
                     <path
+                      key={`a${i}`}
                       d={`M ${ox1.toFixed(2)} ${oy1.toFixed(2)} A ${R_OUT} ${R_OUT} 0 0 1 ${ox2.toFixed(2)} ${oy2.toFixed(2)} L ${ix2.toFixed(2)} ${iy2.toFixed(2)} A ${R_PRZ} ${R_PRZ} 0 0 0 ${ix1.toFixed(2)} ${iy1.toFixed(2)} Z`}
                       fill={hsl(PALETTE[i % PALETTE.length].h, PALETTE[i % PALETTE.length].s, PALETTE[i % PALETTE.length].band)}
-                      key={`a${i}`}
                       stroke="#fffdf4"
                       strokeWidth="1.2"
                     />
@@ -341,9 +340,9 @@ export default function WheelScreen() {
                     const [ix1, iy1] = pt(a0, R_HUB);
                     return (
                       <path
+                        key={`p${k}`}
                         d={`M ${ox1.toFixed(2)} ${oy1.toFixed(2)} A ${R_PRZ} ${R_PRZ} 0 0 1 ${ox2.toFixed(2)} ${oy2.toFixed(2)} L ${ix2.toFixed(2)} ${iy2.toFixed(2)} A ${R_HUB} ${R_HUB} 0 0 0 ${ix1.toFixed(2)} ${iy1.toFixed(2)} Z`}
                         fill={hsl(PALETTE[i % PALETTE.length].h, PALETTE[i % PALETTE.length].s, cellL(i, n))}
-                        key={`p${k}`}
                         stroke="#fffdf4"
                         strokeWidth="0.8"
                       />
@@ -353,11 +352,11 @@ export default function WheelScreen() {
 
                 {cells.map((c) => (
                   <text
+                    key={c.k}
                     className={SERIF}
+                    dominantBaseline="central"
                     fill={CELL_INK}
                     fontSize="8"
-                    key={c.k}
-                    dominantBaseline="central"
                     textAnchor={c.anchor}
                     transform={`rotate(${c.rot.toFixed(2)} ${c.x.toFixed(2)} ${c.y.toFixed(2)})`}
                     x={c.x}
@@ -396,9 +395,9 @@ export default function WheelScreen() {
                     const [ex, ey] = pt(up ? a1 : a0, r);
                     return (
                       <path
+                        key={i}
                         d={`M ${sx.toFixed(2)} ${sy.toFixed(2)} A ${r} ${r} 0 0 ${up ? 1 : 0} ${ex.toFixed(2)} ${ey.toFixed(2)}`}
                         id={`arc-${i}`}
-                        key={i}
                       />
                     );
                   })}
@@ -408,7 +407,7 @@ export default function WheelScreen() {
                   // "OBJETS INUTILES" ran off the end of its arc and was clipped
                   const size = name.length > 13 ? 6 : name.length > 10 ? 6.8 : 7.6;
                   return (
-                  <text className={FUNFAIR} dominantBaseline="central" fill={PALETTE[i % PALETTE.length].ink} fontSize={size} key={`t${i}`}>
+                  <text key={`t${i}`} className={FUNFAIR} dominantBaseline="central" fill={PALETTE[i % PALETTE.length].ink} fontSize={size}>
                     <textPath href={`#arc-${i}`} startOffset="50%" textAnchor="middle">
                       {name}
                     </textPath>
@@ -429,11 +428,11 @@ export default function WheelScreen() {
                       style={{ animationDelay: `${i % 2 ? 500 : 0}ms` }}
                     />
                     <circle
+                      key={i}
                       className="rimbulb"
                       cx={x}
                       cy={y}
                       fill="#f0a92c"
-                      key={i}
                       r="2.4"
                       stroke="#8a5f1e"
                       strokeWidth="0.35"
@@ -469,8 +468,8 @@ export default function WheelScreen() {
                 </>
               ) : (
                 <div
-                  className="flex flex-col justify-center rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:px-10 lg:py-8"
                   key={`${result.a}-${result.p}`}
+                  className="flex flex-col justify-center rounded-[1.75rem] border-2 border-[#d63a30]/25 bg-[#fffdf4] px-6 py-6 text-center shadow-[0_18px_44px_rgba(160,100,40,.18)] lg:px-10 lg:py-8"
                   style={{ animation: "popIn 380ms cubic-bezier(.2,1.3,.4,1) both" }}
                 >
                   <p className="text-[11px] uppercase tracking-[0.28em] text-[#a8281f]/70">{t.landed}</p>
@@ -487,8 +486,8 @@ export default function WheelScreen() {
                         style={{ aspectRatio: "16 / 9" }}
                       >
                         <iframe
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           className="absolute inset-0 h-full w-full"
                           src={`https://www.youtube-nocookie.com/embed/${vid}`}
                           title={locale === "fr" ? prize!.fr : prize!.en}

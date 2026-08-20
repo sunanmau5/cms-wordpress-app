@@ -7,11 +7,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif, Rye } from "next/font/google";
+
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
 
 import { PHOTO, SLOTS } from "./accessories";
 
@@ -154,9 +153,9 @@ export default function FitScreen() {
               <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[1.25rem] border-2 border-[#d63a30]/35" />
               {Array.from({ length: BULBS }).map((_, i) => (
                 <span
+                  key={i}
                   aria-hidden
                   className="pointer-events-none absolute h-2 w-2 rounded-full bg-[#ffb43c]"
-                  key={i}
                   style={{
                     left: `${(i / (BULBS - 1)) * 100}%`,
                     top: i % 2 ? "-4px" : "calc(100% - 4px)",
@@ -179,7 +178,7 @@ export default function FitScreen() {
             <div className="relative w-full shrink-0" style={{ maxWidth: "min(22rem, 43vh)" }}>
               {/* behind the frame, so pieces fly out from under it */}
               {burst > 0 && (
-                <div aria-hidden className="pointer-events-none absolute inset-0 z-0" key={burst}>
+                <div key={burst} aria-hidden className="pointer-events-none absolute inset-0 z-0">
                   {Array.from({ length: 26 }).map((_, i) => {
                     const a = (i / 26) * Math.PI * 2 + (burst % 7) * 0.3;
                     // far enough to clear the frame, which is ~350px across
@@ -187,8 +186,8 @@ export default function FitScreen() {
                     const c = ["#d63a30", "#e8a33d", "#3f8f79", "#2f6fd0", "#c9257e", "#ffd166"][i % 6];
                     return (
                       <span
-                        className="confetto absolute left-1/2 top-1/2 block h-3.5 w-2 rounded-[1px] shadow-[0_1px_2px_rgba(120,80,30,.35)]"
                         key={i}
+                        className="confetto absolute left-1/2 top-1/2 block h-3.5 w-2 rounded-[1px] shadow-[0_1px_2px_rgba(120,80,30,.35)]"
                         style={{
                           background: c,
                           animationDelay: `${(i % 6) * 30}ms`,
@@ -202,7 +201,7 @@ export default function FitScreen() {
                 </div>
               )}
               {/* NOT overflow-hidden: a hat riding up out of the frame is the joke */}
-              <div className="relative z-10" ref={frameRef}>
+              <div ref={frameRef} className="relative z-10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt=""
@@ -225,8 +224,8 @@ export default function FitScreen() {
                   return missing[item.src] ? (
                     // the art is not in public/30ans/fit yet — show its footprint
                     <div
-                      className="acc absolute grid place-items-center rounded-lg border-2 border-dashed border-[#d63a30]/60 bg-[#d63a30]/10 py-6 text-center text-[11px] uppercase tracking-wider text-[#a8281f]"
                       key={item.id}
+                      className="acc absolute grid place-items-center rounded-lg border-2 border-dashed border-[#d63a30]/60 bg-[#d63a30]/10 py-6 text-center text-[11px] uppercase tracking-wider text-[#a8281f]"
                       style={style}
                     >
                       {locale === "fr" ? item.fr : item.en}
@@ -234,9 +233,9 @@ export default function FitScreen() {
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
+                      key={item.id}
                       alt=""
                       className="acc absolute"
-                      key={item.id}
                       onError={() => setMissing((m) => ({ ...m, [item.src]: true }))}
                       src={item.src}
                       style={style}
@@ -256,7 +255,7 @@ export default function FitScreen() {
                 const n = picked[slot.id] ?? -1;
                 const item = n >= 0 ? slot.items[n] : null;
                 return (
-                  <div className="mb-3 rounded-[1rem] border border-[#d63a30]/20 bg-[#fffdf4] px-3 py-2" key={slot.id}>
+                  <div key={slot.id} className="mb-3 rounded-[1rem] border border-[#d63a30]/20 bg-[#fffdf4] px-3 py-2">
                     <div className="flex items-center gap-2">
                       <span className="w-[4.5rem] shrink-0 text-[10px] uppercase tracking-[0.18em] text-[#a8281f]/70">
                         {locale === "fr" ? slot.fr : slot.en}
@@ -287,8 +286,8 @@ export default function FitScreen() {
                           ["−", 0, 0, -2], ["+", 0, 0, 2],
                         ] as const).map(([label, dx, dy, dw]) => (
                           <button
-                            className="rounded-md border border-[#d63a30]/30 px-2 py-1 text-[#a8281f]"
                             key={label}
+                            className="rounded-md border border-[#d63a30]/30 px-2 py-1 text-[#a8281f]"
                             onClick={() => bump(item.id, dx, dy, dw)}
                           >
                             {label}

@@ -5,19 +5,18 @@
 "use client";
 
 import {
+  type ReactElement,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type ReactElement,
 } from "react";
 
 import { useLocale } from "./locale";
-
-import { VariantA, nameA } from "./variant-a";
-import { VariantB, nameB } from "./variant-b";
-import { VariantC, nameC } from "./variant-c";
-import { FONTS, VariantD, nameD } from "./variant-d";
+import { nameA,VariantA } from "./variant-a";
+import { nameB,VariantB } from "./variant-b";
+import { nameC,VariantC } from "./variant-c";
+import { FONTS, nameD,VariantD } from "./variant-d";
 
 type VariantProps = {
   count: number;

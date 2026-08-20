@@ -9,7 +9,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-
 import { Instrument_Serif } from "next/font/google";
 
 import { FORTUNES } from "./fortunes";
@@ -63,10 +62,10 @@ export function FortuneCookie({ locale }: { locale: "fr" | "en" }) {
       {/* the opened cookie, centre stage */}
       {phase !== "idle" && (
         <div
+          aria-label={locale === "fr" ? "Ton biscuit de la fortune" : "Your fortune cookie"}
           className="fc-overlay"
           onClick={close}
           role="dialog"
-          aria-label={locale === "fr" ? "Ton biscuit de la fortune" : "Your fortune cookie"}
         >
           <button aria-label="Close" className="fc-x" onClick={close} type="button">
             ✕

@@ -8,7 +8,7 @@
 // We only add the DIRECTION: a data-vt flag on <html> that transitions.css keys
 // its slide keyframes off. Where the API is missing it navigates instantly.
 
-import { createContext, useCallback, useContext, useEffect, type ReactNode } from "react";
+import { createContext, type ReactNode,useCallback, useContext, useEffect } from "react";
 import { useTransitionRouter } from "next-view-transitions";
 
 type Dir = "left" | "up" | "fade";

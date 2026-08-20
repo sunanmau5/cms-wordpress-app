@@ -5,13 +5,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-
-import { useLocale } from "./locale";
-
 import { Instrument_Serif } from "next/font/google";
 
-import { useScreenNav } from "./screen-nav";
 import { COPY, TARGET } from "./joke-copy";
+import { useLocale } from "./locale";
+import { useScreenNav } from "./screen-nav";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 // Instrument Serif ships a true italic; without asking for it the browser only
@@ -592,8 +590,8 @@ export function JokeScreen() {
           The stage is measured against the taller of the two so switching
           language never changes how big she is. */}
       <div
-        aria-hidden
         ref={mirrorRef}
+        aria-hidden
         className={`pointer-events-none invisible absolute inset-x-0 top-0 z-0 px-6 pt-12 sm:px-10 ${
           short ? "sm:pt-6" : "sm:pt-16"
         }`}
@@ -616,9 +614,9 @@ export function JokeScreen() {
         >
           <div style={{ animation: "tumble 90s linear infinite" }}>
             <img
-              draggable={false}
               alt=""
               className="w-[32vw] max-w-[178px] sm:max-w-[226px]"
+              draggable={false}
               src={`/30ans/surprised-cutout-web.png${BUST}`}
               style={{ animation: "riseIn 1100ms cubic-bezier(.16,1,.3,1) both" }}
             />
@@ -648,9 +646,9 @@ export function JokeScreen() {
               {/* both photos are stacked and cross-faded, so picking up the
                   broom is a dissolve rather than a jump cut */}
               <img
-                draggable={false}
                 alt=""
                 className="pointer-events-none h-full w-auto max-w-none opacity-0"
+                draggable={false}
                 src={`/30ans/cutout2-web.png${BUST}`}
                 style={{ visibility: "hidden" }}
               />
@@ -659,10 +657,10 @@ export function JokeScreen() {
                 { src: `/30ans/cutout2-web.png${BUST}`, on: brooms > 0 },
               ].map((img) => (
                 <img
-                  draggable={false}
                   key={img.src}
                   alt=""
                   className="pointer-events-none absolute bottom-0 left-0 h-full w-auto max-w-none"
+                  draggable={false}
                   src={img.src}
                   style={{
                     opacity: img.on ? 1 : 0,
@@ -708,9 +706,9 @@ export function JokeScreen() {
                     }}
                   >
                     <img
-                      draggable={false}
                       alt=""
                       className="h-full w-auto max-w-none"
+                      draggable={false}
                       src="/30ans/broom-full-web.png"
                       style={{
                         transformOrigin: "bottom center",

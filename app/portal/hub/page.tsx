@@ -9,12 +9,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Instrument_Serif, Rye } from "next/font/google";
+import Image from "next/image";
 
 import { useLocale } from "../locale";
 import { useScreenNav } from "../screen-nav";
-
-import Image from "next/image";
-import { Instrument_Serif, Rye } from "next/font/google";
 
 import { ACTIVITIES, HUB } from "./content";
 import { FortuneCookie } from "./FortuneCookie";
@@ -146,13 +145,13 @@ function HubContent() {
         <div className="title-row shrink-0">
           <div aria-hidden className="side-banner">
             {Array.from({ length: 5 }).map((_, i) => (
-              <img alt="" key={i} src={i % 2 ? "/30ans/hub/joker-icon.png" : "/30ans/hub/ferris-wheel-icon.png"} />
+              <img key={i} alt="" src={i % 2 ? "/30ans/hub/joker-icon.png" : "/30ans/hub/ferris-wheel-icon.png"} />
             ))}
           </div>
           <div className="title-slot"><Sign /></div>
           <div aria-hidden className="side-banner">
             {Array.from({ length: 5 }).map((_, i) => (
-              <img alt="" key={i} src={i % 2 ? "/30ans/hub/ferris-wheel-icon.png" : "/30ans/hub/joker-icon.png"} />
+              <img key={i} alt="" src={i % 2 ? "/30ans/hub/ferris-wheel-icon.png" : "/30ans/hub/joker-icon.png"} />
             ))}
           </div>
         </div>
@@ -165,10 +164,10 @@ function HubContent() {
               const tn = TUNE[a.icon] ?? { rot: 0, delay: 0, scale: 1 };
               return (
                 <a
+                  key={a.id}
                   className="ent"
                   data-a={a.icon}
                   href={a.href}
-                  key={a.id}
                   onClick={(e) => {
                     e.preventDefault();
                     nav(a.href, "fade");
@@ -178,7 +177,7 @@ function HubContent() {
                   <span className="ent-lift">
                     <span className="ent-art" style={{ animationDelay: `${tn.delay}s` }}>
                       {art ? (
-                        <Image alt={a[locale].name} className="ent-img" fill sizes="(max-width:900px) 40vw, 160px" src={art} style={{ objectFit: "contain", transform: `scale(${tn.scale})` }} />
+                        <Image fill alt={a[locale].name} className="ent-img" sizes="(max-width:900px) 40vw, 160px" src={art} style={{ objectFit: "contain", transform: `scale(${tn.scale})` }} />
                       ) : null}
                     </span>
                     <span className="ent-label">
@@ -233,7 +232,7 @@ function Sign() {
     <svg className="rina-sign" viewBox="0 0 560 160">
       <rect fill={DEEPRED} height="140" rx="26" stroke={GOLD} strokeWidth="4" width="536" x="12" y="10" />
       {bulbs.map((b, i) => (
-        <circle className="mbulb" cx={b.x} cy={b.y} fill={i % 2 ? CREAM : GOLD} key={i} r="4.4" style={{ animationDelay: `${(i * 100) % 1200}ms` }} />
+        <circle key={i} className="mbulb" cx={b.x} cy={b.y} fill={i % 2 ? CREAM : GOLD} r="4.4" style={{ animationDelay: `${(i * 100) % 1200}ms` }} />
       ))}
       <text className={FUNFAIR} dominantBaseline="central" fill="#ffffff" fontSize="62" lengthAdjust="spacingAndGlyphs" textAnchor="middle" textLength="410" x="280" y="84">
         RINA-LAND

@@ -242,8 +242,8 @@ export default function WheelEditor() {
 
         {areas.map((a, ai) => (
           <section
-            className="mb-8 rounded-lg border border-white/10 bg-white/[0.03] p-5"
             key={ai}
+            className="mb-8 rounded-lg border border-white/10 bg-white/[0.03] p-5"
           >
             <div className="mb-4 flex items-center gap-3">
               <span className="grid h-7 w-7 place-items-center rounded-full bg-amber-400/20 text-[12px] font-bold text-amber-300">
@@ -273,8 +273,8 @@ export default function WheelEditor() {
                 const vidOk = isVideo && !!youtubeId(vraw);
                 return (
                   <div
-                    className={`rounded border p-4 ${isVideo ? "border-fuchsia-500/40 bg-fuchsia-500/[0.05]" : "border-white/10"}`}
                     key={pi}
+                    className={`rounded border p-4 ${isVideo ? "border-fuchsia-500/40 bg-fuchsia-500/[0.05]" : "border-white/10"}`}
                   >
                     <p className="mb-3 text-[11px] uppercase tracking-wider text-white/40">
                       Prize {pi + 1}

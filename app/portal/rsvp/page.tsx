@@ -7,12 +7,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif } from "next/font/google";
 
+import { useLocale } from "../locale";
 import { useScreenNav } from "../screen-nav";
+
 import { COPY, DATES } from "./copy";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
@@ -129,9 +128,9 @@ function Confetti() {
     <>
       {CONFETTI.map((p, i) => (
         <span
+          key={i}
           aria-hidden
           className="confetti pointer-events-none absolute top-1 block h-2 w-2 rounded-[2px]"
-          key={i}
           style={
             {
               left: p.left,
@@ -171,10 +170,10 @@ function Balls({ from, count, className = "" }: { from: number; count: number; c
         const b = ball(from + n);
         return (
           <img
+            key={n}
             alt=""
             className="rl-ball"
             draggable={false}
-            key={n}
             src="/30ans/disco-ball.png"
             style={{
               width: b.size,
@@ -344,12 +343,12 @@ function PartyHorns({ boxRef }: { boxRef: React.RefObject<HTMLDivElement | null>
   }, [boxRef]);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-0" ref={wrap}>
+    <div ref={wrap} aria-hidden className="pointer-events-none fixed inset-0 z-0">
       {[
         { w: "w-[96px] sm:w-[190px]", spin: 26, rev: false },
         { w: "w-[82px] sm:w-[165px]", spin: 33, rev: true },
       ].map((h, i) => (
-        <div className={`absolute left-0 top-0 ${h.w}`} key={i}>
+        <div key={i} className={`absolute left-0 top-0 ${h.w}`}>
           <img
             alt=""
             className="w-full max-w-none opacity-75"
@@ -640,7 +639,7 @@ export default function RsvpScreen() {
                 containing block for position:fixed children — which pinned the
                 horns to the text instead of the viewport */}
             <PartyHorns boxRef={askRef} />
-            <div className="relative" ref={askRef} style={{ animation: "riseIn 900ms cubic-bezier(.16,1,.3,1) both" }}>
+            <div ref={askRef} className="relative" style={{ animation: "riseIn 900ms cubic-bezier(.16,1,.3,1) both" }}>
             {/* one line from the sm breakpoint up: the size follows the viewport
                 so neither language ever wraps onto a second line */}
             <h1
@@ -726,8 +725,8 @@ export default function RsvpScreen() {
                     const on = dates.includes(d.key);
                     return (
                       <button
-                        className="flex w-full items-center gap-3 text-left"
                         key={d.key}
+                        className="flex w-full items-center gap-3 text-left"
                         onClick={() => toggleDate(d.key)}
                         type="button"
                       >
@@ -834,7 +833,7 @@ export default function RsvpScreen() {
                   [t.sentDiet, sentRef.current?.diet],
                   [t.sentMessage, sentRef.current?.message],
                 ].map(([k, v]) => (
-                  <div className="sent-row border-b border-white/10 pb-3" key={k as string}>
+                  <div key={k as string} className="sent-row border-b border-white/10 pb-3">
                     <dt className={label}>{k}</dt>
                     <dd className={`${SERIF} mt-1.5 text-[1.35rem] text-white/90`}>
                       {(v as string)?.trim() ? (v as string) : t.sentNothing}
@@ -945,10 +944,10 @@ export default function RsvpScreen() {
           </button>
           {(["ask", "form", "sent", "no", "noSent"] as Stage[]).map((s) => (
             <button
+              key={s}
               className={`rounded-full px-3 py-1 text-xs font-semibold ${
                 s === stage ? "bg-neutral-900 text-white" : "bg-neutral-200"
               }`}
-              key={s}
               onClick={() => go(s)}
             >
               {s}

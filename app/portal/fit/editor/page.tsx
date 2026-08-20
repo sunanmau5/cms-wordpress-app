@@ -82,7 +82,7 @@ export default function FitEditor() {
       <div className="mx-auto flex max-w-[74rem] flex-col gap-6 lg:flex-row">
         {/* the portrait — drag anything on it */}
         <div className="mx-auto w-full max-w-[26rem] shrink-0">
-          <div className="relative" onPointerMove={onMove} onPointerUp={onUp} ref={frameRef}>
+          <div ref={frameRef} className="relative" onPointerMove={onMove} onPointerUp={onUp}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="" className="block w-full select-none rounded-xl" draggable={false} src={PHOTO.src} />
             {ALL.map((i) => {
@@ -91,12 +91,12 @@ export default function FitEditor() {
               return (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
+                  key={i.id}
                   alt=""
                   className={`absolute cursor-grab select-none touch-none active:cursor-grabbing ${
                     on ? "outline-dashed outline-2 outline-sky-500" : "opacity-25 hover:opacity-60"
                   }`}
                   draggable={false}
-                  key={i.id}
                   onPointerDown={onDown(i.id)}
                   src={i.src}
                   style={{
@@ -125,10 +125,10 @@ export default function FitEditor() {
           <div className="mb-4 flex flex-wrap gap-1">
             {ALL.map((i) => (
               <button
+                key={i.id}
                 className={`rounded-full border px-3 py-1 text-sm ${
                   i.id === active ? "border-sky-600 bg-sky-600 text-white" : "border-neutral-300 bg-white"
                 }`}
-                key={i.id}
                 onClick={() => setActive(i.id)}
               >
                 {i.fr}
@@ -144,7 +144,7 @@ export default function FitEditor() {
               ["x", "x", -20, 120],
               ["y", "y", -40, 120],
             ] as const).map(([label, key, lo, hi]) => (
-              <label className="mb-3 block text-sm" key={key}>
+              <label key={key} className="mb-3 block text-sm">
                 <span className="mb-1 flex justify-between text-neutral-600">
                   <span>{label}</span>
                   <code>{p[key]}</code>

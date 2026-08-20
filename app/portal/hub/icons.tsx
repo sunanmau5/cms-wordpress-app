@@ -97,10 +97,10 @@ export function Icon({ name }: { name: string }) {
           <path d="M60 4v14" stroke={CREAM} strokeWidth="3" />
           <g className="turn-slow" style={{ transformOrigin: "60px 52px" }}>
             <circle cx="60" cy="52" fill={NAVY} r="30" />
-            <path d="M30 52h60M60 22v60" stroke={CREAM} strokeWidth="2.4" opacity=".85" />
-            <path d="M38 33c13 8 31 8 44 0M38 71c13-8 31-8 44 0" fill="none" stroke={CREAM} strokeWidth="2.4" opacity=".85" />
+            <path d="M30 52h60M60 22v60" opacity=".85" stroke={CREAM} strokeWidth="2.4" />
+            <path d="M38 33c13 8 31 8 44 0M38 71c13-8 31-8 44 0" fill="none" opacity=".85" stroke={CREAM} strokeWidth="2.4" />
             <circle cx="48" cy="40" fill={GOLD} r="5" />
-            <circle cx="70" cy="62" fill={CREAM} r="3.4" opacity=".9" />
+            <circle cx="70" cy="62" fill={CREAM} opacity=".9" r="3.4" />
           </g>
         </svg>
       );

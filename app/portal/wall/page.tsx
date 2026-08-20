@@ -4,16 +4,12 @@
 "use client";
 
 import {
+  type ReactElement,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type ReactElement,
 } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import {
   Fraunces,
   IBM_Plex_Sans,
@@ -23,7 +19,10 @@ import {
   Poppins,
 } from "next/font/google";
 
-import { QUOTES, type Quote } from "./quotes";
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
+
+import { type Quote,QUOTES } from "./quotes";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 const fraunces = Fraunces({ subsets: ["latin"], weight: "400" });
@@ -417,7 +416,6 @@ function VariantA({
   return (
     <div
       className="relative h-full w-full cursor-grab overflow-hidden active:cursor-grabbing"
-      style={PAPER}
       onPointerDown={(e) => {
         drag.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
       }}
@@ -428,6 +426,7 @@ function VariantA({
       onPointerUp={() => {
         drag.current = null;
       }}
+      style={PAPER}
     >
       <div
         className="absolute left-1/2 top-1/2"
@@ -743,11 +742,11 @@ function VariantB({
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={PAPER}
       onTouchStart={() => {
         touch.current = true;
         setNight(false);
       }}
+      style={PAPER}
     >
       {/* title, high on the page */}
       <h1
@@ -854,6 +853,10 @@ function VariantB({
       {open && (
         <div
           className="absolute inset-0 z-40 flex items-center justify-center px-5"
+          onClick={() => {
+            closeModal();
+            setSent(false);
+          }}
           style={{
             background: "rgba(3,3,5,.72)",
             backdropFilter: "blur(4px)",
@@ -862,13 +865,10 @@ function VariantB({
               ? "fadeUp 200ms ease-in both reverse"
               : "fadeUp 260ms ease-out both",
           }}
-          onClick={() => {
-            closeModal();
-            setSent(false);
-          }}
         >
           <div
             className="w-full max-w-md rounded-2xl p-7"
+            onClick={(e) => e.stopPropagation()}
             style={{
               background: "rgba(20,20,24,.92)",
               boxShadow:
@@ -877,7 +877,6 @@ function VariantB({
                 ? "panelIn 200ms ease-in both reverse"
                 : "panelIn 320ms cubic-bezier(.2,1,.3,1) both",
             }}
-            onClick={(e) => e.stopPropagation()}
           >
             {sent ? (
               <div className="py-8 text-center">
@@ -1024,23 +1023,23 @@ function VariantB({
       <div
         ref={buttonRef}
         className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+        onClick={() => {
+          if (!touch.current) setOpen(true);
+        }}
         onFocus={() => setNight(true)}
+        // no hover on a phone: the first tap plays the transition, and the
+        // second one would open the message form
         onMouseEnter={() => {
           if (!touch.current) setNight(true);
         }}
         onMouseLeave={() => {
           if (!touch.current && !open) setNight(false);
         }}
-        // no hover on a phone: the first tap plays the transition, and the
-        // second one would open the message form
         onTouchStart={(e) => {
           e.stopPropagation();
           touch.current = true;
           if (night) setOpen(true);
           else setNight(true);
-        }}
-        onClick={() => {
-          if (!touch.current) setOpen(true);
         }}
       >
         <button

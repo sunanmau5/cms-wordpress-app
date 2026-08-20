@@ -74,7 +74,7 @@ export default function CaptionEditor() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {rows.map((r, i) => (
-            <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3" key={r.id}>
+            <div key={r.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
               <div className="mb-1 flex items-baseline justify-between">
                 <span className="text-xs text-white/40">#{i + 1}</span>
                 {i < 16 && (

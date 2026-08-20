@@ -6,14 +6,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BackToHub } from "../BackToHub";
-
-import { useLocale } from "../locale";
-
 import { Instrument_Serif } from "next/font/google";
 
+import { BackToHub } from "../BackToHub";
+import { useLocale } from "../locale";
+
 import { COPY } from "./copy";
-import { PHOTOS, full, thumb } from "./photos";
+import { full, PHOTOS, thumb } from "./photos";
 
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400" });
 const SERIF = instrument.className;
@@ -279,8 +278,8 @@ export default function GalleryScreen() {
       <div className="pointer-events-none absolute inset-0">
         {STARS.map((s, i) => (
           <span
-            className="absolute rounded-full bg-white"
             key={i}
+            className="absolute rounded-full bg-white"
             style={{
               left: `${s.left}%`,
               top: `${s.top}%`,
@@ -300,8 +299,8 @@ export default function GalleryScreen() {
           const size = 40 + z * 58; // far ones small, near ones big
           return (
             <button
-              className="photo absolute left-0 top-0 transition-[filter,opacity] duration-300"
               key={p.id}
+              className="photo absolute left-0 top-0 transition-[filter,opacity] duration-300"
               onClick={() => setOpen(i)}
               style={{
                 width: `clamp(34px, ${size / 13}vw, ${size}px)`,
@@ -326,7 +325,7 @@ export default function GalleryScreen() {
 
       {/* title + hint, out of the way of the field */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[40] px-6 pt-10 text-center sm:pt-14">
-        <div className="mx-auto w-max" ref={titleRef}>
+        <div ref={titleRef} className="mx-auto w-max">
           <h1 className={`${SERIF} text-[2.2rem] text-white sm:text-[3rem]`}>{t.title}</h1>
           <p className="mt-2 text-[13px] uppercase tracking-[0.2em] text-white/55">
             {t.hint}
@@ -345,10 +344,10 @@ export default function GalleryScreen() {
 
           {BALLS.map((b, i) => (
             <img
+              key={i}
               alt=""
               className="pointer-events-none absolute opacity-70"
               draggable={false}
-              key={i}
               src="/30ans/disco-ball.png"
               style={{
                 left: `${b.left}%`,

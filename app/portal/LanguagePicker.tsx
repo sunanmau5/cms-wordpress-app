@@ -5,7 +5,7 @@
 // as the "tap to continue" hint; flags centred on a dark ground that matches
 // the opening.
 
-import { useLocale, type Locale } from "./locale";
+import { type Locale,useLocale } from "./locale";
 
 export function LanguagePicker({ onPick }: { onPick: () => void }) {
   const { setLocale } = useLocale();

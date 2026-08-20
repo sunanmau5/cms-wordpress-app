@@ -1,7 +1,6 @@
 import { promises as fs } from "fs";
-import path from "path";
-
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 
 /**
  * DEV ONLY — rewrites the wheel's content file from the editor at

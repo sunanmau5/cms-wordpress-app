@@ -7,11 +7,11 @@
 
 import {
   createContext,
+  type ReactNode,
+  type SetStateAction,
   useContext,
   useEffect,
   useState,
-  type ReactNode,
-  type SetStateAction,
 } from "react";
 
 export type Locale = "fr" | "en";

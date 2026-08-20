@@ -285,9 +285,9 @@ export default function QuizEditor() {
           <div className="space-y-5">
             {intro.fr.map((_, n) => (
               <Pair
+                key={n}
                 en={intro.en[n] ?? ""}
                 fr={intro.fr[n] ?? ""}
-                key={n}
                 onEn={(v) =>
                   setIntro((c) => ({ ...c, en: c.en.map((x, m) => (m === n ? v : x)) }))
                 }
@@ -326,8 +326,8 @@ export default function QuizEditor() {
         {/* questions */}
         {questions.map((q, qi) => (
           <section
-            className="mb-8 rounded-lg border border-white/10 bg-white/[0.03] p-5"
             key={qi}
+            className="mb-8 rounded-lg border border-white/10 bg-white/[0.03] p-5"
           >
             <h2 className="mb-4 text-lg font-semibold">Question {qi + 1}</h2>
             <Pair
@@ -342,10 +342,10 @@ export default function QuizEditor() {
             <div className="mt-6 space-y-5">
               {q.options.map((o, oi) => (
                 <div
+                  key={oi}
                   className={`rounded border p-4 ${
                     o.correct ? "border-emerald-500/50 bg-emerald-500/[0.06]" : "border-white/10"
                   }`}
-                  key={oi}
                 >
                   <div className="mb-3 flex items-center gap-3">
                     <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10 text-[11px] font-bold">
