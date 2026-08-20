@@ -171,8 +171,8 @@ function ColumnBody({
       <p
         // wider measure, more leading and more contrast than the first pass —
         // italic serif at low opacity on black was hard going
-        className={`${SERIF_IT} mt-6 max-w-[38rem] whitespace-pre-line text-left text-[1.05rem] leading-[1.7] text-white/85 sm:mx-auto sm:text-center ${
-          short ? "sm:mt-5 sm:text-[1.1rem]" : "sm:mt-8 sm:text-[1.4rem]"
+        className={`${SERIF_IT} mt-6 max-w-[38rem] whitespace-pre-line text-left text-[1.25rem] leading-[1.7] text-white/85 sm:mx-auto sm:text-center ${
+          short ? "sm:mt-5 sm:text-[1.3rem]" : "sm:mt-8 sm:text-[1.7rem]"
         }`}
         style={
           still
