@@ -3,7 +3,13 @@
 
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactElement,
+} from "react";
 import { BackToHub } from "../BackToHub";
 
 import { useLocale } from "../locale";
@@ -1225,7 +1231,7 @@ type WallVariantProps = {
 const VARIANTS: {
   key: string;
   name: string;
-  Component: (p: WallVariantProps) => JSX.Element;
+  Component: (p: WallVariantProps) => ReactElement;
 }[] = [
   { key: "A", name: "Constellation — drag to roam", Component: VariantA },
   { key: "B", name: "Drift — floats by itself", Component: VariantB },

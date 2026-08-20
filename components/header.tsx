@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 
 import { PAGES } from "@/lib/constants";
@@ -33,9 +33,12 @@ function Header() {
   const [activeOption, setActiveOption] = useState<string>(activePage);
 
   const navigate = (route: string) => {
-    window.history.pushState({ referer: activePage }, "", route);
     setActiveOption(route);
   };
+
+  useEffect(() => {
+    setActiveOption(activePage);
+  }, [activePage]);
 
   if (isMobile) {
     return (

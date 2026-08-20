@@ -4,7 +4,13 @@
 
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactElement,
+} from "react";
 
 import { useLocale } from "./locale";
 
@@ -24,7 +30,7 @@ type VariantProps = {
 const VARIANTS: {
   key: string;
   name: string;
-  Component: (props: VariantProps) => JSX.Element;
+  Component: (props: VariantProps) => ReactElement;
 }[] = [
   { key: "D", name: nameD, Component: VariantD },
   { key: "A", name: nameA, Component: VariantA },

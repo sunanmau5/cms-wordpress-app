@@ -11,6 +11,7 @@ import {
   useEffect,
   useState,
   type ReactNode,
+  type SetStateAction,
 } from "react";
 
 export type Locale = "fr" | "en";
@@ -19,7 +20,7 @@ const KEY = "portal-lang";
 
 const LocaleContext = createContext<{
   locale: Locale;
-  setLocale: (l: Locale) => void;
+  setLocale: (l: SetStateAction<Locale>) => void;
 }>({ locale: "fr", setLocale: () => {} });
 
 export const useLocale = () => useContext(LocaleContext);
@@ -33,13 +34,17 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     if (saved === "fr" || saved === "en") setLocaleState(saved);
   }, []);
 
-  const setLocale = (l: Locale) => {
-    setLocaleState(l);
-    try {
-      window.localStorage.setItem(KEY, l);
-    } catch {
-      /* ignore storage failures */
-    }
+  // accepts a value or an updater, so callers can toggle off the current locale
+  const setLocale = (update: SetStateAction<Locale>) => {
+    setLocaleState((prev) => {
+      const next = typeof update === "function" ? update(prev) : update;
+      try {
+        window.localStorage.setItem(KEY, next);
+      } catch {
+        /* ignore storage failures */
+      }
+      return next;
+    });
   };
 
   return (

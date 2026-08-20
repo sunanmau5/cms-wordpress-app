@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
-export const useRefererPathname = (): string | undefined => {
-  const headersList = headers();
+export const getRefererPathname = async (): Promise<string | undefined> => {
+  const headersList = await headers();
   const referer = headersList.get("referer");
   if (referer) {
     const { pathname } = new URL(referer);

@@ -1,3 +1,5 @@
+import type React from "react";
+
 import { cn } from "@/lib/utils";
 
 import type { Page } from "./scroll";
@@ -12,7 +14,7 @@ function ScrollNavigation({
   pages,
   currentPage,
   forcePageChange,
-}: ScrollNavigationProps): JSX.Element {
+}: ScrollNavigationProps): React.JSX.Element {
   return (
     <div className="fixed w-full flex z-10 pl-[30%] justify-around text-xl my-4">
       {pages.map((page, i) => (
