@@ -528,7 +528,8 @@ export default function RsvpScreen() {
       cur.includes(key) ? cur.filter((k) => k !== key) : [...cur, key],
     );
 
-  async function post(payload: Record<string, string>) {
+  // dates go over as an array: the Apps Script joins it on its side
+  async function post(payload: Record<string, string | string[]>) {
     const res = await fetch("/api/rinaverse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -547,9 +548,7 @@ export default function RsvpScreen() {
       await post({
         response: "yes",
         name: name.trim(),
-        dates: dates
-          .map((k) => DATES.find((d) => d.key === k)?.en ?? k)
-          .join(", "),
+        dates: dates.map((k) => DATES.find((d) => d.key === k)?.en ?? k),
         diet: diet.trim(),
         message: message.trim(),
       });
@@ -575,7 +574,7 @@ export default function RsvpScreen() {
       await post({
         response: "no",
         name: noName.trim(),
-        dates: "",
+        dates: [],
         diet: "",
         message: "",
       });
