@@ -1,25 +1,16 @@
-import dynamic from "next/dynamic";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/toaster";
 
-import Transitions, { Animate } from "@/components/hoc/transitions";
+import RootFrame from "./RootFrame";
 
 import "@/styles/globals.css";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-});
-
-const NoSSRHeader = dynamic(() => import("@/components/header"), {
-  ssr: false,
-});
-
-const NoSSRFooter = dynamic(() => import("@/components/footer"), {
-  ssr: false,
 });
 
 export default function RootLayout({
@@ -34,11 +25,7 @@ export default function RootLayout({
       <body
         className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
-        <Transitions className="flex flex-col">
-          <NoSSRHeader />
-          <Animate className="flex-1 no-scrollbar">{children}</Animate>
-          <NoSSRFooter />
-        </Transitions>
+        <RootFrame>{children}</RootFrame>
 
         <Toaster />
       </body>
