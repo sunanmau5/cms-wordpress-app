@@ -503,6 +503,7 @@ function VariantB({
   title: string;
 }) {
   const fieldRef = useRef<HTMLDivElement>(null);
+  const colRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const nodes = useRef<(HTMLDivElement | null)[]>([]);
@@ -516,6 +517,7 @@ function VariantB({
   const [slots, setSlots] = useState<number[]>([]);
   const [fading, setFading] = useState(-1);
   const [night, setNight] = useState(false);
+  const [narrow, setNarrow] = useState(false);
   const [pool, setPool] = useState<Quote[]>(ALL);
   const [open, setOpen] = useState(false);
 
@@ -594,6 +596,7 @@ function VariantB({
       const w = window.innerWidth;
       setSlotCount(w < 640 ? 5 : w < 1024 ? 7 : 9);
       setScale(w < 640 ? 0.72 : w < 1024 ? 0.9 : 1.05);
+      setNarrow(w < 640);
     };
     sync();
     window.addEventListener("resize", sync);
@@ -631,9 +634,43 @@ function VariantB({
     return () => clearInterval(id);
   }, [slots.length, pool.length]);
 
+  // mobile column: drift it upward slowly; a manual scroll pauses the drift
+  useEffect(() => {
+    if (!narrow) return;
+    const el = colRef.current;
+    if (!el) return;
+    let raf = 0;
+    let pausedUntil = 0;
+    let acc = 0;
+    const onScroll = () => {
+      pausedUntil = performance.now() + 2500;
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    const step = (now: number) => {
+      if (now > pausedUntil) {
+        acc += 0.35; // ~21px/s
+        if (acc >= 1) {
+          const whole = Math.floor(acc);
+          acc -= whole;
+          if (el.scrollTop + el.clientHeight >= el.scrollHeight - 1) {
+            el.scrollTop = 0;
+          } else {
+            el.scrollTop += whole;
+          }
+        }
+      }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("scroll", onScroll);
+    };
+  }, [narrow, pool.length]);
+
   useEffect(() => {
     const field = fieldRef.current;
-    if (!field) return;
+    if (!field || narrow) return; // mobile uses the scrolling column instead
 
     const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
@@ -808,7 +845,7 @@ function VariantB({
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", start);
     };
-  }, [locale, serif, slots]);
+  }, [locale, serif, slots, narrow]);
 
   return (
     <div
@@ -857,8 +894,34 @@ function VariantB({
         ))}
       </div>
 
-      {/* the field */}
-      <div ref={fieldRef} className="absolute inset-0 z-10">
+      {/* mobile: a plain scrolling column, bottom-to-top; it auto-scrolls
+          slowly and you can also scroll it yourself. Avoids the float sim's
+          bounding-box glitches on tiny screens. */}
+      {narrow && (
+        <div
+          ref={colRef}
+          className="absolute inset-0 z-10 overflow-y-auto overscroll-contain px-5 pb-24 pt-20"
+        >
+          <div className="mx-auto flex max-w-[32rem] flex-col items-center gap-7">
+            {pool.map((q, i) => (
+              <QuoteCard
+                key={i}
+                locale={locale}
+                night={dark}
+                q={q}
+                scale={scale}
+                serif={serif}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* the field (desktop / tablet float sim) */}
+      <div
+        ref={fieldRef}
+        className={`absolute inset-0 z-10 ${narrow ? "hidden" : ""}`}
+      >
         {slots.map((quoteIndex, i) => (
           <div
             key={i}

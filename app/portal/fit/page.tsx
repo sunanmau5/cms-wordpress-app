@@ -51,6 +51,13 @@ export default function FitScreen() {
   const [photo, setPhoto] = useState(PHOTO.src);
   // every change of piece throws confetti and knocks the frame
   const [burst, setBurst] = useState(0);
+  // on short phones, the banner + title fade away shortly after opening so the
+  // frame and its arrows sit centred with no scroll (see .fit-focus CSS)
+  const [focus, setFocus] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setFocus(true), 1600);
+    return () => clearTimeout(id);
+  }, []);
   const frameRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState<
     Record<string, { dx: number; dy: number; dw: number }>
@@ -94,11 +101,19 @@ export default function FitScreen() {
     });
 
   return (
-    <div className="fit fixed inset-0 z-50 overflow-y-auto">
+    <div className={`fit fixed inset-0 z-50 overflow-y-auto${focus ? " fit-focus" : ""}`}>
       <BackToHub />
       <style
         dangerouslySetInnerHTML={{
           __html: `
+        .fit-banner, .fit-title { transition: opacity 700ms ease; }
+        /* short phones: after opening, banner + title fade/collapse so the frame
+           and arrows sit centred with no scroll */
+        @media (max-width: 900px) and (max-height: 800px) {
+          .fit-focus .fit-banner { opacity: 0; }
+          .fit-focus .fit-title { opacity: 0; max-height: 0; margin-top: 0 !important; margin-bottom: 0 !important; overflow: hidden; pointer-events: none; transition: opacity 600ms ease, max-height 600ms ease, margin 600ms ease; }
+          .fit-focus { overflow: hidden !important; }
+        }
         .fit {
           background:
             radial-gradient(circle at 50% 50%, rgba(255,252,240,.95) 0%, rgba(255,250,232,.55) 26%, rgba(255,250,232,0) 52%),
@@ -143,7 +158,7 @@ export default function FitScreen() {
 
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-x-0 top-0 z-[5] h-14 sm:h-16"
+        className="fit-banner pointer-events-none fixed inset-x-0 top-0 z-[5] h-14 sm:h-16"
       >
         <svg
           className="absolute inset-0 h-full w-full"
@@ -175,7 +190,7 @@ export default function FitScreen() {
       <div className="relative mx-auto flex min-h-full max-w-[46rem] flex-col px-6 py-6 sm:px-10 lg:max-w-[70rem]">
         <div className="m-auto w-full">
           <div
-            className="mb-5 mt-9 text-center sm:mb-7 sm:mt-16"
+            className="fit-title mb-5 mt-9 text-center sm:mb-7 sm:mt-16"
             style={{ animation: "sway 5s ease-in-out infinite" }}
           >
             <span className="relative inline-block rounded-[1.25rem] px-8 py-3">
