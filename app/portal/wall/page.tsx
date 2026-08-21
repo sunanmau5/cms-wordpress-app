@@ -648,15 +648,14 @@ function VariantB({
     el.addEventListener("scroll", onScroll, { passive: true });
     const step = (now: number) => {
       if (now > pausedUntil) {
-        acc += 0.35; // ~21px/s
+        acc += 0.45; // ~27px/s
         if (acc >= 1) {
           const whole = Math.floor(acc);
           acc -= whole;
-          if (el.scrollTop + el.clientHeight >= el.scrollHeight - 1) {
-            el.scrollTop = 0;
-          } else {
-            el.scrollTop += whole;
-          }
+          el.scrollTop += whole;
+          // content is doubled: wrap at the halfway point for a seamless loop
+          const half = el.scrollHeight / 2;
+          if (half > 0 && el.scrollTop >= half) el.scrollTop -= half;
         }
       }
       raf = requestAnimationFrame(step);
@@ -903,7 +902,8 @@ function VariantB({
           className="absolute inset-0 z-10 overflow-y-auto overscroll-contain px-5 pb-24 pt-20"
         >
           <div className="mx-auto flex max-w-[32rem] flex-col items-center gap-7">
-            {pool.map((q, i) => (
+            {/* doubled so the upward drift loops seamlessly */}
+            {[...pool, ...pool].map((q, i) => (
               <QuoteCard
                 key={i}
                 locale={locale}
@@ -1189,6 +1189,18 @@ function VariantB({
               : "balloon 6s ease-in-out infinite",
           }}
         >
+          {/* soft blur/halo so quotes passing behind the button read cleanly */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -inset-3 rounded-full"
+            style={{
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              background: dark
+                ? "radial-gradient(circle, rgba(3,3,5,.45), rgba(3,3,5,0) 72%)"
+                : "radial-gradient(circle, rgba(244,244,240,.6), rgba(244,244,240,0) 72%)",
+            }}
+          />
           {/* the ball it becomes */}
           <img
             alt=""

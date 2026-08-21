@@ -484,7 +484,31 @@ type Stage = "ask" | "form" | "sent" | "no" | "noSent";
 
 export default function RsvpScreen() {
   const { locale, setLocale } = useLocale();
+  const nav = useScreenNav();
   const [stage, setStage] = useState<Stage>("ask");
+
+  // on the confirmation screens, a swipe up also goes to Rina-Land (like the arrow)
+  useEffect(() => {
+    if (stage !== "sent" && stage !== "noSent") return;
+    let y0 = 0;
+    let x0 = 0;
+    const start = (e: TouchEvent) => {
+      y0 = e.touches[0].clientY;
+      x0 = e.touches[0].clientX;
+    };
+    const endT = (e: TouchEvent) => {
+      const dy = y0 - e.changedTouches[0].clientY;
+      const dx = Math.abs(x0 - e.changedTouches[0].clientX);
+      if (dy > 55 && dx < 45) nav("/portal/hub", "up");
+    };
+    window.addEventListener("touchstart", start, { passive: true });
+    window.addEventListener("touchend", endT, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", start);
+      window.removeEventListener("touchend", endT);
+    };
+  }, [stage, nav]);
+
   const [name, setName] = useState("");
   const [dates, setDates] = useState<string[]>([]);
   const [diet, setDiet] = useState("");

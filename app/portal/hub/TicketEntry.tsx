@@ -157,11 +157,14 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
             {phase === "printing" ? t.printing : t.invite}
           </p>
 
-          {/* the machine */}
+          {/* the machine — clicking it also presses for the ticket */}
           <div
             className={
-              phase === "printing" ? "machine-shake relative" : "relative"
+              phase === "printing"
+                ? "machine-shake relative"
+                : "relative cursor-pointer"
             }
+            onClick={phase === "idle" ? press : undefined}
           >
             <svg
               className="block w-[16rem] sm:w-[19rem]"
@@ -304,7 +307,11 @@ export function TicketEntry({ onEnter }: { onEnter: () => void }) {
             {t.here}
           </p>
 
-          <div className="presented w-full max-w-[44rem]">
+          {/* clicking the ticket itself also enters Rina-Land */}
+          <div
+            className="presented w-full max-w-[44rem] cursor-pointer"
+            onClick={toHub}
+          >
             <BigTicket copy={t} locale={locale} />
           </div>
 

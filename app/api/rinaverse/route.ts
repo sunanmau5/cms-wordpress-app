@@ -77,7 +77,7 @@ export async function GET() {
     );
   }
 
-  const res = await fetch(WEBHOOK, { next: { revalidate: 60 } });
+  const res = await fetch(WEBHOOK, { next: { revalidate: 10 } });
   const data = await res.json();
 
   return NextResponse.json(data);
