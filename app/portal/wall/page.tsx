@@ -645,7 +645,10 @@ function VariantB({
     const onScroll = () => {
       pausedUntil = performance.now() + 2500;
     };
-    el.addEventListener("scroll", onScroll, { passive: true });
+    // only a real gesture pauses (a plain scroll listener fires on our own
+    // programmatic scrollTop change and would pause the drift immediately)
+    el.addEventListener("touchmove", onScroll, { passive: true });
+    el.addEventListener("wheel", onScroll, { passive: true });
     const step = (now: number) => {
       if (now > pausedUntil) {
         acc += 0.45; // ~27px/s
@@ -663,7 +666,8 @@ function VariantB({
     raf = requestAnimationFrame(step);
     return () => {
       cancelAnimationFrame(raf);
-      el.removeEventListener("scroll", onScroll);
+      el.removeEventListener("touchmove", onScroll);
+      el.removeEventListener("wheel", onScroll);
     };
   }, [narrow, pool.length]);
 
@@ -1192,10 +1196,10 @@ function VariantB({
           {/* soft blur/halo so quotes passing behind the button read cleanly */}
           <span
             aria-hidden
-            className="pointer-events-none absolute -inset-3 rounded-full"
+            className="pointer-events-none absolute inset-0 rounded-full"
             style={{
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)",
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)",
               background: dark
                 ? "radial-gradient(circle, rgba(3,3,5,.45), rgba(3,3,5,0) 72%)"
                 : "radial-gradient(circle, rgba(244,244,240,.6), rgba(244,244,240,0) 72%)",

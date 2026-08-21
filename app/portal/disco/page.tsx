@@ -283,7 +283,7 @@ const CSS = `
 .ball { position: relative; z-index: 2; border: 0; background: none; padding: 0; width: 74%; animation: hang 5s ease-in-out infinite; transform-origin: top center; }
 .ball-img { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 30px rgba(203,213,225,.4)); }
 @keyframes hang { 0%,100% { transform: rotate(-1.4deg) } 50% { transform: rotate(1.4deg) } }
-.ball-hint { position: absolute; z-index: 3; bottom: -8%; white-space: nowrap; font-size: .78rem; text-transform: uppercase; letter-spacing: .3em; color: rgba(255,255,255,.6); text-shadow: 0 2px 6px rgba(0,0,0,.85); animation: hint 2s ease-in-out infinite; }
+.ball-hint { position: absolute; z-index: 3; bottom: -8%; left: 50%; transform: translateX(-50%); width: 92vw; max-width: 26rem; text-align: center; font-size: .78rem; text-transform: uppercase; letter-spacing: .3em; color: rgba(255,255,255,.6); text-shadow: 0 2px 6px rgba(0,0,0,.85); animation: hint 2s ease-in-out infinite; }
 @keyframes hint { 0%,100% { opacity: .5 } 50% { opacity: 1 } }
 
 .badge { position: absolute; z-index: 4; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: baseline; gap: .3rem;

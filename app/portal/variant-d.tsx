@@ -432,7 +432,7 @@ export function VariantD({
       </div>
 
       <p
-        className="z-10 mb-24 text-xs uppercase tracking-[0.35em] text-white/40 sm:mb-14 sm:text-sm"
+        className="z-10 mb-24 mx-auto max-w-[92vw] px-4 text-center text-xs uppercase leading-relaxed tracking-[0.35em] text-white/40 sm:mb-14 sm:text-sm"
         style={{
           animation:
             done && !showContinue

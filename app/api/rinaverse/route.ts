@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 30;
+
 /**
  * Storage bridge for the 30ans microsite.
  *
