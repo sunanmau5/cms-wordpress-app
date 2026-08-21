@@ -497,9 +497,9 @@ export default function RsvpScreen() {
       x0 = e.touches[0].clientX;
     };
     const endT = (e: TouchEvent) => {
-      const dy = y0 - e.changedTouches[0].clientY;
+      const dy = Math.abs(y0 - e.changedTouches[0].clientY);
       const dx = Math.abs(x0 - e.changedTouches[0].clientX);
-      if (dy > 55 && dx < 45) nav("/portal/hub", "up");
+      if (dy > 45 && dy > dx * 1.4) nav("/portal/hub", "up");
     };
     window.addEventListener("touchstart", start, { passive: true });
     window.addEventListener("touchend", endT, { passive: true });

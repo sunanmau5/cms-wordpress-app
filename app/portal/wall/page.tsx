@@ -862,7 +862,7 @@ function VariantB({
       {/* title, high on the page */}
       <h1
         ref={titleRef}
-        className={`${serif} pointer-events-none absolute left-1/2 top-6 z-10 -translate-x-1/2 whitespace-nowrap text-center text-3xl sm:top-8 sm:text-5xl`}
+        className={`${serif} pointer-events-none absolute left-1/2 top-6 z-30 -translate-x-1/2 whitespace-nowrap text-center text-3xl sm:top-8 sm:text-5xl`}
         style={{
           color: dark ? "rgba(255,255,255,.55)" : "#171717",
           transition: "color 700ms ease",
@@ -870,6 +870,18 @@ function VariantB({
       >
         {title}
       </h1>
+
+      {/* mobile header mask: the column scrolls UNDER the title, fading out
+          before it reaches the text rather than overlapping it */}
+      {narrow && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-28"
+          style={{
+            background: `linear-gradient(to bottom, ${dark ? "#030305" : "#f4f3f1"} 58%, transparent)`,
+          }}
+        />
+      )}
 
       {/* night sky — wipes open from the button, sits under the quotes */}
       <div
