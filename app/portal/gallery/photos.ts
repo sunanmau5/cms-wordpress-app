@@ -206,5 +206,7 @@ export const PHOTOS: Photo[] = [
   },
 ];
 
-export const thumb = (id: string) => `/30ans/gallery/thumbs/${id}.jpg`;
-export const full = (id: string) => `/30ans/gallery/web/${id}.jpg`;
+// bump V when a gallery image is re-edited in place, to bust the browser/CDN cache
+const V = "2";
+export const thumb = (id: string) => `/30ans/gallery/thumbs/${id}.jpg?v=${V}`;
+export const full = (id: string) => `/30ans/gallery/web/${id}.jpg?v=${V}`;
