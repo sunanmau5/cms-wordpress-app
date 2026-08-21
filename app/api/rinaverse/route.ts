@@ -79,7 +79,7 @@ export async function GET() {
     );
   }
 
-  const res = await fetch(WEBHOOK, { next: { revalidate: 10 } });
+  const res = await fetch(WEBHOOK, { next: { revalidate: 0 } });
   const data = await res.json();
 
   return NextResponse.json(data);
